@@ -1,0 +1,26 @@
+execute pathogen#infect()
+syntax on
+set shiftwidth=2
+set tabstop=2
+set expandtab
+set relativenumber
+set ignorecase
+set smartcase
+inoremap <C-j> <C-n>
+inoremap <C-k> <C-p>
+inoremap jk <ESC>
+nmap <C-j> o<ESC>k
+nmap <C-k> O<ESC>j
+nmap <C-i> gg=G''
+map <C-h> :tabp<CR>
+map <C-l> :tabn<CR>
+map <Leader>q :bp\|bd #<CR>
+map <C-n> <plug>NERDTreeTabsToggle<CR>
+let g:neocomplete#enable_at_startup = 1
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+filetype indent plugin on
+set omnifunc=syntaxcomplete#Complete
+" vim-airline-tabline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 1
+let g:nerdtree_tabs_open_on_console_startup = 2

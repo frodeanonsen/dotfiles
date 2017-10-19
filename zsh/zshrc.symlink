@@ -1,0 +1,70 @@
+plugins=(git osx common-aliases npm zsh-autosuggestions wd sudo)
+
+# Path to your oh-my-zsh configuration.
+ZSH=$HOME/.oh-my-zsh
+
+ZSH_CUSTOM=$HOME/Dropbox/dotfiles/zsh
+
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+ZSH_THEME="spaceship"
+SPACESHIP_KUBECONTEXT_SHOW=false
+SPACESHIP_BATTERY_THRESHOLD="20"
+SPACESHIP_BATTERY_PREFFIX="🔋 "
+SPACESHIP_BATTERY_SUFFIX="💡 "
+
+# Example aliases
+#alias p3rr="mplayer http://lyd.nrk.no:80/nrk_radio_p3_radioresepsjonen_aac_h"
+
+# Set to this to use case-sensitive completion
+CASE_SENSITIVE="true"
+
+# Comment this out to disable bi-weekly auto-update checks
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment to change how many often would you like to wait before auto-updates occur? (in days)
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment following line if you want to disable colors in ls
+# DISABLE_LS_COLORS="true"
+
+# Uncomment following line if you want to disable autosetting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment following line if you want red dots to be displayed while waiting for completion
+COMPLETION_WAITING_DOTS="true"
+
+source $ZSH/oh-my-zsh.sh
+
+# Prefer US English and use UTF-8
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US"
+
+# My Homebrew Github token
+export HOMEBREW_GITHUB_API_TOKEN="9aa333a5ad070d7b8e2fe876db59fccab43aed38"
+
+# bindkey "^[^[[D" backward-word
+# bindkey "^[^[[C" forward-word
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+. "/usr/local/opt/nvm/nvm.sh"
+
+# Intellij
+alias idea='open -a "`ls -dt /Applications/IntelliJ\ IDEA*|head -1`"'
+
+# UF
+alias ufprod="ssh docker@\$(aws ec2 describe-instances --filters \"Name=tag:Name, Values=prod-Manager\" | jq -r '.Reservations[0].Instances[0].PublicIpAddress') -A"
+alias ufstage="ssh docker@\$(aws ec2 describe-instances --filters \"Name=tag:Name, Values=stage-Manager\" | jq -r '.Reservations[0].Instances[0].PublicIpAddress') -A"
+
+
+#source /usr/local/bin/aws_zsh_completer.sh
+
+export GPG_TTY=$(tty)
+
+export EDITOR="code"
+
+# added by travis gem
+[ -f /Users/frode/.travis/travis.sh ] && source /Users/frode/.travis/travis.sh
