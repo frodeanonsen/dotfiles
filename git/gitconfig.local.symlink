@@ -1,0 +1,5 @@
+[user]
+        name = frodeanonsen
+        email = frode@anonsen.org
+[credential]
+        helper = osxkeychain
