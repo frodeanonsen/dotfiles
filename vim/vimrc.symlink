@@ -62,6 +62,7 @@ let NERDTreeQuitOnOpen = 1
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+let NERDTreeShowHidden=1
 set ttyfast
 set lazyredraw
 map tt :NERDTreeToggle<CR> "double click t button to toggle NerdTree
