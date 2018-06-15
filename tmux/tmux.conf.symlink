@@ -38,6 +38,12 @@ bind - split-window -v -c '#{pane_current_path}' # horizontal pane
 unbind '"'
 unbind %
 
+# switch panes using ALT-CMD-arrow without prefix
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
 # Easy-to-remember window commands
 bind k confirm kill-window
 bind K confirm kill-server
