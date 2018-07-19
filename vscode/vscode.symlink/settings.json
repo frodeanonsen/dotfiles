@@ -14,23 +14,33 @@
     "editor.cursorStyle": "line",
     "editor.cursorWidth": 5,
     "editor.cursorBlinking": "solid",
-    // Very important: Install this plugin: https://github.com/be5invis/vscode-custom-css
-    // You'll need to change this to a file URI scheme on your computer: https://en.wikipedia.org/wiki/File_URI_scheme
-    // Mac/Linux: file:///Users/YOUR-PC-USERNAME/.vscodestyles.css
-    // Windows: file:///C:/Users/YOUR-PC-USERNAME/.vscodestyles.css
-    "vscode_custom_css.imports": [
-        "file:///Users/frode/.vscode/codestyles.css"
-    ],
-    "vscode_custom_css.policy": true,
     "editor.renderWhitespace": "all",
     "window.zoomLevel": 0,
-    "workbench.iconTheme": "vscode-great-icons",
+    "workbench.iconTheme": "eq-material-theme-icons",
     "workbench.startupEditor": "newUntitledFile",
     "workbench.colorCustomizations": {
-        "editorIndentGuide.activeBackground": "#ff0000"
+        "editorIndentGuide.activeBackground": "#ff0000",
+        "activityBarBadge.background": "#388E3C",
+        "list.activeSelectionForeground": "#388E3C",
+        "list.inactiveSelectionForeground": "#388E3C",
+        "list.highlightForeground": "#388E3C",
+        "scrollbarSlider.activeBackground": "#388E3C50",
+        "editorSuggestWidget.highlightForeground": "#388E3C",
+        "textLink.foreground": "#388E3C",
+        "progressBar.background": "#388E3C",
+        "pickerGroup.foreground": "#388E3C",
+        "tab.activeBorder": "#388E3C",
+        "notificationLink.foreground": "#388E3C",
+        "editorWidget.resizeBorder": "#388E3C",
+        "editorWidget.border": "#388E3C",
+        "settings.modifiedItemForeground": "#388E3C",
+        "panelTitle.activeBorder": "#388E3C"
     },
     "terminal.integrated.shell.linux": "/usr/local/bin/zsh",
     "terminal.external.osxExec": "iTerm.app",
-    "workbench.colorTheme": "Cobalt2",
-    "git.confirmSync": false
+    "workbench.colorTheme": "Material Theme",
+    "git.confirmSync": false,
+    "materialTheme.fixIconsRunning": false,
+    "materialTheme.accentPrevious": "",
+    "materialTheme.accent": "Breaking Bad"
 }
