@@ -32,14 +32,16 @@ POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=''
 POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX=($'%F{red} \uf1d0 %f %F{yellow}❯ ')
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_writable vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status history kubecontext)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_writable)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status)
+#POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_writable vcs)
+#POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status history kubecontext)
 
 POWERLEVEL9K_KUBECONTEXT_BACKGROUND='004'
 POWERLEVEL9K_KUBECONTEXT_FOREGROUND='000'
 
 # POWERLEVEL9K_TIME_FORMAT="%D{%T | %m.%d.%y}"
-## 
+##
 
 # Default username to hide "user@hostname" info
 DEFAULT_USER="frode"
@@ -154,7 +156,7 @@ alias ohmyzsh="code ~/.oh-my-zsh"
 alias k="kubectl"
 
 # export PATH=$PATH:~/bin
-# export GOPATH=~/go 
+# export GOPATH=~/go
 # export PATH=$GOPATH/bin:$PATH
 # export GOROOT=/usr/local/opt/go/libexec
 
