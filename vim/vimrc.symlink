@@ -12,6 +12,7 @@ Plugin 'nightsense/seabird'
 Plugin 'tomasiser/vim-code-dark'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'git://github.com/scrooloose/nerdtree.git'
 call vundle#end()            " required
 
 filetype plugin indent on    " required
