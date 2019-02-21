@@ -30,6 +30,7 @@ values."
               ibuffer-group-buffers-by 'projects)
      auto-completion
      ;; better-defaults
+     ranger
 
      ;; Source control
      (git :variables
@@ -148,7 +149,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
+   dotspacemacs-themes '(material
+                         spacemacs-dark
                          spacemacs-light
                          solarized-light
                          solarized-dark
@@ -409,6 +411,7 @@ you should place your code here."
 
   (add-hook 'inferior-python-mode-hook (lambda ()
                                          (setq indent-tabs-mode t)))
+  ; (add-hook 'dired-mode-hook 'deer)
   (setq python-shell-interpreter "python3")
 
   (global-hungry-delete-mode)

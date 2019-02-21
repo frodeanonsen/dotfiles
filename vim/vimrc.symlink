@@ -7,6 +7,7 @@ filetype off                  " required
 "
 "
 set number                      "Line numbers are good
+set relativenumber              "Line numbers are good
 set backspace=indent,eol,start  "Allow backspace in insert mode
 set history=1000                "Store lots of :cmdline history
 set showcmd                     "Show incomplete cmds down the bottom
@@ -32,6 +33,8 @@ nmap <Leader>rxm :ExtractMethod<Enter>
 
 " Copy the relative path of the current file to the clipboard
 nmap <Leader>cf :silent !echo -n % \| pbcopy<Enter>
+
+" set clipboard=unnamed
 
 " ================ Turn Off Swap Files ==============
 

@@ -126,3 +126,5 @@ GIT_PS1_SHOWUPSTREAM="auto"
 
 # az cli
 autoload bashcompinit && bashcompinit
+
+[ -s "/Users/frode/.jabba/jabba.sh" ] && source "/Users/frode/.jabba/jabba.sh"

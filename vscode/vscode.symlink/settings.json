@@ -42,5 +42,8 @@
     "git.confirmSync": false,
     "materialTheme.fixIconsRunning": false,
     "materialTheme.accentPrevious": "",
-    "materialTheme.accent": "Breaking Bad"
+    "materialTheme.accent": "Breaking Bad",
+    "prettier.semi": false,
+    "workbench.list.openMode": "doubleClick",
+    "workbench.editor.highlightModifiedTabs": true
 }

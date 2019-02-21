@@ -16,6 +16,8 @@
 	<string>manual</string>
 	<key>AutoHideTmuxClientSession</key>
 	<false/>
+	<key>CGFontRenderingFontSmoothingDisabled</key>
+	<false/>
 	<key>Custom Color Presets</key>
 	<dict>
 		<key>3024 Night</key>
@@ -36384,6 +36386,8 @@
 	<true/>
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
+	<key>NSFontPanelAttributes</key>
+	<string>1, 0</string>
 	<key>NSNavLastRootDirectory</key>
 	<string>~/Downloads/iterm</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
@@ -36420,15 +36424,17 @@
 	<key>NSTableView Supports v2 KeyBingingTable</key>
 	<true/>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>814 232 609 444 0 0 1680 1027 </string>
+	<string>662 451 609 331 0 0 1680 1050 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>530 476 620 392 0 0 1680 1027 </string>
+	<string>530 493 620 392 0 0 1680 1050 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>674 584 770 429 0 0 1680 1027 </string>
+	<string>-1216 635 796 486 -1920 143 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>163 95 1137 795 0 0 1680 1027 </string>
+	<string>0 23 1680 1027 0 0 1680 1050 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>641 144 570 452 0 0 1680 1027 </string>
+	<string>-3840 143 1920 1080 -3840 143 1920 1080 </string>
+	<key>NSWindow Frame iTerm Window 2</key>
+	<string>-1920 -21 1920 531 -1920 -30 1920 1080 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -36653,13 +36659,13 @@
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.21960783004760742</real>
+				<real>0.17647058823529413</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.19607836008071899</real>
+				<real>0.13309443254968575</real>
 				<key>Red Component</key>
-				<real>0.14901962876319885</real>
+				<real>0.11974792310796009</real>
 			</dict>
 			<key>Background Image Location</key>
 			<string></string>
@@ -36677,7 +36683,7 @@
 				<real>1</real>
 			</dict>
 			<key>Blinking Cursor</key>
-			<false/>
+			<true/>
 			<key>Blur</key>
 			<false/>
 			<key>Bold Color</key>
@@ -37209,7 +37215,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<false/>
 			<key>Normal Font</key>
-			<string>SourceCodeProNerdFontC-Regular 12</string>
+			<string>FuraCodeNerdFontComplete-Retina 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<true/>
 			<key>Option Key Sends</key>
@@ -37287,7 +37293,7 @@
 			<key>Use Tab Color</key>
 			<false/>
 			<key>Vertical Spacing</key>
-			<real>1</real>
+			<real>1.0454807511295181</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -37936,6 +37942,18 @@
 	</array>
 	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
 	<true/>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
+	<true/>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
+	<integer>0</integer>
+	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt</key>
+	<true/>
+	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt_selection</key>
+	<integer>0</integer>
+	<key>NoSyncHaveRequestedFullDiskAccess</key>
+	<true/>
+	<key>NoSyncHaveUsedCopyMode</key>
+	<true/>
 	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
@@ -37985,6 +38003,10 @@
 		<string>0027</string>
 		<string>0028</string>
 	</array>
+	<key>NoSyncTurnOffMouseReportingOnHostChange</key>
+	<false/>
+	<key>PMPrintingExpandedStateForPrint2</key>
+	<false/>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -38020,6 +38042,14 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/frode/.itermcfg/</string>
+	<key>Print In Black And White</key>
+	<true/>
+	<key>QuickPasteBytesPerCall</key>
+	<integer>1536</integer>
+	<key>QuickPasteDelayBetweenCalls</key>
+	<real>0.0066666663624346256</real>
+	<key>SUAutomaticallyUpdate</key>
+	<true/>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedAlternateAppNameKey</key>
@@ -38029,20 +38059,24 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-09-08T11:09:08Z</date>
+	<date>2019-02-11T09:01:57Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
+	<key>SuppressRestartAnnouncement</key>
+	<true/>
+	<key>TabStyleWithAutomaticOption</key>
+	<integer>1</integer>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>
-	<string>3.2.0</string>
+	<string>3.2.7</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
-	<false/>
+	<true/>
 </dict>
 </plist>
