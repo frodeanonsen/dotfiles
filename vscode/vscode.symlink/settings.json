@@ -10,13 +10,12 @@
     "editor.letterSpacing": 0.5,
     "files.trimTrailingWhitespace": true,
     "editor.fontWeight": "400",
-    "prettier.eslintIntegration": true,
     "editor.cursorStyle": "line",
     "editor.cursorWidth": 5,
     "editor.cursorBlinking": "solid",
     "editor.renderWhitespace": "all",
     "window.zoomLevel": 0,
-    "workbench.iconTheme": "eq-material-theme-icons",
+    "workbench.iconTheme": "openhab",
     "workbench.startupEditor": "newUntitledFile",
     "workbench.colorCustomizations": {
         "editorIndentGuide.activeBackground": "#ff0000",
@@ -45,5 +44,11 @@
     "materialTheme.accent": "Breaking Bad",
     "prettier.semi": false,
     "workbench.list.openMode": "doubleClick",
-    "workbench.editor.highlightModifiedTabs": true
+    "workbench.editor.highlightModifiedTabs": true,
+    "editor.lineNumbers": "relative",
+    "openhab.host": "hassio",
+    "openhab.port": 9090,
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
