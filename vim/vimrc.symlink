@@ -17,6 +17,18 @@ set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
 set scrolloff=5 " Keep 5 lines below and above the cursor
 
+autocmd InsertEnter * set cul
+autocmd InsertLeave * set nocul
+
+let &t_SI = "\e[5 q"
+let &t_EI = "\e[2 q"
+
+" optional reset cursor on start:
+augroup myCmds
+au!
+autocmd VimEnter * silent !echo -ne "\e[2 q"
+augroup END
+
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
@@ -62,8 +74,8 @@ set tabstop=2
 set expandtab
 
 " Auto indent pasted text
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
+"nnoremap p p=`]<C-o>
+"nnoremap P P=`]<C-o>
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -77,6 +89,7 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'git://github.com/scrooloose/nerdtree.git'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plugin 'junegunn/fzf.vim'
+Plugin 'NLKNguyen/papercolor-theme'
 call vundle#end()            " required
 
 filetype plugin indent on    " required
@@ -90,21 +103,23 @@ filetype plugin indent on    " required
 
 " theme
 " ----
+set t_Co=256   " This is may or may not needed.
+
 set background=dark
-colorscheme material
+colorscheme PaperColor
 " ----
 " End theme
 
-if (has("termguicolors"))
-  set termguicolors
-endif
+"if (has("termguicolors"))
+"  set termguicolors
+"endif
 
-let g:material_theme_style = 'default'
+" let g:material_theme_style = 'default'
 
 " Airline
-let g:airline_theme = 'material'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
+"let g:airline_theme = 'material'
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline_powerline_fonts = 1
 
 syntax enable
 
@@ -118,9 +133,6 @@ set statusline=%f "tail of the filename
 set statusline+=\ c:%c
 " ------
 
-" Set line number
-set number
-
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
@@ -131,12 +143,12 @@ set ignorecase
 set smartcase
 
 " Nerdtree Settings
-set mouse=a
-autocmd VimEnter * NERDTree | wincmd p
+"" set mouse=a
+" autocmd VimEnter * NERDTree | wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 map <C-n> :NERDTreeToggle<CR>
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
+let g:NERDTreeDirArrowExpandable = '>'
+let g:NERDTreeDirArrowCollapsible = '\'
 let NERDTreeQuitOnOpen = 1
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
