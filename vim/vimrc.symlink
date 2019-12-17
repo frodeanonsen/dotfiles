@@ -1,7 +1,6 @@
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
-filetype off                  " required
 
 " ================ General Config ====================
 "
@@ -16,7 +15,31 @@ set gcr=a:blinkon0              "Disable cursor blink
 set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
 set scrolloff=5 " Keep 5 lines below and above the cursor
+set shiftwidth=2
+set tabstop=2
+set expandtab
+set ignorecase
+set smartcase
+" ================ Indentation ======================
+set autoindent
+set smartindent
+set smarttab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+set expandtab
 
+autocmd InsertEnter * set cul
+autocmd InsertLeave * set nocul
+
+let &t_SI = "\e[5 q"
+let &t_EI = "\e[2 q"
+
+" optional reset cursor on start:
+augroup myCmds
+au!
+autocmd VimEnter * silent !echo -ne "\e[2 q"
+augroup END
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
@@ -51,32 +74,32 @@ if has('persistent_undo')
   set undofile
 endif
 
-" ================ Indentation ======================
-
-set autoindent
-set smartindent
-set smarttab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
-set expandtab
 
 " Auto indent pasted text
 nnoremap p p=`]<C-o>
 nnoremap P P=`]<C-o>
 
+filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'kaicataldo/material.vim'
 Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-surround'
 Plugin 'git://git.wincent.com/command-t.git'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'git://github.com/scrooloose/nerdtree.git'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plugin 'junegunn/fzf.vim'
+Plugin 'NLKNguyen/papercolor-theme'
+Plugin 'udalov/kotlin-vim'
+Plugin 'vim-scripts/ReplaceWithRegister'
+Plugin 'christoomey/vim-system-copy'
 call vundle#end()            " required
 
 filetype plugin indent on    " required
@@ -84,8 +107,6 @@ filetype plugin indent on    " required
 "filetype plugin on
 
 " Put your non-Plugin stuff after this line
-
-" execute pathogen#infect()
 
 
 " theme
@@ -102,7 +123,7 @@ endif
 let g:material_theme_style = 'default'
 
 " Airline
-let g:airline_theme = 'material'
+let g:airline_theme = 'cobalt2'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 
@@ -118,21 +139,10 @@ set statusline=%f "tail of the filename
 set statusline+=\ c:%c
 " ------
 
-" Set line number
-set number
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-set shiftwidth=2
-set tabstop=2
-set expandtab
-set ignorecase
-set smartcase
 
 " Nerdtree Settings
-set mouse=a
-autocmd VimEnter * NERDTree | wincmd p
+"set mouse=a
+" autocmd VimEnter * NERDTree | wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 map <C-n> :NERDTreeToggle<CR>
 let g:NERDTreeDirArrowExpandable = '▸'
@@ -146,3 +156,4 @@ set ttyfast
 set lazyredraw
 map tt :NERDTreeToggle<CR> "double click t button to toggle NerdTree
 map [] :TagbarToggle<CR> "click [] to toggle Tagbar
+

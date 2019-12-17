@@ -171,20 +171,16 @@ fi
 echo ''
 info "starting jldeen mods"
 #backup old bin, if exists
-if [ -d $HOME/bin ]
+if [ ! -d $HOME/bin ]
 then
-    echo "current $HOME/bin folder found!!! Creating backup..."
-    sudo mv $HOME/bin bin_old
-    success "backup created"
-else
-    echo "No current $HOME/bin folder found. Proceeding to link bin folder for tumx scripts..."
+  # symlink .dotfiles bin to ~
+  echo "No current $HOME/bin folder found. Proceeding to link bin folder for tumx scripts..."
+  ln -s $HOME/.dotfiles/bin $HOME/bin && success "symlink for $HOME/bin folder created"
 fi
 
-# symlink .dotfiles bin to ~
-ln -s $HOME/.dotfiles/bin $HOME/bin && success "symlink for $HOME/bin folder created"
 
 # symlink .dotfiles tmux to ~
-ln -s $HOME/.dotfiles/tmux $HOME/.tmux && success "symlink for $HOME/.tmux folder created"
+# ln -s $HOME/.dotfiles/tmux $HOME/.tmux && success "symlink for $HOME/.tmux folder created"
 
 # symlink VSCode User Settings
 if [ -d $HOME/Library/Application\ Support/Code/User ] ; then 
@@ -195,22 +191,16 @@ else
   echo "VS Code does not appear to be installed or has not been launched yet. Cannot create symlink for VS Code User settings..."
 fi
 
-# install Source Code Pro nerd font
-cp $HOME/.dotfiles/Source\ Code\ Pro\ Nerd\ Font\ Complete.ttf /Library/Fonts
-success "Source Code Pro font copied successfully!"
+if [[ -d /Library/Fonts ]]; then
+  # install Source Code Pro nerd font
+  cp $HOME/.dotfiles/Source\ Code\ Pro\ Nerd\ Font\ Complete.ttf /Library/Fonts
+  success "Source Code Pro font copied successfully!"
+fi
 
 # .config permissions fix
 sudo chown $(whoami) $HOME/.config 
 success '.config permissions fixed'
 
-# airport symlink
-if ! [ -f /usr/local/bin/airport ]
-  then
-    sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/local/bin/airport
-    success "symlink for airport created"
-  else 
-    info "symlink for airport already exists"
-  fi
 
 # crontab additions
 add_line "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -221,49 +211,59 @@ add_line "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   info "ERROR $PATH could not be added to crontab"
   fi
 
-add_cron "speedtest-cli --simple > ~/bin/bandwidth.log"
-  if [[ $? -eq 0 ]]
-  then
-  success "crontab created for speedtest cli --simple"
-  else
-  info "ERROR crontab could not be created for speedtest cli --simple"
-  fi
+#add_cron "speedtest-cli --simple > ~/bin/bandwidth.log"
+#  if [[ $? -eq 0 ]]
+#  then
+#  success "crontab created for speedtest cli --simple"
+#  else
+#  info "ERROR crontab could not be created for speedtest cli --simple"
+#  fi
 
-add_cron "speedtest-cli --json > ~/bin/bandwidth.json"
-  if [[ $? -eq 0 ]]
-  then
-  success "crontab created for speedtest cli --json"
-  else
-  info "ERROR crontab could not be created for speedtest cli --json"
-  fi
+#add_cron "speedtest-cli --json > ~/bin/bandwidth.json"
+#  if [[ $? -eq 0 ]]
+#  then
+#  success "crontab created for speedtest cli --json"
+#  else
+#  info "ERROR crontab could not be created for speedtest cli --json"
+#  fi
 
 # first run of speedtest-cli
-echo "Running speedtest-cli for tmux status bar data now..."
-speedtest-cli --simple > ~/bin/bandwidth.log
-success "speedtest-cli bandwidth.log created"
+#echo "Running speedtest-cli for tmux status bar data now..."
+#speedtest-cli --simple > ~/bin/bandwidth.log
+#success "speedtest-cli bandwidth.log created"
 
-speedtest-cli --json > ~/bin/bandwidth.json
-success "speedtest-cli bandwidth.json created"
+#speedtest-cli --json > ~/bin/bandwidth.json
+#success "speedtest-cli bandwidth.json created"
 
-# iterm2 config
-echo ''
-read -p "Do you currently use iTerm2 and would you like to set jldeen's custom colors? y/n" -n 1 -r
-echo ''
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-	# Specify the preferences directory
-  defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/.itermcfg/"
-  # Tell iTerm2 to use the custom preferences in the directory
-  defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
-    if [[ $? -eq 0 ]]
-    then
-        success "successfully configured iTerm2 to use jldeen's custom colors..."
-    else
-        fail "failed to apply jldeen's custom colors..." >&2
+if [ "$(uname -s)" == "Darwin" ]; then
+  # airport symlink
+  if ! [ -f /usr/local/bin/airport ]; then
+    sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/local/bin/airport
+    success "symlink for airport created"
+  else 
+    info "symlink for airport already exists"
+  fi
+
+  # iterm2 config
+  echo ''
+  read -p "Do you currently use iTerm2 and would you like to set jldeen's custom colors? y/n" -n 1 -r
+  echo ''
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+    # Specify the preferences directory
+    defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/.itermcfg/"
+    # Tell iTerm2 to use the custom preferences in the directory
+    defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+      if [[ $? -eq 0 ]]
+      then
+          success "successfully configured iTerm2 to use jldeen's custom colors..."
+      else
+          fail "failed to apply jldeen's custom colors..." >&2
+  fi
+  else 
+      echo "You chose not to use iTerm2 or jldeen's custom colors."
+  fi
 fi
-else 
-    echo "You chose not to use iTerm2 or jldeen's custom colors."
-fi
 
 echo ''
-echo '	Badass macOS terminal installed!'
+echo '	Badass terminal installed!'
