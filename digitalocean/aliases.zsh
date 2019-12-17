@@ -1,0 +1,1 @@
+source <(doctl completion zsh)
