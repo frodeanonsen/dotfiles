@@ -71,10 +71,10 @@ values."
      markdown
      php
      (python :variables python-backend 'lsp)
-     (scala :variables ensime-startup-snapshot-notification nil)
      sql
      swift
      yaml
+     kotlin
 
      ;; Other modes
      markdown
@@ -94,6 +94,7 @@ values."
      ;; editorconfig
      gradle-mode
      groovy-mode
+     kotlin-mode
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(persp-mode)
@@ -322,7 +323,7 @@ you should place your code here."
     (let ((gls (executable-find "gls")))
       (when gls
         (setq insert-directory-program gls
-              dired-listing-switches "-aBhl --group-directories-first")))
+              dired-listing-switches "-al --si --time-style long-iso --group-directories-first")))
 
     (custom-set-variables
      '(eclim-eclipse-dirs '("/Applications/Eclipse.app/Contents/Eclipse"))
