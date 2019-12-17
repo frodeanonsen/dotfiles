@@ -1,9 +1,14 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 # Homebrew
 #
 # This installs some of the common dependencies needed (or at least desired)
 # using Homebrew.
+
+if [[ "$OSTYPE" != "darwin"* ]]; then
+  echo "No need for homebrew here!"
+  exit 0
+fi
 
 # Check for Homebrew
 if test ! $(which brew)

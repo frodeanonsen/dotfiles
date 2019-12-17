@@ -26,6 +26,11 @@ if [ -z "$SDKMAN_DIR" ]; then
     SDKMAN_DIR="$HOME/.sdkman"
 fi
 
+if [[ -d $SDKMAN_DIR ]]; then
+  echo "SdkMan installed"
+  exit 0
+fi
+
 # Local variables
 sdkman_bin_folder="${SDKMAN_DIR}/bin"
 sdkman_src_folder="${SDKMAN_DIR}/src"
