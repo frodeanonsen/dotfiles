@@ -6,13 +6,24 @@
 #	  command k "$@"
 #}
 
+kan() {
+  command kubectl "$@" --all-namespaces
+}
+
+wkan() {
+  command watch kubectl "$@" --all-namespaces
+}
+
+
 alias kx='kubectx'
 alias kn='kubens'
 
 source <(kubectl completion zsh)
-alias k='kubectl'
+source <(helm completion zsh)
+source <(kind completion zsh)
 complete -o default -F __start_kubectl k
-alias sk='kubectl -n kube-system'
+complete -o default -F __start_kubectl kan
+alias wk='watch kubectl'
 alias ke='EDITOR=vim kubectl edit'
 alias klbaddr="kubectl get svc -ojsonpath='{.status.loadBalancer.ingress[0].hostname}'"
 
