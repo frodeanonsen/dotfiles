@@ -22,6 +22,7 @@ if command -v kubectl >/dev/null 2>&1; then
   source <(kind completion zsh)
   complete -o default -F __start_kubectl k
   complete -o default -F __start_kubectl kan
+  alias k='kubectl'
   alias wk='watch kubectl'
   alias ke='EDITOR=vim kubectl edit'
   alias klbaddr="kubectl get svc -ojsonpath='{.status.loadBalancer.ingress[0].hostname}'"
