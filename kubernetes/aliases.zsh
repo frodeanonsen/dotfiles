@@ -18,8 +18,12 @@ if command -v kubectl >/dev/null 2>&1; then
   alias kn='kubens'
 
   source <(kubectl completion zsh)
-  source <(helm completion zsh)
-  source <(kind completion zsh)
+  if command -v helm >/dev/null 2>&1; then
+    source <(helm completion zsh)
+  fi
+  if command -v kind >/dev/null 2>&1; then
+    source <(kind completion zsh)
+  fi
   complete -o default -F __start_kubectl k
   complete -o default -F __start_kubectl kan
   alias k='kubectl'
