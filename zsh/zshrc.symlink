@@ -151,6 +151,8 @@ unset config_files updated_at
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-
+if [[ -f "${HOME}/.env.zsh" ]]; then
+  source ${HOME}/.env.zsh
+fi
 # az cli
 autoload bashcompinit && bashcompinit
