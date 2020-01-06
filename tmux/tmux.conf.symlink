@@ -65,22 +65,16 @@ set-option -g update-environment "SSH_ASKPASS SSH_AUTH_SOCK SSH_AGENT_PID SSH_CO
 set -g status-position bottom
 set -g status-bg colour237
 set -g status-fg colour137
-set -g status-attr 'none'
+set -g status-style 'none'
 set -g status-left ' #[fg=colour197] '
 set -g status-right '#(eval ~/.tmux/responsive `tmux display -p "#{client_width}"`)#[fg=colour165]#[bg=default] #H'
 set -g status-right-length 100
 set -g status-left-length 80
 
 set-window-option -g aggressive-resize
-setw -g window-status-current-fg colour170
-setw -g window-status-current-bg colour239
-setw -g window-status-current-attr bold
+setw -g window-status-current-style bold,fg=colour170,bg=colour239
 setw -g window-status-current-format ' #I#[fg=colour250]:#[fg=colour255]#W#[fg=colour170]#F '
-
 set-option -g set-titles-string 'do epic shit. | #S | / #W'
-setw -g window-status-current-fg colour170
-setw -g window-status-current-attr bold
-setw -g window-status-current-format ' #I#[fg=colour250]:#[fg=colour255]#W#[fg=colour170]#F '
 
 set -sg escape-time 0
 
