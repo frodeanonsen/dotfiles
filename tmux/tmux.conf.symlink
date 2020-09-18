@@ -29,15 +29,15 @@ unbind '"'
 unbind %
 
 # switch panes using ALT-CMD-arrow without prefix
-bind -n M-Left select-pane -L
-bind -n M-Right select-pane -R
-bind -n M-Up select-pane -U
-bind -n M-Down select-pane -D
+bind -n M-h select-pane -L
+bind -n M-l select-pane -R
+bind -n M-k select-pane -U
+bind -n M-j select-pane -D
 
-bind -rn M-S-h resize-pane -L
-bind -rn M-S-l resize-pane -R
-bind -rn M-S-k resize-pane -U
-bind -rn M-S-j resize-pane -D
+bind -rn C-M-h resize-pane -L
+bind -rn C-M-l resize-pane -R
+bind -rn C-M-k resize-pane -U
+bind -rn C-M-j resize-pane -D
 
 bind -n  M-` last-window
 
@@ -74,7 +74,7 @@ set -g status-left-length 80
 set-window-option -g aggressive-resize
 setw -g window-status-current-style bold,fg=colour170,bg=colour239
 setw -g window-status-current-format ' #I#[fg=colour250]:#[fg=colour255]#W#[fg=colour170]#F '
-set-option -g set-titles-string 'do epic shit. | #S | / #W'
+set-option -g set-titles-string '#h | #S | / #W'
 
 set -sg escape-time 0
 

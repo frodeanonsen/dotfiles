@@ -75,9 +75,9 @@ if has('persistent_undo')
 endif
 
 
-" Auto indent pasted text
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
+" " Auto indent pasted text
+" nnoremap p p=`]<C-o>
+" nnoremap P P=`]<C-o>
 
 filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim

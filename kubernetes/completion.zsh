@@ -8,8 +8,8 @@ if [ $commands[kind] ]; then
   source <(kind completion zsh)
 fi
 
-if [ $commands[helm] ]; then
-  source <(helm completion zsh)
-  complete -o default -F __start_helm helm
-  complete -o default -F __start_helm h
-fi
+# if [ $commands[helm] ]; then
+#   source <(helm completion zsh)
+#   complete -o default -F __start_helm helm
+#   complete -o default -F __start_helm h
+# fi
