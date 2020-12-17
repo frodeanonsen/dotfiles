@@ -19,6 +19,10 @@ if [ $commands[kubectl] ]; then
   alias knrunning='kubectl get pods --field-selector=status.phase!=Running'
   alias kfails='kubectl get po -owide --all-namespaces | grep "0/" | tee /dev/tty | wc -l'
   alias kimg="kubectl get deployment --output=jsonpath='{.spec.template.spec.containers[*].image}'"
+
+  alias kgp="kubectl get pod"
+  alias kdp="kubectl describe pod"
+  alias klf="kubectl logs -f"
 fi
 
 if [ $commands[helm] ]; then

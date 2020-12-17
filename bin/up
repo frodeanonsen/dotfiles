@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+az storage blob upload -c fano --account-name jsvappstorageprod -f ./$1 -n $1

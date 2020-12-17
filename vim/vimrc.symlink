@@ -78,6 +78,7 @@ endif
 " " Auto indent pasted text
 " nnoremap p p=`]<C-o>
 " nnoremap P P=`]<C-o>
+set paste
 
 filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
