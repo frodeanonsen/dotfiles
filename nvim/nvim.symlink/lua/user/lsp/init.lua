@@ -5,4 +5,5 @@ end
 
 require("user.lsp.lsp-installer")
 require("user.lsp.handlers").setup()
-require("lspconfig").kotlin_language_server.setup{}
+require "user.lsp.kotlin"
+require "user.lsp.null-ls"

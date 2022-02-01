@@ -6,7 +6,7 @@ bind-key ] send-prefix
 bind-key C-] last-window
 
 set -g default-terminal "xterm-256color"
-set-option -g default-shell /usr/bin/zsh
+set-option -g default-shell /usr/local/bin/zsh
 set-option -g history-limit 20000
 
 # xterm-style function key sequences
@@ -23,8 +23,8 @@ setw -g mode-keys vi
 #bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "reattach-to-user-namespace pbcopy" \; display-message "highlighted selection copied to system clipboard"
 
 # Easy-to-remember split pane commands
-bind \ split-window -h -c '#{pane_current_path}' # vertical pane
-bind - split-window -v -c '#{pane_current_path}' # horizontal pane
+bind h split-window -h -c '#{pane_current_path}' # vertical pane
+bind v split-window -v -c '#{pane_current_path}' # horizontal pane
 unbind '"'
 unbind %
 
@@ -34,10 +34,17 @@ bind l select-pane -R
 bind k select-pane -U
 bind j select-pane -D
 
+<<<<<<< Updated upstream
 bind -rn C-M-h resize-pane -L
 bind -rn C-M-l resize-pane -R
 bind -rn C-M-k resize-pane -U
 bind -rn C-M-j resize-pane -D
+=======
+bind -rn C-M-Left resize-pane -L
+bind -rn C-M-Right resize-pane -R
+bind -rn C-M-Up resize-pane -U
+bind -rn C-M-Down resize-pane -D
+>>>>>>> Stashed changes
 
 bind -n  M-` last-window
 

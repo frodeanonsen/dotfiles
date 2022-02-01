@@ -33,20 +33,21 @@ keymap("n", "<leader>-", ":split<cr>", opts)
 keymap("n", "<leader>|", ":vsplit<cr>", opts)
 
 -- Better window navigation
-keymap("n", "<C-h>", "<C-w>h", opts)
-keymap("n", "<C-j>", "<C-w>j", opts)
-keymap("n", "<C-k>", "<C-w>k", opts)
-keymap("n", "<C-l>", "<C-w>l", opts)
+keymap("n", "<A-h>", "<C-w>h", opts)
+keymap("n", "<A-j>", "<C-w>j", opts)
+keymap("n", "<A-k>", "<C-w>k", opts)
+keymap("n", "<A-l>", "<C-w>l", opts)
 
 -- Resize with arrows
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+keymap("n", "<C-Up>", ":resize +2<CR>", opts)
+keymap("n", "<C-Down>", ":resize -2<CR>", opts)
+keymap("n", "<C-Left>", ":vertical resize +2<CR>", opts)
+keymap("n", "<C-Right>", ":vertical resize -2<CR>", opts)
 
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
+keymap("n", "<Leader>c", "<cmd>Bdelete!<CR>", opts)
 
 -- Insert --
 -- Press jk fast to enter
@@ -80,7 +81,26 @@ keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 keymap("n", "<leader>fb", ":Telescope buffers<cr>", opts)
 keymap("n", "<leader>ff", ":Telescope find_files<cr>", opts)
 keymap("n", "<leader>fg", ":Telescope live_grep<cr>", opts)
+keymap("n", "<leader>fr", ":Telescope oldfiles<cr>", opts)
 
 -- Nvimtree
-keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+keymap("n", "<leader>x", ":NvimTreeToggle<cr>", opts)
 
+
+
+-- Testing
+
+-- GitSigns maps
+-- toggle hunk line highlight - staying with the leader + h + one-letter identifier for Hunks (not ,t*)
+keymap("n", "<Leader>hh", [[<Cmd>lua require'gitsigns'.toggle_linehl()<CR>]], { noremap = true, silent = true })
+-- toggle hunk line Num highlight
+keymap("n", "<Leader>hn", [[<Cmd>lua require'gitsigns'.toggle_numhl()<CR>]], { noremap = true, silent = true })
+-- toogle Virtual current line blame → <leader>hb for Full line blame
+keymap("n", ",tb", [[<Cmd>lua require'gitsigns'.toggle_current_line_blame()<CR>]], { noremap = true, silent = true })
+
+-- toggle neoclip - https://github.com/AckslD/nvim-neoclip.lua#startstop
+keymap("n", ",tn", [[<Cmd>lua require('neoclip').toggle()<CR>]], { noremap = true, silent = true })
+
+
+-- NeoClip
+keymap("n", "<Leader>v", ":Telescope neoclip<cr>", opts)

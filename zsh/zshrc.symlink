@@ -2,7 +2,8 @@
 # shortcut to this dotfiles path is $DOTFILES
 export DOTFILES="$HOME/.dotfiles"
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/.cargo/bin
+
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 export TERM=xterm-256color
@@ -66,7 +67,8 @@ export ZSH_CUSTOM=~/.oh-my-zsh-custom
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(sudo git history taskwarrior zsh-autosuggestions wd emacs zsh-syntax-highlighting kubetail)
+plugins=(sudo git history taskwarrior zsh-autosuggestions wd zsh-syntax-highlighting)
+
 source $ZSH/oh-my-zsh.sh
 #source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -116,4 +118,7 @@ if [[ -f "${HOME}/.env.zsh" ]]; then
   source ${HOME}/.env.zsh
 fi
 # az cli
-autoload bashcompinit && bashcompinit
+
+eval "$(starship init zsh)"
+
+# autoload bashcompinit && bashcompinit
