@@ -1,98 +1,50 @@
-# force a reload of the config file
-bind-key r source-file ~/.tmux.conf \; display-message "tmux.conf reloaded."
+set -g default-terminal "screen-256color"
 
-# TODO: This shadows the default paste-buffer binding; should fix that.
-bind-key ] send-prefix
-bind-key C-] last-window
+set -g prefix C-a
+unbind C-b
+bind-key C-a send-prefix
 
-set -g default-terminal "xterm-256color"
-set-option -g default-shell /usr/local/bin/zsh
-set-option -g history-limit 20000
-
-# xterm-style function key sequences
-setw -g xterm-keys on
-
-# Mouse support ---------------------------------------------------------- 
-# set -g mouse on
-#bind-key -T copy-mode-vi WheelUpPane send -X scroll-up
-#bind-key -T copy-mode-vi WheelDownPane send -X scroll-down
-
-# # Vi copypaste
-setw -g mode-keys vi
-#bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "reattach-to-user-namespace pbcopy"
-#bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "reattach-to-user-namespace pbcopy" \; display-message "highlighted selection copied to system clipboard"
-
-# Easy-to-remember split pane commands
-bind h split-window -h -c '#{pane_current_path}' # vertical pane
-bind v split-window -v -c '#{pane_current_path}' # horizontal pane
-unbind '"'
 unbind %
+bind | split-window -h
 
-# switch panes using ALT-CMD-arrow without prefix
-bind h select-pane -L
-bind l select-pane -R
-bind k select-pane -U
-bind j select-pane -D
+unbind '"'
+bind - split-window -v
 
-<<<<<<< Updated upstream
-bind -rn C-M-h resize-pane -L
-bind -rn C-M-l resize-pane -R
-bind -rn C-M-k resize-pane -U
-bind -rn C-M-j resize-pane -D
-=======
-bind -rn C-M-Left resize-pane -L
-bind -rn C-M-Right resize-pane -R
-bind -rn C-M-Up resize-pane -U
-bind -rn C-M-Down resize-pane -D
->>>>>>> Stashed changes
+unbind r
+bind r source-file ~/.tmux.conf
 
-bind -n  M-` last-window
+bind -r j resize-pane -D 5
+bind -r k resize-pane -U 5
+bind -r l resize-pane -R 5
+bind -r h resize-pane -L 5
 
-# Easy-to-remember window commands
-bind k confirm kill-window
-bind K confirm kill-server
-bind a last-window
-bind space command-prompt -p index "select-window"
-unbind &
+bind -r m resize-pane -Z
 
-# Colors
-set -g @tasks_format_begin '#[fg=white,bg=default]'
-set -g @tasks_format_end '#[fg=white,bg=default]'
+# Clear screen
+bind -n C-M-l send-keys 'C-l'
 
-# Icons
-set -g @tasks_icon_urgent '! '
-set -g @tasks_icon_outstanding '+ '
+set -g mouse on
 
-# Status bar ------------------------------------------------------------- 
-# set-option -g status on
-set-option -g set-titles on
-set -g status-interval 1
-set-option -g update-environment "SSH_ASKPASS SSH_AUTH_SOCK SSH_AGENT_PID SSH_CONNECTION DISPLAY"
+set-window-option -g mode-keys vi
 
-set -g status-position bottom
-set -g status-bg colour237
-set -g status-fg colour137
-set -g status-style 'none'
-set -g status-left ' #[fg=colour197] '
-set -g status-right '#(eval ~/.tmux/responsive `tmux display -p "#{client_width}"`)#[fg=colour165]#[bg=default] #H'
-set -g status-right-length 100
-set -g status-left-length 80
+bind-key -T copy-mode-vi 'v' send -X begin-selection # start selecting text with "v"
+bind-key -T copy-mode-vi 'y' send -X copy-selection # copy text with "y"
 
-set-window-option -g aggressive-resize
-setw -g window-status-current-style bold,fg=colour170,bg=colour239
-setw -g window-status-current-format ' #I#[fg=colour250]:#[fg=colour255]#W#[fg=colour170]#F '
-set-option -g set-titles-string '#h | #S | / #W'
+unbind -T copy-mode-vi MouseDragEnd1Pane # don't exit copy mode when dragging with mouse
 
-set -sg escape-time 0
+# tpm plugin
+set -g @plugin 'tmux-plugins/tpm'
 
-# Plugins
-# List of plugins
- set -g @tpm_plugins '          \
-   tmux-plugins/tpm             \
-   chriszarate/tmux-tasks       \
-   soyuka/tmux-current-pane-hostname     \
-   christoomey/vim-tmux-navigator       \
-'
+# list of tmux plugins
+set -g @plugin 'christoomey/vim-tmux-navigator'
+set -g @plugin 'jimeh/tmux-themepack'
+set -g @plugin 'tmux-plugins/tmux-resurrect' # persist tmux sessions after computer restart
+set -g @plugin 'tmux-plugins/tmux-continuum' # automatically saves sessions for you every 15 minutes
+
+set -g @themepack 'powerline/default/cyan'
+
+set -g @resurrect-capture-pane-contents 'on'
+set -g @continuum-restore 'on'
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
