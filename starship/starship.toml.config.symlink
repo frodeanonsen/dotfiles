@@ -173,7 +173,7 @@ disabled = false
 [username]
 style_root = "bold red"
 style_user = "bold yellow"
-show_always = false
+show_always = true
 disabled = false
 
 [azure]

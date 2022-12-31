@@ -34,7 +34,7 @@ POWERLEVEL9K_GO_VERSION_FOREGROUND='000'
 # POWERLEVEL9K_TIME_FORMAT="%D{%T | %m.%d.%y}"
 ##
 # Default username to hide "user@hostname" info
-DEFAULT_USER="fano"
+DEFAULT_USER="frode"
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
 # Uncomment the following line to use hyphen-insensitive completion. Case
