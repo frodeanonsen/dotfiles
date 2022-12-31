@@ -44,3 +44,5 @@
 	protocol = ssh
 [init]
 	defaultBranch = main
+[pull]
+	rebase = true
