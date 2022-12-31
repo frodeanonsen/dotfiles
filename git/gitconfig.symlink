@@ -41,4 +41,6 @@
 [github]
 	user = frodeanonsen
 [hub]
-	protocol = git
+	protocol = ssh
+[init]
+	defaultBranch = main
