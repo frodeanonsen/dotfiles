@@ -1,7 +1,7 @@
 # Use `hub` as our git wrapper:
 #   http://defunkt.github.com/hub/
 if command -v hub >/dev/null 2>&1; then
-  alias git=$hub_path
+  alias git=hub
 fi
 
 # The rest of my fun git aliases
