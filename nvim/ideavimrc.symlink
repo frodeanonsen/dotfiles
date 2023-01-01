@@ -9,7 +9,7 @@ set clipboard+=ideaput
 nnoremap \e :e ~/.ideavimrc<CR>
 nnoremap \r :action IdeaVim.ReloadVimRc.reload<CR>
 
-"" Plugins  --------------------------------
+" Plugins  --------------------------------
 """ Surround Plugin  --------------------------------
 " Emulates vim-surround. Mappings to easily delete, change and add such surroundings in pairs
 " Basic Commands:
@@ -68,7 +68,7 @@ map s <Plug>(easymotion-f)
 "   m	    Display the NERDTree menu
 " See  https://github.com/JetBrains/ideavim/wiki/NERDTree-support for details
 set NERDTree
-map <c-n> :NERDTreeToggle<CR>
+nnoremap <leader>e :NERDTreeToggle<CR>
 
 """ multiple-cursors plugin  --------------------------------
 " Emulates vim-multiple-cursors
@@ -150,7 +150,7 @@ nnoremap <s-TAB> :action NextTab<CR>
 "sethandler <D-n> a:vim
 "nnoremap <D-n> :action NextWindow<CR>
 
-nnoremap ;q :action CloseContent<CR>
+nnoremap <leader>q :action CloseContent<CR>
 nnoremap ;a :action CloseAllEditors<CR>
 
 """ Editing source code
