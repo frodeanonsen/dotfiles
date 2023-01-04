@@ -15,43 +15,113 @@
 #   limitations under the License.
 #
 
-#Install: stable
+
+# install:- channel: stable; cliVersion: 5.16.0; cliNativeVersion: 0.0.15; api: https://api.sdkman.io/2
+
+set -e
+
+track_last_command() {
+    last_command=$current_command
+    current_command=$BASH_COMMAND
+}
+trap track_last_command DEBUG
+
+echo_failed_command() {
+    local exit_code="$?"
+	if [[ "$exit_code" != "0" ]]; then
+		echo "'$last_command': command failed with exit code $exit_code."
+	fi
+}
+trap echo_failed_command EXIT
+
 
 # Global variables
-SDKMAN_SERVICE="https://api.sdkman.io/2"
-SDKMAN_VERSION="5.7.3+337"
-SDKMAN_PLATFORM=$(uname)
+export SDKMAN_SERVICE="https://api.sdkman.io/2"
+export SDKMAN_VERSION="5.16.0"
+export SDKMAN_NATIVE_VERSION="0.0.15"
+# infer platform
+function infer_platform() {
+	local kernel
+	local machine
+
+	kernel="$(uname -s)"
+	machine="$(uname -m)"
+
+	case $kernel in
+	Linux)
+	  case $machine in
+	  i686)
+		echo "linuxx32"
+		;;
+	  x86_64)
+		echo "linuxx64"
+		;;
+	  armv6l)
+		echo "linuxarm32hf"
+		;;
+	  armv7l)
+		echo "linuxarm32hf"
+		;;
+	  armv8l)
+		echo "linuxarm32hf"
+		;;
+	  aarch64)
+		echo "linuxarm64"
+		;;
+	  *)
+	  	echo "exotic"
+	  	;;
+	  esac
+	  ;;
+	Darwin)
+	  case $machine in
+	  x86_64)
+		echo "darwinx64"
+		;;
+	  arm64)
+		if [[ "$sdkman_rosetta2_compatible" == 'true' ]]; then
+			echo "darwinx64"
+		else
+			echo "darwinarm64"
+		fi
+		;;
+	  *)
+	  	echo "darwinx64"
+	  	;;
+	  esac
+	  ;;
+	*)
+	  echo "exotic"
+	esac
+}
+
+export SDKMAN_PLATFORM="$(infer_platform)"
+
 
 if [ -z "$SDKMAN_DIR" ]; then
     SDKMAN_DIR="$HOME/.sdkman"
+    SDKMAN_DIR_RAW='$HOME/.sdkman'
+else
+    SDKMAN_DIR_RAW="$SDKMAN_DIR"
 fi
-
-if [[ -d $SDKMAN_DIR ]]; then
-  echo "SdkMan installed"
-  exit 0
-fi
+export SDKMAN_DIR
 
 # Local variables
-sdkman_bin_folder="${SDKMAN_DIR}/bin"
-sdkman_src_folder="${SDKMAN_DIR}/src"
 sdkman_tmp_folder="${SDKMAN_DIR}/tmp"
-sdkman_stage_folder="${sdkman_tmp_folder}/stage"
-sdkman_zip_file="${sdkman_tmp_folder}/sdkman-${SDKMAN_VERSION}.zip"
 sdkman_ext_folder="${SDKMAN_DIR}/ext"
 sdkman_etc_folder="${SDKMAN_DIR}/etc"
 sdkman_var_folder="${SDKMAN_DIR}/var"
-sdkman_archives_folder="${SDKMAN_DIR}/archives"
 sdkman_candidates_folder="${SDKMAN_DIR}/candidates"
 sdkman_config_file="${sdkman_etc_folder}/config"
 sdkman_bash_profile="${HOME}/.bash_profile"
 sdkman_profile="${HOME}/.profile"
 sdkman_bashrc="${HOME}/.bashrc"
-sdkman_zshrc="${HOME}/.zshrc"
+sdkman_zshrc="${ZDOTDIR:-${HOME}}/.zshrc"
 
 sdkman_init_snippet=$( cat << EOF
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$SDKMAN_DIR"
-[[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
+export SDKMAN_DIR="$SDKMAN_DIR_RAW"
+[[ -s "${SDKMAN_DIR_RAW}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR_RAW}/bin/sdkman-init.sh"
 EOF
 )
 
@@ -73,7 +143,6 @@ case "$(uname)" in
     FreeBSD*)
         freebsd=true
 esac
-
 
 echo ''
 echo '                                -+syyyyyyys:'
@@ -141,7 +210,7 @@ if [ -d "$SDKMAN_DIR" ]; then
 fi
 
 echo "Looking for unzip..."
-if [ -z $(which unzip) ]; then
+if ! command -v unzip > /dev/null; then
 	echo "Not found."
 	echo "======================================================================================================"
 	echo " Please install unzip on your system using your favourite package manager."
@@ -153,7 +222,7 @@ if [ -z $(which unzip) ]; then
 fi
 
 echo "Looking for zip..."
-if [ -z $(which zip) ]; then
+if ! command -v zip > /dev/null; then
 	echo "Not found."
 	echo "======================================================================================================"
 	echo " Please install zip on your system using your favourite package manager."
@@ -165,7 +234,7 @@ if [ -z $(which zip) ]; then
 fi
 
 echo "Looking for curl..."
-if [ -z $(which curl) ]; then
+if ! command -v curl > /dev/null; then
 	echo "Not found."
 	echo ""
 	echo "======================================================================================================"
@@ -194,7 +263,7 @@ if [[ "$solaris" == true ]]; then
 	fi
 else
 	echo "Looking for sed..."
-	if [ -z $(which sed) ]; then
+	if [ -z $(command -v sed) ]; then
 		echo "Not found."
 		echo ""
 		echo "======================================================================================================"
@@ -207,21 +276,16 @@ else
 	fi
 fi
 
-
 echo "Installing SDKMAN scripts..."
 
 
 # Create directory structure
 
 echo "Create distribution directories..."
-mkdir -p "$sdkman_bin_folder"
-mkdir -p "$sdkman_src_folder"
 mkdir -p "$sdkman_tmp_folder"
-mkdir -p "$sdkman_stage_folder"
 mkdir -p "$sdkman_ext_folder"
 mkdir -p "$sdkman_etc_folder"
 mkdir -p "$sdkman_var_folder"
-mkdir -p "$sdkman_archives_folder"
 mkdir -p "$sdkman_candidates_folder"
 
 echo "Getting available candidates..."
@@ -231,17 +295,33 @@ echo "$SDKMAN_CANDIDATES_CSV" > "${SDKMAN_DIR}/var/candidates"
 echo "Prime the config file..."
 touch "$sdkman_config_file"
 echo "sdkman_auto_answer=false" >> "$sdkman_config_file"
-echo "sdkman_auto_selfupdate=false" >> "$sdkman_config_file"
-echo "sdkman_insecure_ssl=false" >> "$sdkman_config_file"
+if [ -z "$ZSH_VERSION" -a -z "$BASH_VERSION" ]; then
+    echo "sdkman_auto_complete=false" >> "$sdkman_config_file"
+else
+    echo "sdkman_auto_complete=true" >> "$sdkman_config_file"
+fi
+echo "sdkman_auto_env=false" >> "$sdkman_config_file"
+echo "sdkman_auto_update=true" >> "$sdkman_config_file"
+echo "sdkman_beta_channel=false" >> "$sdkman_config_file"
+echo "sdkman_checksum_enable=true" >> "$sdkman_config_file"
+echo "sdkman_colour_enable=true" >> "$sdkman_config_file"
 echo "sdkman_curl_connect_timeout=7" >> "$sdkman_config_file"
 echo "sdkman_curl_max_time=10" >> "$sdkman_config_file"
-echo "sdkman_beta_channel=false" >> "$sdkman_config_file"
 echo "sdkman_debug_mode=false" >> "$sdkman_config_file"
-echo "sdkman_colour_enable=true" >> "$sdkman_config_file"
+echo "sdkman_insecure_ssl=false" >> "$sdkman_config_file"
+echo "sdkman_rosetta2_compatible=false" >> "$sdkman_config_file"
+echo "sdkman_selfupdate_feature=true" >> "$sdkman_config_file"
 
-echo "Download script archive..."
-curl --location --progress-bar "${SDKMAN_SERVICE}/broker/download/sdkman/install/${SDKMAN_VERSION}/${SDKMAN_PLATFORM}" > "$sdkman_zip_file"
+# script cli distribution
+echo "Installing script cli archive..."
+# fetch distribution
+download_url="${SDKMAN_SERVICE}/broker/download/sdkman/install/${SDKMAN_VERSION}/${SDKMAN_PLATFORM}"
+sdkman_zip_file="${sdkman_tmp_folder}/sdkman-${SDKMAN_VERSION}.zip"
+echo "* Downloading..."
+curl --fail --location --progress-bar "$download_url" > "$sdkman_zip_file"
 
+# check integrity
+echo "* Checking archive integrity..."
 ARCHIVE_OK=$(unzip -qt "$sdkman_zip_file" | grep 'No errors detected in compressed data')
 if [[ -z "$ARCHIVE_OK" ]]; then
 	echo "Downloaded zip archive corrupt. Are you connected to the internet?"
@@ -249,25 +329,73 @@ if [[ -z "$ARCHIVE_OK" ]]; then
 	echo "If problems persist, please ask for help on our Slack:"
 	echo "* easy sign up: https://slack.sdkman.io/"
 	echo "* report on channel: https://sdkman.slack.com/app_redirect?channel=user-issues"
-	rm -rf "$SDKMAN_DIR"
-	exit 2
+	exit
 fi
 
-echo "Extract script archive..."
+# extract archive
+echo "* Extracting archive..."
 if [[ "$cygwin" == 'true' ]]; then
-	echo "Cygwin detected - normalizing paths for unzip..."
+	sdkman_tmp_folder=$(cygpath -w "$sdkman_tmp_folder")
 	sdkman_zip_file=$(cygpath -w "$sdkman_zip_file")
-	sdkman_stage_folder=$(cygpath -w "$sdkman_stage_folder")
 fi
-unzip -qo "$sdkman_zip_file" -d "$sdkman_stage_folder"
+unzip -qo "$sdkman_zip_file" -d "$sdkman_tmp_folder"
 
+# copy in place
+echo "* Copying archive contents..."
+cp -rf "${sdkman_tmp_folder}"/sdkman-*/* "$SDKMAN_DIR"
 
-echo "Install scripts..."
-mv "${sdkman_stage_folder}/sdkman-init.sh" "$sdkman_bin_folder"
-mv "$sdkman_stage_folder"/sdkman-* "$sdkman_src_folder"
+# clean up
+echo "* Cleaning up..."
+rm -rf "$sdkman_tmp_folder"/sdkman-*
+rm -rf "$sdkman_zip_file"
+
+echo ""
+
+# native cli distribution
+if [[ "$SDKMAN_PLATFORM" != "exotic" ]]; then
+# fetch distribution
+download_url="${SDKMAN_SERVICE}/broker/download/native/install/${SDKMAN_NATIVE_VERSION}/${SDKMAN_PLATFORM}"
+sdkman_zip_file="${sdkman_tmp_folder}/sdkman-native-${SDKMAN_NATIVE_VERSION}.zip"
+echo "* Downloading..."
+curl --fail --location --progress-bar "$download_url" > "$sdkman_zip_file"
+
+# check integrity
+echo "* Checking archive integrity..."
+ARCHIVE_OK=$(unzip -qt "$sdkman_zip_file" | grep 'No errors detected in compressed data')
+if [[ -z "$ARCHIVE_OK" ]]; then
+	echo "Downloaded zip archive corrupt. Are you connected to the internet?"
+	echo ""
+	echo "If problems persist, please ask for help on our Slack:"
+	echo "* easy sign up: https://slack.sdkman.io/"
+	echo "* report on channel: https://sdkman.slack.com/app_redirect?channel=user-issues"
+	exit
+fi
+
+# extract archive
+echo "* Extracting archive..."
+if [[ "$cygwin" == 'true' ]]; then
+	sdkman_tmp_folder=$(cygpath -w "$sdkman_tmp_folder")
+	sdkman_zip_file=$(cygpath -w "$sdkman_zip_file")
+fi
+unzip -qo "$sdkman_zip_file" -d "$sdkman_tmp_folder"
+
+# copy in place
+echo "* Copying archive contents..."
+cp -rf "${sdkman_tmp_folder}"/sdkman-*/* "$SDKMAN_DIR"
+
+# clean up
+echo "* Cleaning up..."
+rm -rf "$sdkman_tmp_folder"/sdkman-*
+rm -rf "$sdkman_zip_file"
+
+echo ""
+fi
 
 echo "Set version to $SDKMAN_VERSION ..."
 echo "$SDKMAN_VERSION" > "${SDKMAN_DIR}/var/version"
+
+echo "Set native version to $SDKMAN_NATIVE_VERSION ..."
+echo "$SDKMAN_NATIVE_VERSION" > "${SDKMAN_DIR}/var/version_native"
 
 
 if [[ $darwin == true ]]; then
@@ -293,8 +421,13 @@ if [[ -z $(grep 'sdkman-init.sh' "$sdkman_zshrc") ]]; then
     echo "Updated existing ${sdkman_zshrc}"
 fi
 
+
+
 echo -e "\n\n\nAll done!\n\n"
 
+echo "You are subscribed to the STABLE channel."
+
+echo ""
 echo "Please open a new terminal, or run the following in the existing one:"
 echo ""
 echo "    source \"${SDKMAN_DIR}/bin/sdkman-init.sh\""
