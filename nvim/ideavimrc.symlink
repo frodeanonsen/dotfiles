@@ -1,3 +1,9 @@
+""" The Leader Key
+let mapleader=" "
+
+""" The Escape key
+map <C-c> <Esc>
+
 set so=5 " Keep few lines visible when scrolling
 set incsearch
 set number relativenumber " Set relative line numbers
@@ -6,8 +12,8 @@ set timeoutlen=400
 """ Editing and Reloading the Config
 set clipboard+=unnamed
 set clipboard+=ideaput
-nnoremap \e :e ~/.ideavimrc<CR>
-nnoremap \r :action IdeaVim.ReloadVimRc.reload<CR>
+nnoremap <leader>ic :e ~/.ideavimrc<CR>
+nnoremap <leader>ir :action IdeaVim.ReloadVimRc.reload<CR>
 
 " Plugins  --------------------------------
 """ Surround Plugin  --------------------------------
@@ -86,6 +92,8 @@ map mp <A-p>
 """ Commentary plugin  --------------------------------
 Plug 'tpope/vim-commentary'
 
+nnoremap <leader>/ :action CommentByLineComment<CR>
+
 """ ReplaceWithRegister plugin  --------------------------------
 " Emulates  ReplaceWithRegister
 " Basic Commands:
@@ -122,8 +130,6 @@ set relativenumber " Set relative line numbers
 """ The Escape button
 map <C-c> <Esc>
 
-""" The Leader Key
-let mapleader=" "
 
 """ Distraction Free Mode
 nnoremap <c-z> :action ToggleDistractionFreeMode<CR>
@@ -132,8 +138,8 @@ nnoremap <c-z> :action ToggleDistractionFreeMode<CR>
 nnoremap <c-t> :action ActivateTerminalToolWindow<CR>
 
 """ Navigation
-nnoremap <c-\> :action SplitVertically<CR>
-nnoremap <c--> :action SplitHorizontally<CR>
+nnoremap \ :action SplitVertically<CR>
+nnoremap - :action SplitHorizontally<CR>
 nnoremap <c-m> :action MoveEditorToOppositeTabGroup<CR>
 
 sethandler <c-j> a:vim
@@ -171,7 +177,7 @@ nnoremap <leader>zo :action ExpandAllRegions<CR>
 nnoremap <leader>c :action CommentByLineComment<CR>
 
 nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
-nnoremap <Leader>=  :action ReformatCode<CR>
+nnoremap <Leader>= :action ReformatCode<CR>
 nnoremap <leader>o :action OptimizeImports<CR>
 
 nnoremap <c-r> :action RecentFiles<CR>
@@ -181,7 +187,7 @@ nnoremap <leader>h  :action LocalHistory.ShowHistory<CR>
 nnoremap ge :action GotoNextError<CR>
 nnoremap gE :action GotoPreviousError<CR>
 
-nnoremap <leader>s :write<CR>
+nnoremap <leader>w :write<CR>
 
 """ Searching and Source Code Navigation
 set incsearch
