@@ -2,8 +2,16 @@ alias reload!='. ~/.zshrc'
 
 alias cls='clear' # Good 'ol Clear Screen command
 
-# NB! Using `gls -F --color` from oh-my-zsh config
-alias ll='ls -lh --group-directories-first'
-alias la='ls -lAh --group-directories-first'
+alias ll='exa -l --icons --git --group-directories-first --time-style=long-iso'
+alias la='exa -l --icons --git -a --group-directories-first --time-style=long-iso'
+alias lt='exa --tree --level=2 --icons --git -a --group-directories-first --time-style=long-iso'
+
+alias du=dust
+
+alias dig=dog
+
+alias http=xh
+
+alias df=duf
 
 alias cat='bat -p'
