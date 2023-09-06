@@ -44,8 +44,8 @@ set -g @plugin 'tmux-plugins/tmux-yank' # Copy to the system clipboard
 
 set -g @themepack 'powerline/default/cyan'
 
-set -g @resurrect-capture-pane-contents 'on'
-set -g @continuum-restore 'on'
+set -g @resurrect-capture-pane-contents 'off'
+set -g @continuum-restore 'off'
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
