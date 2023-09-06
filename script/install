@@ -47,16 +47,29 @@ install_packages() {
   if [[ "$OSTYPE" == "darwin"* ]]; then
     # Run Homebrew through the Brewfile
     echo "› brew bundle"
-    brew bundle
+#    brew bundle
   fi
 	# sudo dnf install -y ${system_packages[@]} --allowerasing
 	run_installers
-	echo $ruby_packages
-	gem install --user ${ruby_packages[@]}
-	echo $npm_packages
-	yarn global add ${npm_packages[@]}
-	echo $python_packages
-	pip3 install --user ${python_packages[@]}
+  if [ -z "$ruby_packages" ]; then
+    echo No Ruby packages specified
+  else
+    echo $ruby_packages
+    gem install --user ${ruby_packages[@]}
+  fi
+  if [ -z "$node_packages" ]; then
+    echo No Node packages specified
+  else
+    echo $npm_packages
+    npm global i ${npm_packages[@]}
+  fi
+  if [ -z "$python_packages" ]; then
+    echo No Python packages specified
+  else
+    echo $python_packages
+    python3 -m pip install --upgrade pip
+    pip3 install --user ${python_packages[@]}
+  fi
 
 	echo 'Done, you need to logout and in to source `.zprofile`'
 }
