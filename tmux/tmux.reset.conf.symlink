@@ -41,6 +41,7 @@ bind x swap-pane -D
 bind s choose-session
 bind-key -T copy-mode-vi v send-keys -X begin-selection
 #bind-key -T copy-mode-vi 'y' send -X copy-selection # copy text with "y"
+bind -r m resize-pane -Z
 
 bind C-l send-keys 'C-l'
 bind c copy-mode

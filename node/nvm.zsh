@@ -4,6 +4,6 @@ if [[ -d ~/.nvm ]]; then
    if [[ -f "$NVM_DIR/nvm.sh" ]]; then
      . "$NVM_DIR/nvm.sh"
      . "$NVM_DIR/bash_completion"
-     nvm use default
+     nvm use --silent default
    fi
  fi

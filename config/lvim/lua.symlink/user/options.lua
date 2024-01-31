@@ -52,3 +52,36 @@ end
 
 -- use nightly version of hrsh7th/nvim-cmp
 lvim.builtin.cmp.experimental.ghost_text = true
+
+
+-- folding powered by treesitter
+-- https://github.com/nvim-treesitter/nvim-treesitter#folding
+-- look for foldenable: https://github.com/neovim/neovim/blob/master/src/nvim/options.lua
+-- Vim cheatsheet, look for folds keys: https://devhints.io/vim
+vim.opt.foldmethod = "expr"                     -- default is "normal"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- default is ""
+vim.opt.foldenable = true                       -- if this option is true and fold method option is other than normal, every time a document is opened everything will be folded.
+vim.wo.fillchars = "fold: "
+vim.wo.foldnestmax = 3
+vim.wo.foldminlines = 1
+vim.wo.foldlevel = 1
+-- vim.wo.foldtext =
+-- [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend)) . ' (' . (v:foldend - v:foldstart + 1) . ' lines)']]
+
+lvim.builtin.which_key.setup.plugins.presets.z = true
+
+lvim.autocmds = {
+  {
+    "BufReadPost",       -- see `:h autocmd-events`
+    {                    -- this table is passed verbatim as `opts` to `nvim_create_autocmd`
+      pattern = { "*" }, -- see `:h autocmd-events`
+      command = "normal zR",
+    },
+
+    "FileReadPost",      -- see `:h autocmd-events`
+    {                    -- this table is passed verbatim as `opts` to `nvim_create_autocmd`
+      pattern = { "*" }, -- see `:h autocmd-events`
+      command = "normal zR",
+    }
+  },
+}
