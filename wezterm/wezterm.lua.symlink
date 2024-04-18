@@ -22,6 +22,11 @@ return {
 	leader = { key = "w", mods = "CTRL" },
 	keys = {
 		{
+			key = "l",
+			mods = "CTRL",
+			action = wezterm.action.DisableDefaultAssignment,
+		},
+		{
 			key = "m",
 			mods = "LEADER",
 			action = wezterm.action.TogglePaneZoomState,
