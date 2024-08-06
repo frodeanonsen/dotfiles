@@ -15,14 +15,14 @@
    # Home Manager is pretty good at managing .dotfiles. The primary way to manage
    # plain files is through 'home.file'.
    home.file = {
-     ".zshrc".source = ~/.dotfiles/zsh/zshrc.symlink;
-     ".config/wezterm".source = ~/.dotfiles/wezterm;
-     ".config/skhd".source = ~/.dotfiles/skhd;
-     ".config/ohmyposh".source = ~/.dotfiles/ohmyposh;
-     ".config/tmux".source = ~/.dotfiles/tmux;
-     ".config/nvim".source = ~/.dotfiles/nvim;
-     ".config/nix".source = ~/.dotfiles/nix;
-     ".config/nix-darwin".source = ~/.dotfiles/nix-darwin;
+     ".zshrc".source = ./zsh/zshrc.symlink;
+     # ".config/wezterm".source = /Users/frode/.dotfiles/wezterm;
+     # ".config/skhd".source = /Users/frode/.dotfiles/skhd;
+     # ".config/ohmyposh".source = /Users/frode/.dotfiles/ohmyposh;
+     # ".config/tmux".source = /Users/frode/.dotfiles/tmux;
+     # ".config/nvim".source = /Users/frode/.dotfiles/nvim;
+     # ".config/nix".source = /Users/frode/.dotfiles/nix;
+     # ".config/nix-darwin".source = /Users/frode/.dotfiles/nix-darwin;
    };
 
    home.sessionVariables = {
