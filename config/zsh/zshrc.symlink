@@ -24,7 +24,7 @@ source $ZSH/oh-my-zsh.sh
 
 # all of our zsh files
 typeset -U config_files
-config_files=($DOTFILES/*/*.zsh)
+config_files=($DOTFILES/config/*/*.zsh)
 
 # load the path files
 for file in ${(M)config_files:#*/path.zsh}; do
