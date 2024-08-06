@@ -15,7 +15,8 @@
    # Home Manager is pretty good at managing .dotfiles. The primary way to manage
    # plain files is through 'home.file'.
    home.file = {
-     ".zshrc".source = ./zsh/zshrc.symlink;
+     ".zshrc".source = ./config/zsh/zshrc.symlink;
+    ".config/ohmyposh".source = ./config/ohmyposh;
      # ".config/wezterm".source = /Users/frode/.dotfiles/wezterm;
      # ".config/skhd".source = /Users/frode/.dotfiles/skhd;
      # ".config/ohmyposh".source = /Users/frode/.dotfiles/ohmyposh;
