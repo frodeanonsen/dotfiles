@@ -18,18 +18,47 @@
       # $ nix-env -qaP | grep wget
       environment.systemPackages =
         [ pkgs.vim
-           pkgs.direnv
-           pkgs.age
-           pkgs.sshs
-           pkgs.atac
-           pkgs.termshark
-           pkgs.portal
-           pkgs.glow
+          pkgs.neovim
+          pkgs.tree-sitter
+          pkgs.git
+          pkgs.gh
+          pkgs.direnv
+          pkgs.bat
+          pkgs.ripgrep
+          pkgs.age
+          pkgs.sshs
+          pkgs.atac
+          pkgs.termshark
+          pkgs.portal
+          pkgs.glow
+          pkgs.btop
+          pkgs.bottom
+          pkgs.fd
+          pkgs.fzf
+          pkgs.eza
+          pkgs.gawk
+          pkgs.skhd
+          pkgs.yabai
+          pkgs.jq
+          pkgs.yq
+          pkgs.lazygit
+          pkgs.darwin.lsusb
+          pkgs.zsh
+          pkgs.yt-dlp
+          pkgs.tldr
+          pkgs.xh
+          pkgs.wget
+          pkgs.hwatch
+          pkgs.watchman
+          pkgs.gnumake
         ];
 
       # Auto upgrade nix package and the daemon service.
       services.nix-daemon.enable = true;
       # nix.package = pkgs.nix;
+
+      services.yabai.enable = true;
+      services.skhd.enable = true;
 
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
@@ -54,6 +83,42 @@
       home-manager.backupFileExtension = "backup";
       nix.configureBuildUsers = true;
       nix.useDaemon = true;
+
+      system.defaults = {
+        dock.autohide = true;
+        dock.mru-spaces = false;
+        finder.AppleShowAllExtensions = true;
+        finder.FXPreferredViewStyle = "clmv";
+        loginwindow.LoginwindowText = "Zygizo";
+        screencapture.location = "~/Desktop/Screenshots";
+        screensaver.askForPasswordDelay = 10;
+      };
+
+      # Homebrew needs to be installed on its own!
+      homebrew.enable = true;
+      homebrew.casks = [
+	      "wireshark"
+        "google-chrome"
+        "firefox"
+        "raycast"
+        "wezterm"
+        "freecad"
+        "monitorcontrol"
+        "1password-cli"
+      ];
+      homebrew.brews = [
+	      "imagemagick"
+        "arm-none-eabi-gdb"
+        "armmbed/formulae/arm-none-eabi-gcc"
+        "aztfexport"
+        "azure-cli"
+        "azure/functions/azure-functions-core-tools@4"
+        "terraform"
+        "terraform-ls"
+        "matplotplusplus"
+        "nvm"
+        "stlink"
+      ];
     };
   in
   {
