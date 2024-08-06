@@ -16,12 +16,11 @@
    # plain files is through 'home.file'.
    home.file = {
      ".zshrc".source = ./config/zsh/zshrc.symlink;
-    ".config/ohmyposh".source = ./config/ohmyposh;
+     ".config/ohmyposh".source = ./config/ohmyposh;
+     ".config/nvim".source = ./config/lazyvim;
      # ".config/wezterm".source = /Users/frode/.dotfiles/wezterm;
      # ".config/skhd".source = /Users/frode/.dotfiles/skhd;
-     # ".config/ohmyposh".source = /Users/frode/.dotfiles/ohmyposh;
      # ".config/tmux".source = /Users/frode/.dotfiles/tmux;
-     # ".config/nvim".source = /Users/frode/.dotfiles/nvim;
      # ".config/nix".source = /Users/frode/.dotfiles/nix;
      # ".config/nix-darwin".source = /Users/frode/.dotfiles/nix-darwin;
    };
