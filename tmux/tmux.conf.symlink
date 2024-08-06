@@ -30,9 +30,12 @@ set -g @plugin 'sainnhe/tmux-fzf'
 set -g @plugin 'wfxr/tmux-fzf-url'
 set -g @plugin 'catppuccin/tmux'
 set -g @plugin 'omerxx/tmux-sessionx'
+set -g @plugin 'omerxx/tmux-floax'
 set -g @plugin 'christoomey/vim-tmux-navigator'
 
 set -g @sessionx-bind 'o'
+set -g @sessionx-auto-acept 'off'
+set -g @floax-bind 'p'
 set -g @continuum-restore 'on'
 set -g @resurrect-strategy-nvim 'session'
 set -g @catppuccin_window_left_separator ""
