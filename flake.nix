@@ -1,141 +1,76 @@
+#
+#  flake.nix *
+#   ├─ ./hosts
+#   │   └─ default.nix
+#   ├─ ./darwin
+#   │   └─ default.nix
+#   └─ ./nix
+#       └─ default.nix
+#
+
+#
+#  flake.nix *
+#   ├─ ./hosts
+#   │   └─ default.nix
+#   ├─ ./darwin
+#   │   └─ default.nix
+#   └─ ./nix
+#       └─ default.nix
+#
+
 {
-  description = "Frodes Darwin system flake";
+  description = "Nix, NixOS and Nix Darwin System Flake Configuration";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager = {
-       url = "github:nix-community/home-manager";
-       inputs.nixpkgs.follows = "nixpkgs";
-     };
-  };
+  inputs =
+    {
+      nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; # Nix Packages (Default)
+      nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05"; # Stable Nix Packages
+      nixos-hardware.url = "github:nixos/nixos-hardware/master"; # Hardware Specific Configurations
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
-  let
-    configuration = { pkgs, ... }: {
-      # List packages installed in system profile. To search by name, run:
-      # $ nix-env -qaP | grep wget
-      environment.systemPackages =
-        [ pkgs.vim
-          pkgs.neovim
-          pkgs.tree-sitter
-          pkgs.git
-          pkgs.gh
-          pkgs.direnv
-          pkgs.bat
-          pkgs.ripgrep
-          pkgs.age
-          pkgs.sshs
-          pkgs.atac
-          pkgs.termshark
-          pkgs.portal
-          pkgs.glow
-          pkgs.btop
-          pkgs.bottom
-          pkgs.fd
-          pkgs.fzf
-          pkgs.eza
-          pkgs.gawk
-          pkgs.skhd
-          pkgs.yabai
-          pkgs.jq
-          pkgs.yq
-          pkgs.lazygit
-          pkgs.darwin.lsusb
-          pkgs.zsh
-          pkgs.yt-dlp
-          pkgs.tldr
-          pkgs.xh
-          pkgs.wget
-          pkgs.hwatch
-          pkgs.watchman
-          pkgs.gnumake
-        ];
-
-      # Auto upgrade nix package and the daemon service.
-      services.nix-daemon.enable = true;
-      # nix.package = pkgs.nix;
-
-      services.yabai.enable = true;
-      services.skhd.enable = true;
-
-      # Necessary for using flakes on this system.
-      nix.settings.experimental-features = "nix-command flakes";
-
-      # Create /etc/zshrc that loads the nix-darwin environment.
-      programs.zsh.enable = true;  # default shell on catalina
-      # programs.fish.enable = true;
-
-      # Set Git commit hash for darwin-version.
-      system.configurationRevision = self.rev or self.dirtyRev or null;
-
-      # Used for backwards compatibility, please read the changelog before changing.
-      # $ darwin-rebuild changelog
-      system.stateVersion = 4;
-
-      # The platform the configuration will be used on.
-      nixpkgs.hostPlatform = "aarch64-darwin";
-
-      security.pam.enableSudoTouchIdAuth = true;
-
-      users.users.frode.home = "/Users/frode";
-      home-manager.backupFileExtension = "backup";
-      nix.configureBuildUsers = true;
-      nix.useDaemon = true;
-
-      system.defaults = {
-        dock.autohide = true;
-        dock.mru-spaces = false;
-        finder.AppleShowAllExtensions = true;
-        finder.FXPreferredViewStyle = "clmv";
-        loginwindow.LoginwindowText = "Zygizo";
-        screencapture.location = "~/Desktop/Screenshots";
-        screensaver.askForPasswordDelay = 10;
+      # User Environment Manager
+      home-manager = {
+        url = "github:nix-community/home-manager";
+        inputs.nixpkgs.follows = "nixpkgs";
       };
 
-      # Homebrew needs to be installed on its own!
-      homebrew.enable = true;
-      homebrew.casks = [
-	      "wireshark"
-        "google-chrome"
-        "firefox"
-        "raycast"
-        "wezterm"
-        "freecad"
-        "monitorcontrol"
-        "1password-cli"
-      ];
-      homebrew.brews = [
-	      "imagemagick"
-        "arm-none-eabi-gdb"
-        "armmbed/formulae/arm-none-eabi-gcc"
-        "aztfexport"
-        "azure-cli"
-        "azure/functions/azure-functions-core-tools@4"
-        "terraform"
-        "terraform-ls"
-        "matplotplusplus"
-        "nvm"
-        "stlink"
-      ];
-    };
-  in
-  {
-    # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#Frodes-MacBook-Pro
-    darwinConfigurations."Frodes-MacBook-Pro" = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      modules = [ configuration
-           home-manager.darwinModules.home-manager {
-           home-manager.useGlobalPkgs = true;
-           home-manager.useUserPackages = true;
-           home-manager.users.frode = import ./home.nix;
-         }
-      ];
+      # MacOS Package Management
+      darwin = {
+        url = "github:LnL7/nix-darwin";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
     };
 
-    # Expose the package set, including overlays, for convenience.
-    darwinPackages = self.darwinConfigurations."Frodes-MacBook-Pro".pkgs;
-  };
+  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixos-hardware, home-manager, darwin, ... }: # Function telling flake which inputs to use
+    let
+      # Variables Used In Flake
+      vars = {
+        user = "frode";
+        location = "$HOME/.dotfiles";
+        terminal = "wezterm";
+        editor = "nvim";
+      };
+    in
+    {
+      # nixosConfigurations = (
+      #   import ./hosts {
+      #     inherit (nixpkgs) lib;
+      #     inherit inputs nixpkgs nixpkgs-stable nixos-hardware home-manager vars; # Inherit inputs
+      #   }
+      # );
+
+      darwinConfigurations = (
+        import ./darwin {
+          inherit (nixpkgs) lib;
+          inherit inputs nixpkgs nixpkgs-stable home-manager darwin vars;
+        }
+      );
+
+      # homeConfigurations = (
+      #   import ./nix {
+      #     inherit (nixpkgs) lib;
+      #     inherit inputs nixpkgs nixpkgs-stable home-manager vars;
+      #   }
+      # );
+    };
 }
