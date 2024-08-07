@@ -14,7 +14,7 @@ return {
 	color_scheme = "Catppuccin Mocha",
 	enable_tab_bar = false,
 	-- font = wezterm.font('JetBrainsMono Nerd Font', {}),
-	font = wezterm.font("MonaspiceKr Nerd Font Mono", {}),
+	font = wezterm.font("Monaspace Krypton", {}),
 	font_size = 16.0,
 	macos_window_background_blur = 50,
 	window_background_opacity = 0.70,
