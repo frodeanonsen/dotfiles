@@ -47,7 +47,6 @@
       eza
       gawk
       skhd
-      yabai
       raycast
       _1password
       jq
@@ -92,6 +91,7 @@
       "vlc"
       "1password"
       "orcaslicer"
+      "nikitabobko/tap/aerospace"
     ];
     brews = [
       "arm-none-eabi-gdb"
@@ -133,7 +133,7 @@
       ".config/ohmyposh".source = ../config/ohmyposh;
       ".config/nvim".source = ../config/lazyvim;
       ".config/skhd".source = ../config/skhd;
-      ".config/yabai".source = ../config/yabai;
+      ".config/aerospace".source = ../config/aerospace;
       ".config/wezterm".source = ../config/wezterm;
       ".config/tmux".source = ../config/tmux;
       ".config/gh".source = ../config/gh;
@@ -204,7 +204,6 @@
     settings.experimental-features = "nix-command flakes";
   };
 
-  services.yabai.enable = true;
   services.skhd.enable = true;
 
   system = {
