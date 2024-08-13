@@ -25,6 +25,7 @@
       VISUAL = "${vars.editor}";
     };
     systemPackages = with pkgs; [
+      nixfmt-rfc-style
       vim
       neovim
       tree-sitter
@@ -94,8 +95,6 @@
       "nikitabobko/tap/aerospace"
     ];
     brews = [
-      "arm-none-eabi-gdb"
-      "armmbed/formulae/arm-none-eabi-gcc"
       "aztfexport"
       "matplotplusplus"
       "nvm"
@@ -116,15 +115,14 @@
     home.stateVersion = "23.05";
     programs.home-manager.enable = true;
     programs.zsh = {
-    initExtra = ''
-      # Add any additional configurations here
-      export PATH=/run/current-system/sw/bin:$HOME/.nix-profile/bin:$PATH
-      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-      fi
-    '';
-  };
-
+      initExtra = ''
+        # Add any additional configurations here
+        export PATH=/run/current-system/sw/bin:$HOME/.nix-profile/bin:$PATH
+        if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+          . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+        fi
+      '';
+    };
 
     # Home Manager is pretty good at managing .dotfiles. The primary way to manage
     # plain files is through 'home.file'.
@@ -141,16 +139,15 @@
       ".config/zellij".source = ../config/zellij;
     };
 
-    home.sessionVariables = {
-    };
+    home.sessionVariables = { };
 
     home.sessionPath = [
       "/run/current-system/sw/bin"
-        "$HOME/.nix-profile/bin"
+      "$HOME/.nix-profile/bin"
     ];
 
     # Makes sense for user specific applications that shouldn't be available system-wide
-   home.packages = with pkgs; [
+    home.packages = with pkgs; [
       htop
       home-assistant-cli
       podman
@@ -182,7 +179,8 @@
       terraform-ls
       slack
       pngpaste
-   ];
+      gcc-arm-embedded-13
+    ];
   };
 
   # Auto upgrade nix package and the daemon service.
