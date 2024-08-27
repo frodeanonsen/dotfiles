@@ -21,27 +21,37 @@
 {
   description = "Nix, NixOS and Nix Darwin System Flake Configuration";
 
-  inputs =
-    {
-      nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; # Nix Packages (Default)
-      nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05"; # Stable Nix Packages
-      nixos-hardware.url = "github:nixos/nixos-hardware/master"; # Hardware Specific Configurations
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; # Nix Packages (Default)
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05"; # Stable Nix Packages
+    nixos-hardware.url = "github:nixos/nixos-hardware/master"; # Hardware Specific Configurations
+    zig.url = "github:mitchellh/zig-overlay";
 
-      # User Environment Manager
-      home-manager = {
-        url = "github:nix-community/home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-
-      # MacOS Package Management
-      darwin = {
-        url = "github:LnL7/nix-darwin";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-
+    # User Environment Manager
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-stable, nixos-hardware, home-manager, darwin, ... }: # Function telling flake which inputs to use
+    # MacOS Package Management
+    darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+  };
+
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nixpkgs-stable,
+      nixos-hardware,
+      zig,
+      home-manager,
+      darwin,
+      ...
+    }: # Function telling flake which inputs to use
     let
       # Variables Used In Flake
       vars = {
@@ -62,7 +72,15 @@
       darwinConfigurations = (
         import ./darwin {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs nixpkgs-stable home-manager darwin vars;
+          inherit
+            inputs
+            nixpkgs
+            nixpkgs-stable
+            zig
+            home-manager
+            darwin
+            vars
+            ;
         }
       );
 

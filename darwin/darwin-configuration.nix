@@ -79,9 +79,15 @@
   homebrew = {
     enable = true;
     onActivation = {
-      upgrade = false;
+      upgrade = true;
       cleanup = "zap";
     };
+
+    taps = [
+      "nikitabobko/tap"
+      "cfergeau/crc"
+    ];
+
     casks = [
       "wireshark"
       "google-chrome"
@@ -92,13 +98,17 @@
       "vlc"
       "1password"
       "orcaslicer"
-      "nikitabobko/tap/aerospace"
+      "aerospace"
+      "openscad@snapshot"
     ];
+
     brews = [
+      "azure-cli"
       "aztfexport"
       "matplotplusplus"
       "nvm"
       "stlink"
+      "vfkit"
     ];
 
     masApps = {
@@ -128,6 +138,7 @@
     # plain files is through 'home.file'.
     home.file = {
       ".zshrc".source = ../config/zsh/zshrc;
+      ".gitconfig".source = ../config/git/gitconfig.symlink;
       ".config/ohmyposh".source = ../config/ohmyposh;
       ".config/nvim".source = ../config/lazyvim;
       ".config/skhd".source = ../config/skhd;
@@ -160,6 +171,7 @@
       llvm_16
       ccls
       cmake
+      cmake-lint
       oh-my-posh
       exercism
       qmk
@@ -169,8 +181,6 @@
       rustup
       tflint
       python312Packages.west
-      azure-cli
-      azure-functions-core-tools
       platformio-core
       nmap
       plantuml
@@ -180,6 +190,12 @@
       slack
       pngpaste
       gcc-arm-embedded-13
+      entr
+      zigpkgs.master
+      openocd
+      colima
+      docker
+      docker-buildx
     ];
   };
 

@@ -8,7 +8,16 @@
 #       └─ <host>.nix
 #
 
-{ inputs, nixpkgs, nixpkgs-stable, darwin, home-manager, vars, ... }:
+{
+  inputs,
+  nixpkgs,
+  nixpkgs-stable,
+  zig,
+  darwin,
+  home-manager,
+  vars,
+  ...
+}:
 
 let
   systemConfig = system: {
@@ -16,6 +25,7 @@ let
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
+      overlays = [ zig.overlays.default ];
     };
     stable = import nixpkgs-stable {
       inherit system;
@@ -72,7 +82,15 @@ in
     in
     darwin.lib.darwinSystem {
       inherit system;
-      specialArgs = { inherit inputs system pkgs stable vars; };
+      specialArgs = {
+        inherit
+          inputs
+          system
+          pkgs
+          stable
+          vars
+          ;
+      };
       modules = [
         ./darwin-configuration.nix
         ./apple.nix
