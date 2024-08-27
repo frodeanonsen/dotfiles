@@ -93,25 +93,15 @@ foreground = "#111111"
 invert_powerline = true
 powerline_symbol = ""
 style = "powerline"
-template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}  "
+template = " {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }}  "
 type = "python"
 
 [blocks.segments.properties]
-display_mode = "files"
-fetch_virtual_env = false
-
-[[blocks.segments]]
-background = "#AE1401"
-foreground = "#ffffff"
-invert_powerline = true
-powerline_symbol = ""
-style = "powerline"
-template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}  "
-type = "ruby"
-
-[blocks.segments.properties]
-display_mode = "files"
-fetch_version = true
+display_mode = "context"
+display_default = true
+fetch_virtual_env = true
+folder_name_fallback = true
+home_enabled = true
 
 [[blocks.segments]]
 background = "#FEAC19"
