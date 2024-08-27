@@ -18,7 +18,7 @@ DEFAULT_USER="frode"
 CASE_SENSITIVE="true"
 HIST_STAMPS="yyyy-mm-dd"
 export ZSH_CUSTOM=~/.oh-my-zsh-custom
-plugins=(sudo git history taskwarrior zsh-autosuggestions wd zsh-syntax-highlighting)
+plugins=(sudo git history zsh-autosuggestions zsh-syntax-highlighting vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
