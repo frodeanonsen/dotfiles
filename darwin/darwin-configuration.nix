@@ -138,14 +138,15 @@
     # plain files is through 'home.file'.
     home.file = {
       ".zshrc".source = ../config/zsh/zshrc;
-      ".gitconfig".source = ../config/git/gitconfig.symlink;
+      ".bashrc".source = ../config/bash/bashrc;
+      ".gitignore".source = ../config/git/gitignore;
+      ".editorconfig".source = ../config/system/editorconfig;
       ".config/ohmyposh".source = ../config/ohmyposh;
       ".config/nvim".source = ../config/lazyvim;
       ".config/skhd".source = ../config/skhd;
       ".config/aerospace".source = ../config/aerospace;
       ".config/wezterm".source = ../config/wezterm;
       ".config/tmux".source = ../config/tmux;
-      ".config/gh".source = ../config/gh;
       ".config/nix".source = ../config/nix;
       ".config/zellij".source = ../config/zellij;
     };
