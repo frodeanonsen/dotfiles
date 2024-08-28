@@ -10,7 +10,6 @@
   home.file = {
     ".zshrc".source = ../config/zsh/zshrc;
     ".bashrc".source = ../config/bash/bashrc;
-    ".gitconfig".source = ../config/git/gitconfig;
     ".gitignore".source = ../config/git/gitignore;
     ".editorconfig".source = ../config/system/editorconfig;
     ".config/ohmyposh".source = ../config/ohmyposh;
