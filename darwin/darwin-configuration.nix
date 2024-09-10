@@ -66,6 +66,7 @@
       tk
       python3
       python312Packages.tkinter
+      pyenv
     ];
   };
 
@@ -109,6 +110,7 @@
       "nvm"
       "stlink"
       "vfkit"
+      "ktlint"
     ];
 
     masApps = {
@@ -190,13 +192,18 @@
       terraform-ls
       slack
       pngpaste
-      gcc-arm-embedded-13
+      # gcc-arm-embedded-13 // Problematic
       entr
       zigpkgs.master
       openocd
-      colima
+      # colima // Seems to be problem with building from source / patching
       docker
       docker-buildx
+      dotenvx
+      qalculate-qt
+      dust
+      duf
+      postgresql
     ];
   };
 

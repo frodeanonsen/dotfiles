@@ -88,7 +88,14 @@
       homeConfigurations = (
         import ./linux {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs nixpkgs-stable zig home-manager vars;
+          inherit
+            inputs
+            nixpkgs
+            nixpkgs-stable
+            zig
+            home-manager
+            vars
+            ;
         }
       );
     };
