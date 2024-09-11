@@ -65,6 +65,7 @@
       gettext
       tk
       python3
+      python312Packages.pip
       python312Packages.tkinter
       pyenv
     ];
@@ -175,6 +176,7 @@
       ccls
       cmake
       cmake-lint
+      ninja
       oh-my-posh
       exercism
       qmk
@@ -196,7 +198,7 @@
       entr
       zigpkgs.master
       openocd
-      # colima // Seems to be problem with building from source / patching
+      colima
       docker
       docker-buildx
       dotenvx
@@ -204,6 +206,7 @@
       dust
       duf
       postgresql
+      azure-cli
     ];
   };
 
