@@ -34,6 +34,15 @@ return {
     -- see below for full list of optional dependencies 👇
   },
   opts = {
+    callbacks = {
+      enter_note = function()
+        vim.wo.conceallevel = 1
+      end,
+      leave_note = function()
+        vim.wo.conceallevel = 0
+      end,
+    },
+
     workspaces = {
       {
         name = "Notes",
