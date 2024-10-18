@@ -63,11 +63,12 @@
       watchman
       gnumake
       gettext
-      tk
-      python3
-      python312Packages.pip
-      python312Packages.tkinter
+      # tk
+      # python3
+      # python312Packages.pip
+      # python312Packages.tkinter
       pyenv
+      uv
     ];
   };
 
@@ -105,13 +106,13 @@
     ];
 
     brews = [
-      "azure-cli"
       "aztfexport"
       "matplotplusplus"
       "nvm"
       "stlink"
       "vfkit"
       "ktlint"
+      "libpq"
     ];
 
     masApps = {
@@ -168,8 +169,7 @@
       podman
       podman-tui
       poetry
-      act
-      bear
+      act # https://github.com/nektos/act - Run your GitHub Actions locally
       boost-build
       bossa
       llvm_16
@@ -184,8 +184,8 @@
       zellij
       zoxide
       rustup
+      just
       tflint
-      python312Packages.west
       platformio-core
       nmap
       plantuml
@@ -194,19 +194,24 @@
       terraform-ls
       slack
       pngpaste
-      # gcc-arm-embedded-13 // Problematic
       entr
       zigpkgs.master
       openocd
       colima
       docker
       docker-buildx
-      dotenvx
+      dotenvx # .env file manager
       qalculate-qt
-      dust
-      duf
+      dust # Disk Usage Summary
+      duf # Disk Usage/Free Utility
       postgresql
-      azure-cli
+
+      # Removed from base config. Use nix shell instead: nix-shell -p azure-cli
+      # gcc-arm-embedded-13 // Problematic
+      # bear
+      # python312Packages.west
+      # azure-cli
+      # azure-functions-core-tools # Azure Functions Core Tools
     ];
   };
 
