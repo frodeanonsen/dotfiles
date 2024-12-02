@@ -12,7 +12,6 @@
   inputs,
   nixpkgs,
   nixpkgs-stable,
-  zig,
   darwin,
   home-manager,
   vars,
@@ -25,7 +24,6 @@ let
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
-      overlays = [ zig.overlays.default ];
     };
     stable = import nixpkgs-stable {
       inherit system;

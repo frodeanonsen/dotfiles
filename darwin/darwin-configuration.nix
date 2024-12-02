@@ -191,7 +191,6 @@
       slack
       pngpaste
       entr
-      zigpkgs.master
       openocd
       colima
       docker

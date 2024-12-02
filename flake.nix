@@ -24,9 +24,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; # Nix Packages (Default)
     nixpkgs-lib.url = "github:NixOS/nixpkgs/nixos-unstable?dir=lib";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05"; # Stable Nix Packages
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11"; # Stable Nix Packages
     nixos-hardware.url = "github:nixos/nixos-hardware/master"; # Hardware Specific Configurations
-    zig.url = "github:mitchellh/zig-overlay";
 
     # User Environment Manager
     home-manager = {
@@ -48,7 +47,6 @@
       nixpkgs,
       nixpkgs-stable,
       nixos-hardware,
-      zig,
       home-manager,
       darwin,
       ...
@@ -77,7 +75,6 @@
             inputs
             nixpkgs
             nixpkgs-stable
-            zig
             home-manager
             darwin
             vars
@@ -92,7 +89,6 @@
             inputs
             nixpkgs
             nixpkgs-stable
-            zig
             home-manager
             vars
             ;

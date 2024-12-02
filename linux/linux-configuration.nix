@@ -60,7 +60,6 @@
     platformio-core
     terraform
     terraform-ls
-    zigpkgs.master
     tflint
     rustup
     poetry
