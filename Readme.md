@@ -23,9 +23,29 @@ git clone https://github.com/frodeanonsen/dotfiles ~/.dotfiles
 
 Build the system configuration and switch to it.
 
+Example, Darwin:
+
 ```sh
 nix build .#darwinConfigurations.MacBookApple.system
 ./result/sw/bin/darwin-rebuild switch --flake .#MacBookApple
+```
+
+Example, Linux:
+
+```sh
+nix build .#homeConfigurations.Ros.system
+./result/sw/bin/darwin-rebuild switch --flake .#Ros
+```
+
+Example, in a home-manager shell:
+
+```sh
+nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+nix-channel --update
+
+nix-shell '<home-manager>' -A install
+
+home-manager switch --flake .#Ros
 ```
 
 ## Rebuiling the system
