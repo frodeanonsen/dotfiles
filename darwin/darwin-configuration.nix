@@ -49,7 +49,6 @@
       gawk
       skhd
       raycast
-      _1password
       jq
       yq
       lazygit
@@ -63,10 +62,6 @@
       watchman
       gnumake
       gettext
-      # tk
-      # python3
-      # python312Packages.pip
-      # python312Packages.tkinter
       pyenv
       uv
     ];
@@ -82,6 +77,7 @@
   homebrew = {
     enable = true;
     onActivation = {
+      autoUpdate = true;
       upgrade = true;
       cleanup = "zap";
     };
@@ -100,7 +96,6 @@
       "obsidian"
       "vlc"
       "1password"
-      "orcaslicer"
       "aerospace"
       "openscad@snapshot"
     ];
@@ -113,6 +108,7 @@
       "vfkit"
       "ktlint"
       "libpq"
+      "filosottile/musl-cross/musl-cross"
     ];
 
     masApps = {
@@ -199,12 +195,16 @@
       openocd
       colima
       docker
+      docker-compose
       docker-buildx
       dotenvx # .env file manager
       qalculate-qt
       dust # Disk Usage Summary
       duf # Disk Usage/Free Utility
       postgresql
+
+      # ROS2 dependencies
+      tinyxml-2
 
       # Removed from base config. Use nix shell instead: nix-shell -p azure-cli
       # gcc-arm-embedded-13 // Problematic
@@ -218,6 +218,11 @@
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
+  # Testing new settings:
+  # keep-outputs = true
+  # keep-derivations = true
+  # keep-failed = false
+  # keep-going = true
   nix = {
     package = pkgs.nix;
     gc = {
@@ -228,10 +233,20 @@
     extraOptions = ''
       auto-optimise-store = true
       experimental-features = nix-command flakes
+      keep-outputs = true
+      keep-derivations = true
+      keep-failed = false
+      keep-going = true
     '';
     configureBuildUsers = true;
     useDaemon = true;
-    settings.experimental-features = "nix-command flakes";
+    settings = {
+      experimental-features = "nix-command flakes";
+      trusted-users = [
+        "root"
+        "frode"
+      ];
+    };
   };
 
   services.skhd.enable = true;
