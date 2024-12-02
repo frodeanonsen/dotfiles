@@ -76,6 +76,30 @@ type = "go"
 fetch_version = true
 
 [[blocks.segments]]
+type = "rust"
+style = "powerline"
+invert_powerline = true
+powerline_symbol = ""
+foreground = "#193549"
+background = "#99908a"
+template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}  "
+
+[blocks.segments.properties]
+fetch_version = true
+
+[[blocks.segments]]
+type = "kotlin"
+style = "powerline"
+invert_powerline = true
+powerline_symbol = ""
+foreground = "#ffffff"
+background = "#906cff"
+template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} <b>K</b>"
+
+[blocks.segments.properties]
+fetch_version = true
+
+[[blocks.segments]]
 background = "#4063D8"
 foreground = "#111111"
 invert_powerline = true
