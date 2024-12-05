@@ -100,14 +100,13 @@ template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} <b>K</b>"
 fetch_version = true
 
 [[blocks.segments]]
-background = "#4063D8"
-foreground = "#111111"
+template = '{{ if eq .Type "pure" }}   {{ else if eq .Type "impure" }} 󰼩  {{ else if eq .Type "unknown" }} 󱓣  {{ else }} Unknown {{ end }}'
+type = "nix-shell"
+style = "powerline"
+foreground = "#7EBAE4"
+background = "#5277C3"
 invert_powerline = true
 powerline_symbol = ""
-style = "powerline"
-template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}  "
-type = "julia"
-
 [blocks.segments.properties]
 fetch_version = true
 
@@ -128,12 +127,12 @@ folder_name_fallback = true
 home_enabled = true
 
 [[blocks.segments]]
-background = "#FEAC19"
+background = "#007FFF"
 foreground = "#ffffff"
 invert_powerline = true
 powerline_symbol = ""
 style = "powerline"
-template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} "
+template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}  "
 type = "azfunc"
 
 [blocks.segments.properties]
