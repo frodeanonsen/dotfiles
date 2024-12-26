@@ -3,7 +3,7 @@
 {
   programs.zsh.enable = true;
   programs.home-manager.enable = true;
-  
+
   home.stateVersion = "23.05";
   home.username = "${vars.user}";
   home.homeDirectory = "/home/${vars.user}";
@@ -51,6 +51,7 @@
     hwatch
     watchman
     yazi
+    lnav
     nodejs_22
     cmake
     cmake-lint

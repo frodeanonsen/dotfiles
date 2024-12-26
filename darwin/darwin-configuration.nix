@@ -184,6 +184,7 @@
       tflint
       platformio-core
       nmap
+      lnav
       plantuml
       dfu-util
       terraform
