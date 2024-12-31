@@ -1,4 +1,12 @@
-{ config, lib, system, pkgs, stable, vars, ... }:
+{
+  config,
+  lib,
+  system,
+  pkgs,
+  unstable,
+  vars,
+  ...
+}:
 
 {
   homebrew = {

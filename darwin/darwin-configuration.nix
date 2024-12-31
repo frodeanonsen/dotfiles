@@ -9,7 +9,11 @@
 #           └─ default.nix
 #
 
-{ pkgs, vars, ... }:
+{
+  pkgs,
+  vars,
+  ...
+}:
 
 {
   imports = (import ./modules);
@@ -64,6 +68,7 @@
       gettext
       pyenv
       uv
+      xquartz
     ];
   };
 
@@ -98,6 +103,7 @@
       "1password"
       "aerospace"
       "openscad@snapshot"
+      "ghostty"
     ];
 
     brews = [
@@ -122,7 +128,7 @@
 
   home-manager.backupFileExtension = "backup";
   home-manager.users.${vars.user} = {
-    home.stateVersion = "23.05";
+    home.stateVersion = "24.11";
     programs.home-manager.enable = true;
     programs.zsh = {
       initExtra = ''
@@ -149,6 +155,7 @@
       ".config/tmux".source = ../config/tmux;
       ".config/nix".source = ../config/nix;
       ".config/zellij".source = ../config/zellij;
+      ".config/ghostty".source = ../config/ghostty;
     };
 
     home.sessionVariables = { };
@@ -212,6 +219,9 @@
       # python312Packages.west
       # azure-cli
       # azure-functions-core-tools # Azure Functions Core Tools
+
+      # Moved to homebrew for now
+      # unstable.ghostty
     ];
   };
 

@@ -11,7 +11,7 @@
 {
   inputs,
   nixpkgs,
-  nixpkgs-stable,
+  nixpkgs-unstable,
   darwin,
   home-manager,
   vars,
@@ -25,7 +25,7 @@ let
       inherit system;
       config.allowUnfree = true;
     };
-    stable = import nixpkgs-stable {
+    unstable = import nixpkgs-unstable {
       inherit system;
       config.allowUnfree = true;
     };
@@ -76,7 +76,7 @@ in
   # MacBookPro16,1 M2 16" (2023)
   MacBookApple =
     let
-      inherit (systemConfig "aarch64-darwin") system pkgs stable;
+      inherit (systemConfig "aarch64-darwin") system pkgs unstable;
     in
     darwin.lib.darwinSystem {
       inherit system;
@@ -85,7 +85,7 @@ in
           inputs
           system
           pkgs
-          stable
+          unstable
           vars
           ;
       };

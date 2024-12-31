@@ -50,6 +50,7 @@ return {
 		{ key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
 		{ key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
 		{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
+		{ key = "c", mods = "LEADER", action = act({ SpawnCommandInNewTab = { cwd = wezterm.home_dir } }) },
 		{
 			key = "a",
 			mods = "LEADER",
