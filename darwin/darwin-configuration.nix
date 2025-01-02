@@ -149,6 +149,7 @@
       ".editorconfig".source = ../config/system/editorconfig;
       ".config/ohmyposh".source = ../config/ohmyposh;
       ".config/nvim".source = ../config/lazyvim;
+      ".config/fish".source = ../config/fish;
       ".config/skhd".source = ../config/skhd;
       ".config/aerospace".source = ../config/aerospace;
       ".config/wezterm".source = ../config/wezterm;

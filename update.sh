@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
-cd $DOTFILES
+cd ~/.dotfiles || exit
+
 nix flake update
 # darwin-rebuild switch --flake .
 darwin-rebuild switch --flake .#MacBookApple
