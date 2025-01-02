@@ -1,6 +1,11 @@
 if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-    sh /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh | source
+    bass source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
     set -gx PATH /run/current-system/sw/bin /etc/profiles/per-user/$USER/bin $PATH
+end
+
+# Check for Nix profile
+if test -d $HOME/.nix-profile/bin
+    set -gx PATH $HOME/.nix-profile/bin $PATH
 end
 
 set dotfiles $HOME/.dotfiles

@@ -1,7 +1,7 @@
 {
   inputs,
   nixpkgs,
-  nixpkgs-stable,
+  nixpkgs-unstable,
   home-manager,
   vars,
   ...
@@ -14,7 +14,7 @@ let
       inherit system;
       config.allowUnfree = true;
     };
-    stable = import nixpkgs-stable {
+    unstable = import nixpkgs-unstable {
       inherit system;
       config.allowUnfree = true;
     };
@@ -24,7 +24,7 @@ in
   # frodes-ros-machine
   Ros =
     let
-      inherit (systemConfig "aarch64-linux") system pkgs stable;
+      inherit (systemConfig "aarch64-linux") system pkgs unstable;
     in
       home-manager.lib.homeManagerConfiguration  {
           inherit pkgs;
@@ -33,7 +33,7 @@ in
               inputs
               system
               pkgs
-              stable
+              unstable
               vars
               ;
           };
@@ -49,7 +49,7 @@ in
   # zygizo-one
   ZygizoOne =
     let
-      inherit (systemConfig "x86_64-linux") system pkgs stable;
+      inherit (systemConfig "x86_64-linux") system pkgs unstable;
     in
       home-manager.lib.homeManagerConfiguration  {
           inherit pkgs;
@@ -58,7 +58,7 @@ in
               inputs
               system
               pkgs
-              stable
+              unstable
               vars
               ;
           };

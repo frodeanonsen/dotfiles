@@ -14,6 +14,7 @@
     ".editorconfig".source = ../config/system/editorconfig;
     ".config/ohmyposh".source = ../config/ohmyposh;
     ".config/nvim".source = ../config/lazyvim;
+    ".config/fish".source = ../config/fish;
     ".config/tmux".source = ../config/tmux;
     ".config/nix".source = ../config/nix;
     ".config/zellij".source = ../config/zellij;
