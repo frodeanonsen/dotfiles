@@ -2,8 +2,6 @@
 cd ~/.dotfiles || exit
 
 nix flake update
-# darwin-rebuild switch --flake .
-# darwin-rebuild switch --flake .#MacBookApple
 retries=0
 max_retries=10
 while ! darwin-rebuild switch --flake .#MacBookApple; do
