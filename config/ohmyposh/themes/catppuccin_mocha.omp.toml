@@ -1,0 +1,61 @@
+"$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
+final_space = true
+version = 3
+
+[palette]
+os = "#ACB0BE"
+closer = "p:os"
+pink = "#F5C2E7"
+lavender = "#B4BEFE"
+blue = "#89B4FA"
+
+[[blocks]]
+alignment = "left"
+type = "prompt"
+
+[[blocks.segments]]
+foreground = "p:os"
+style = "plain"
+template = "{{.Icon}} "
+type = "os"
+
+[[blocks.segments]]
+foreground = "p:blue"
+style = "plain"
+template = "{{ .UserName }}@{{ .HostName }} "
+type = "session"
+
+[[blocks.segments]]
+foreground = "p:pink"
+style = "plain"
+template = "{{ .Path }} "
+type = "path"
+
+[blocks.segments.properties]
+folder_icon = "...."
+home_icon = "~"
+style = "agnoster_short"
+
+[[blocks.segments]]
+foreground = "p:lavender"
+template = "{{ .HEAD }} "
+style = "plain"
+type = "git"
+
+[blocks.segments.properties]
+branch_icon = " "
+cherry_pick_icon = " "
+commit_icon = " "
+fetch_status = false
+fetch_upstream_icon = false
+merge_icon = " "
+no_commits_icon = " "
+rebase_icon = " "
+revert_icon = " "
+tag_icon = " "
+
+[[blocks.segments]]
+style = "plain"
+foreground = "p:closer"
+template = ""
+type = "text"

@@ -1,7 +1,14 @@
 "$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
 console_title_template = "{{ .Shell }} in {{ .Folder }}"
 final_space = true
-version = 2
+version = 3
+
+[palette]
+os = "#ACB0BE"
+closer = "p:os"
+pink = "#F5C2E7"
+lavender = "#B4BEFE"
+blue = "#89B4FA"
 
 [[blocks]]
 alignment = "left"
@@ -14,6 +21,14 @@ leading_diamond = "╭─"
 style = "diamond"
 template = " {{ if .WSL }}WSL at {{ end }}{{.Icon}} "
 type = "os"
+
+[[blocks.segments]]
+background = "#d3d7cf"
+foreground = "p:blue"
+powerline_symbol = ""
+style = "powerline"
+template = "{{ .UserName }}@{{ .HostName }} "
+type = "session"
 
 [[blocks.segments]]
 background = "#3465a4"
@@ -42,7 +57,14 @@ template = " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatu
 type = "git"
 
 [blocks.segments.properties]
-branch_icon = " "
+branch_icon = " "
+cherry_pick_icon = " "
+commit_icon = " "
+merge_icon = " "
+no_commits_icon = " "
+rebase_icon = " "
+revert_icon = " "
+tag_icon = " "
 fetch_stash_count = true
 fetch_status = true
 fetch_upstream_icon = true
