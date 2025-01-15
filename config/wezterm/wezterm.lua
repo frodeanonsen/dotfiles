@@ -10,12 +10,78 @@ wezterm.on("update-right-status", function(window, pane)
 	window:set_right_status(name or "")
 end)
 
+wezterm.log_level = "debug"
+-- After restarting WezTerm:
+-- $HOME/.local/share/wezterm/logs/ (on Linux/macOS)
+
+local function scheme_for_appearance(appearance)
+	if appearance:find("Dark") then
+		return "Catppuccin Mocha"
+	else
+		return "Catppuccin Latte"
+	end
+end
+
 return {
-	color_scheme = "Catppuccin Mocha",
+	color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
 	enable_tab_bar = true,
-	-- font = wezterm.font('JetBrainsMono Nerd Font', {}),
-	font = wezterm.font("Monaspace Krypton Var", {}),
+	-- font = wezterm.font("Monaspace Xenon", {}),
+	-- font_rules = {
+	-- 	-- normal-intensity-and-italic
+	-- 	{
+	-- 		intensity = "Normal",
+	-- 		italic = true,
+	-- 		font = wezterm.font_with_fallback({
+	-- 			family = "Monaspace Radon",
+	-- 			weight = "SemiWide ExtraLight",
+	-- 			italic = true,
+	-- 		}),
+	-- 	},
+	-- },
+
+	warn_about_missing_glyphs = true,
+
 	font_size = 16.0,
+
+	font = wezterm.font({ -- Normal text
+		family = "Monaspace Xenon",
+		harfbuzz_features = { "calt", "liga", "dlig", "ss01", "ss02", "ss03", "ss04", "ss05", "ss06", "ss07", "ss08" },
+		stretch = "UltraCondensed", -- This doesn't seem to do anything
+	}),
+
+	font_rules = {
+		{ -- Italic
+			intensity = "Normal",
+			italic = true,
+			font = wezterm.font({
+				family = "Monaspace Radon", -- script style
+				-- family='Monaspace Xenon', -- courier-like
+				style = "Italic",
+			}),
+		},
+
+		{ -- Bold
+			intensity = "Bold",
+			italic = false,
+			font = wezterm.font({
+				-- family='Monaspace Krypton',
+				family = "Monaspace Krypton",
+				-- weight='ExtraBold',
+				weight = "Bold",
+			}),
+		},
+
+		{ -- Bold Italic
+			intensity = "Bold",
+			italic = true,
+			font = wezterm.font({
+				family = "Monaspace Xenon",
+				style = "Italic",
+				weight = "Bold",
+			}),
+		},
+	},
+
 	macos_window_background_blur = 50,
 	window_background_opacity = 1.00,
 	window_decorations = "RESIZE",
