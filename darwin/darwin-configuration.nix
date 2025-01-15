@@ -90,6 +90,7 @@
     taps = [
       "nikitabobko/tap"
       "cfergeau/crc"
+      "FelixKratz/formulae"
     ];
 
     casks = [
@@ -104,6 +105,8 @@
       "aerospace"
       "openscad@snapshot"
       "ghostty"
+      "raspberry-pi-imager"
+      "zen-browser"
     ];
 
     brews = [
@@ -115,6 +118,7 @@
       "ktlint"
       "libpq"
       "filosottile/musl-cross/musl-cross"
+      "borders"
     ];
 
     masApps = {
