@@ -23,7 +23,7 @@ local function scheme_for_appearance(appearance)
 end
 
 return {
-	color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
+	color_scheme = "Catppuccin Mocha", -- scheme_for_appearance(wezterm.gui.get_appearance()),
 	enable_tab_bar = true,
 	-- font = wezterm.font("Monaspace Xenon", {}),
 	-- font_rules = {
