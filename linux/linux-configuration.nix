@@ -18,6 +18,7 @@
     ".config/tmux".source = ../config/tmux;
     ".config/nix".source = ../config/nix;
     ".config/zellij".source = ../config/zellij;
+    ".config/wezterm".source = ../config/wezterm;
   };
 
   home.packages = with pkgs; [

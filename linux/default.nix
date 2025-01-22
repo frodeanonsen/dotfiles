@@ -62,6 +62,7 @@ in
               vars
               ;
           };
+
           modules = [ 
             ./linux-configuration.nix
             # home-manager.nixosModules.home-manager {
@@ -69,6 +70,6 @@ in
             #   home-manager.useUserPackages = true;
             # }
           ];
-        };
+      };
 }
 
