@@ -1,10 +1,13 @@
 # Frodes Dotfiles and system configuration
 
-This is mainly a backup of my dotfiles and system configuration files. It is tailored to my needs and preferences, but feel free to use it as a reference or inspiration for your own configuration.
+This is mainly a backup of my dotfiles and system configuration files. It is
+tailored to my needs and preferences, but feel free to use it as a reference or
+inspiration for your own configuration.
 
-The configuration is based on NixOS, which is a declarative system configuration tool. I have been inspired by many
-other dotfiles repositories, but I have tried to make this configuration as minimal as possible.
-Here are the main references that I have used:
+The configuration is based on NixOS, which is a declarative system
+configuration tool. I have been inspired by many other dotfiles repositories,
+but I have tried to make this configuration as minimal as possible. Here are
+the main references that I have used:
 
 - [NixOS](https://nixos.org/)
 - [Home Manager](https://nix-community.github.io/home-manager/options.xhtml)
