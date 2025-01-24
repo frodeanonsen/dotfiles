@@ -44,8 +44,10 @@ key-mapping.preset = 'qwerty'
 # Drop it from your config, if you don't like this behavior
 # See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
-on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-on-focus-changed = "move-mouse window-lazy-center"
+# on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Disabled because of fusion360
+# on-focus-changed = "move-mouse window-lazy-center"
 
 # Gaps between windows (inner-*) and between monitor edges (outer-*).
 # Possible values:
@@ -193,10 +195,10 @@ alt-shift-l = ['join-with right', 'mode main']
 if.app-id = 'com.tinyspeck.slackmacgap'
 run = "move-node-to-workspace Z"
 
-[[on-window-detected]]
-if.app-id = 'com.apple.Safari'
-if.window-title-regex-substring = 'Zygizo'
-run = "move-node-to-workspace Z"
+# [[on-window-detected]]
+# if.app-id = 'com.apple.Safari'
+# if.window-title-regex-substring = 'Zygizo'
+# run = "move-node-to-workspace Z"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.mail'
@@ -210,14 +212,14 @@ run = "move-node-to-workspace Z"
 # Web development
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome'
-run = "move-node-to-workspace W"
+run = ["move-node-to-workspace W", "workspace W"]
 
 
 # Personal
-[[on-window-detected]]
-if.app-id = 'com.apple.Safari'
-if.window-title-regex-substring = 'Personal'
-run = "move-node-to-workspace P"
+# [[on-window-detected]]
+# if.app-id = 'com.apple.Safari'
+# if.window-title-regex-substring = 'Personal'
+# run = "move-node-to-workspace P"
 
 
 # Obsidian
