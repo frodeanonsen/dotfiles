@@ -70,6 +70,7 @@
       uv
       xquartz
       wezterm
+      devbox
     ];
   };
 

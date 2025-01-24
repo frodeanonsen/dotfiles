@@ -1,0 +1,1 @@
+devbox completion fish | source
