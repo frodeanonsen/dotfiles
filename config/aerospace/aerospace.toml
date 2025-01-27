@@ -210,9 +210,9 @@ run = "move-node-to-workspace Z"
 
 
 # Web development
-[[on-window-detected]]
-if.app-id = 'com.google.Chrome'
-run = ["move-node-to-workspace W", "workspace W"]
+# [[on-window-detected]]
+# if.app-id = 'com.google.Chrome'
+# run = ["move-node-to-workspace W", "workspace W"]
 
 
 # Personal
