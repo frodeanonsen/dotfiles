@@ -118,7 +118,10 @@
       "stlink"
       "vfkit"
       "ktlint"
-      "libpq"
+      {
+        name = "libpq";
+        link = true;
+      }
       "filosottile/musl-cross/musl-cross"
       "borders"
     ];
@@ -193,7 +196,6 @@
       yazi
       zellij
       zoxide
-      rustup
       just
       tflint
       platformio-core
@@ -206,7 +208,6 @@
       slack
       pngpaste
       entr
-      openocd
       colima
       docker
       docker-compose
@@ -219,16 +220,6 @@
 
       # ROS2 dependencies
       tinyxml-2
-
-      # Removed from base config. Use nix shell instead: nix-shell -p azure-cli
-      # gcc-arm-embedded-13 // Problematic
-      # bear
-      # python312Packages.west
-      # azure-cli
-      # azure-functions-core-tools # Azure Functions Core Tools
-
-      # Moved to homebrew for now
-      # unstable.ghostty
     ];
   };
 
