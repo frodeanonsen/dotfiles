@@ -46,6 +46,7 @@
     jq
     yq
     lazygit
+    lazydocker
     zsh
     tldr
     xh

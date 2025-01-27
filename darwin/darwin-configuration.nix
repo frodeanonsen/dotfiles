@@ -56,6 +56,7 @@
       jq
       yq
       lazygit
+      lazydocker
       darwin.lsusb
       zsh
       yt-dlp
