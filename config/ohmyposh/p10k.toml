@@ -81,7 +81,6 @@ powerline_symbol = ""
 style = "powerline"
 template = " {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }}  "
 type = "node"
-
 [blocks.segments.properties]
 fetch_version = true
 
@@ -93,19 +92,17 @@ powerline_symbol = ""
 style = "powerline"
 template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}  "
 type = "go"
-
 [blocks.segments.properties]
 fetch_version = true
 
 [[blocks.segments]]
+template = ' {{ if .Error }}{{ else }}{{ .Full }} {{ end }} '
 type = "rust"
 style = "powerline"
 invert_powerline = true
 powerline_symbol = ""
 foreground = "#193549"
 background = "#99908a"
-template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}  "
-
 [blocks.segments.properties]
 fetch_version = true
 
@@ -117,9 +114,19 @@ powerline_symbol = ""
 foreground = "#ffffff"
 background = "#906cff"
 template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} <b>K</b>"
-
 [blocks.segments.properties]
 fetch_version = true
+
+[[blocks.segments]]
+template = ' {{ .Output }} '
+type = "command"
+style = "powerline"
+foreground = "#7EBAE4"
+background = "#5277C3"
+invert_powerline = true
+powerline_symbol = ""
+[blocks.segments.properties]
+command = "if [ -f devbox.json ]; then echo ' '; fi"
 
 [[blocks.segments]]
 template = '{{ if eq .Type "pure" }}   {{ else if eq .Type "impure" }} 󰼩  {{ else if eq .Type "unknown" }} 󱓣  {{ else }} Unknown {{ end }}'
@@ -156,25 +163,9 @@ powerline_symbol = ""
 style = "powerline"
 template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}  "
 type = "azfunc"
-
 [blocks.segments.properties]
 display_mode = "files"
 fetch_version = false
-
-[[blocks.segments]]
-background_templates = [
-  "{{if contains \"default\" .Profile}}#FFA400{{end}}",
-  "{{if contains \"jan\" .Profile}}#f1184c{{end}}",
-]
-foreground = "#ffffff"
-invert_powerline = true
-powerline_symbol = ""
-style = "powerline"
-template = " {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }}  "
-type = "aws"
-
-[blocks.segments.properties]
-display_default = false
 
 [[blocks.segments]]
 background = "#ffff66"
@@ -203,18 +194,8 @@ powerline_symbol = ""
 style = "powerline"
 template = " {{ if gt .Code 0 }}{{ reason .Code }}{{ else }}{{ end }} "
 type = "status"
-
 [blocks.segments.properties]
 always_enabled = true
-
-# [[blocks.segments]]
-# background = "#d3d7cf"
-# foreground = "#000000"
-# invert_powerline = true
-# style = "diamond"
-# template = " {{ .CurrentDate | date .Format }}  "
-# trailing_diamond = "─╮"
-# type = "time"
 
 [[blocks]]
 alignment = "left"
