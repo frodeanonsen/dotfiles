@@ -23,8 +23,6 @@ end
 # Load everything but the path and completion files
 for file in $config_files
     if not string match -r '.*/path\.fish$' -- $file
-        if not string match -r '.*/completion\.fish$' -- $file
-            source $file
-        end
+        source $file
     end
 end

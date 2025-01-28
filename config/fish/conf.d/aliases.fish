@@ -15,6 +15,4 @@ alias http=xh
 
 alias df=duf
 
-alias cat='bat -p'
-
 alias top='btop'
