@@ -68,6 +68,7 @@
     rustup
     poetry
     openocd
+    devbox
   ];
 
 }
