@@ -10,10 +10,6 @@
 { pkgs, ... }:
 
 {
-  networking = {
-    computerName = "Gammal-MacBook";
-    hostName = "GammalMacBook";
-  };
 
   # homebrew = {
   #   brews = [

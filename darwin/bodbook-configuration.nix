@@ -16,90 +16,18 @@
 }:
 
 {
-  imports = (import ./modules);
+  imports = [
+    ./common.nix
+  ];
+
+  networking = {
+    computerName = "BodBook";
+    hostName = "bodbook";
+  };
 
   users.users.${vars.user} = {
     home = "/Users/${vars.user}";
     shell = pkgs.zsh;
-  };
-
-  environment = {
-    variables = {
-      EDITOR = "${vars.editor}";
-      VISUAL = "${vars.editor}";
-    };
-    systemPackages = with pkgs; [
-      nixfmt-rfc-style
-      vim
-      neovim
-      tree-sitter
-      tmux
-      git
-      gh
-      direnv
-      bat
-      ripgrep
-      age
-      sshs
-      atac
-      glow
-      btop
-      bottom
-      fd
-      fzf
-      eza
-      gawk
-      raycast
-      jq
-      yq
-      lazygit
-      zsh
-      yt-dlp
-      tldr
-      xh
-      wget
-      hwatch
-      watchman
-      gnumake
-      gettext
-      pyenv
-      uv
-      xquartz
-      wezterm
-      devbox
-      oh-my-posh
-      zoxide
-    ];
-  };
-
-  fonts.packages = with pkgs; [
-    # (nerdfonts.override { fonts = [ "Monaspace" ]; })
-    monaspace
-  ];
-
-  programs.zsh.enable = true;
-
-  homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = true;
-      upgrade = true;
-      cleanup = "zap";
-    };
-
-    taps = [
-      "nikitabobko/tap"
-      "cfergeau/crc"
-      "FelixKratz/formulae"
-    ];
-
-    casks = [
-      "obsidian"
-      "zen-browser"
-    ];
-
-    brews = [
-    ];
   };
 
   security.pam.enableSudoTouchIdAuth = true;
@@ -118,23 +46,18 @@
       '';
     };
 
-    # Home Manager is pretty good at managing .dotfiles. The primary way to manage
-    # plain files is through 'home.file'.
     home.file = {
       ".zshrc".source = ../config/zsh/zshrc;
       ".bashrc".source = ../config/bash/bashrc;
       ".gitignore".source = ../config/git/gitignore;
+      ".gitconfig".source = ../config/git/gitconfig;
       ".editorconfig".source = ../config/system/editorconfig;
       ".config/ohmyposh".source = ../config/ohmyposh;
       ".config/nvim".source = ../config/lazyvim;
       ".config/fish".source = ../config/fish;
-      ".config/skhd".source = ../config/skhd;
-      ".config/aerospace".source = ../config/aerospace;
       ".config/wezterm".source = ../config/wezterm;
       ".config/tmux".source = ../config/tmux;
       ".config/nix".source = ../config/nix;
-      ".config/zellij".source = ../config/zellij;
-      ".config/ghostty".source = ../config/ghostty;
     };
 
     home.sessionVariables = { };

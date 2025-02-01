@@ -32,53 +32,21 @@ let
   };
 in
 {
-  # # MacBook8,1 "Core M" 1.2 12" (2018)
-  # MacBookIntel =
-  #   let
-  #     inherit (systemConfig "x86_64-darwin") system pkgs stable;
-  #   in
-  #   darwin.lib.darwinSystem {
-  #     inherit system;
-  #     specialArgs = { inherit inputs system pkgs stable vars; };
-  #     modules = [
-  #       ./darwin-configuration.nix
-  #       ./intel.nix
-  #       ../modules/programs/kitty.nix
-  #       home-manager.darwinModules.home-manager
-  #       {
-  #         home-manager.useGlobalPkgs = true;
-  #         home-manager.useUserPackages = true;
-  #       }
-  #     ];
-  #   };
-  #
-  # # MacBook8,1 "Core M" 1.2 12" (2012)
-  # BodBookIntel =
-  #   let
-  #     inherit (systemConfig "x86_64-darwin") system pkgs stable;
-  #   in
-  #   darwin.lib.darwinSystem {
-  #     inherit system;
-  #     specialArgs = { inherit inputs system pkgs stable vars; };
-  #     modules = [
-  #       ./darwin-configuration.nix
-  #       ./intel.nix
-  #       ../modules/programs/kitty.nix
-  #       home-manager.darwinModules.home-manager
-  #       {
-  #         home-manager.useGlobalPkgs = true;
-  #         home-manager.useUserPackages = true;
-  #       }
-  #     ];
-  #   };
-  #
   BodBook =
     let
       inherit (systemConfig "x86_64-darwin") system pkgs stable;
     in
     darwin.lib.darwinSystem {
       inherit system;
-      specialArgs = { inherit inputs system pkgs stable vars; };
+      specialArgs = {
+        inherit
+          inputs
+          system
+          pkgs
+          stable
+          vars
+          ;
+      };
       modules = [
         ./bodbook-configuration.nix
         ./intel.nix
@@ -107,7 +75,7 @@ in
           ;
       };
       modules = [
-        ./darwin-configuration.nix
+        ./zygbook-configuration.nix
         ./apple.nix
         home-manager.darwinModules.home-manager
         {
