@@ -80,7 +80,7 @@ in
       inherit system;
       specialArgs = { inherit inputs system pkgs stable vars; };
       modules = [
-        ./darwin-configuration.nix
+        ./bodbook-configuration.nix
         ./intel.nix
         home-manager.darwinModules.home-manager
         {

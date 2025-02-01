@@ -67,6 +67,8 @@
       xquartz
       wezterm
       devbox
+      oh-my-posh
+      zoxide
     ];
   };
 
@@ -93,7 +95,6 @@
 
     casks = [
       "obsidian"
-      "aerospace"
       "zen-browser"
     ];
 
