@@ -42,8 +42,6 @@
       age
       sshs
       atac
-      termshark
-      portal
       glow
       btop
       bottom
@@ -51,13 +49,10 @@
       fzf
       eza
       gawk
-      skhd
       raycast
       jq
       yq
       lazygit
-      lazydocker
-      darwin.lsusb
       zsh
       yt-dlp
       tldr
@@ -97,41 +92,13 @@
     ];
 
     casks = [
-      "wireshark"
-      "google-chrome"
-      "firefox"
-      "freecad"
-      "monitorcontrol"
       "obsidian"
-      "vlc"
-      "1password"
       "aerospace"
-      "openscad@snapshot"
-      "ghostty"
-      "raspberry-pi-imager"
       "zen-browser"
     ];
 
     brews = [
-      "aztfexport"
-      "matplotplusplus"
-      "nvm"
-      "stlink"
-      "vfkit"
-      "ktlint"
-      {
-        name = "libpq";
-        link = true;
-      }
-      "filosottile/musl-cross/musl-cross"
-      "borders"
     ];
-
-    masApps = {
-      "1Password for Safari" = 1569813296;
-      "Home Assistant" = 1099568401;
-      "MQTT Explorer" = 1455214828;
-    };
   };
 
   security.pam.enableSudoTouchIdAuth = true;
@@ -178,49 +145,6 @@
 
     # Makes sense for user specific applications that shouldn't be available system-wide
     home.packages = with pkgs; [
-      htop
-      home-assistant-cli
-      podman
-      podman-tui
-      poetry
-      act # https://github.com/nektos/act - Run your GitHub Actions locally
-      boost-build
-      bossa
-      llvm_16
-      ccls
-      cmake
-      cmake-lint
-      ninja
-      oh-my-posh
-      exercism
-      qmk
-      yazi
-      zellij
-      zoxide
-      just
-      tflint
-      platformio-core
-      nmap
-      # lnav # problem on intel
-      plantuml
-      dfu-util
-      terraform
-      terraform-ls
-      slack
-      pngpaste
-      entr
-      colima
-      docker
-      docker-compose
-      docker-buildx
-      dotenvx # .env file manager
-      qalculate-qt
-      dust # Disk Usage Summary
-      duf # Disk Usage/Free Utility
-      postgresql
-
-      # ROS2 dependencies
-      tinyxml-2
     ];
   };
 
@@ -258,9 +182,6 @@
     };
   };
 
-  # Not in use atm
-  # services.skhd.enable = true;
-
   system = {
     defaults = {
       dock.autohide = true;
@@ -273,6 +194,6 @@
       screensaver.askForPasswordDelay = 10;
     };
 
-    stateVersion = 4;
+    stateVersion = 5;
   };
 }

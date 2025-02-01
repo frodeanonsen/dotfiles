@@ -15,18 +15,15 @@
     hostName = "GammalMacBook";
   };
 
-  skhd.enable = true;
-  yabai.enable = true;
-
-  homebrew = {
-    brews = [
-      # "wireguard-tools"
-    ];
-    casks = [
-      "podman"
-      "virtualbox" # sudo codesign --force --deep --sign - /Applications/VirtualBox.app/Contents/Resources/VirtualBoxVM.app
-    ];
-  };
+  # homebrew = {
+  #   brews = [
+  #     # "wireguard-tools"
+  #   ];
+  #   casks = [
+  #     # "podman"
+  #     # "virtualbox" # sudo codesign --force --deep --sign - /Applications/VirtualBox.app/Contents/Resources/VirtualBoxVM.app
+  #   ];
+  # };
 
   system = {
     defaults = {
@@ -54,9 +51,9 @@
         ShowPathbar = true;
         QuitMenuItem = false;
       };
-      keyboard = {
-        remapCapsLockToEscape = true;
-      };
+      # keyboard = {
+      #   remapCapsLockToEscape = true;
+      # };
       trackpad = {
         Clicking = true;
         TrackpadRightClick = true;

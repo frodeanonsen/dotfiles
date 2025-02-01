@@ -72,6 +72,23 @@ in
   #     ];
   #   };
   #
+  BodBook =
+    let
+      inherit (systemConfig "x86_64-darwin") system pkgs stable;
+    in
+    darwin.lib.darwinSystem {
+      inherit system;
+      specialArgs = { inherit inputs system pkgs stable vars; };
+      modules = [
+        ./darwin-configuration.nix
+        ./intel.nix
+        home-manager.darwinModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+        }
+      ];
+    };
 
   # MacBookPro16,1 M2 16" (2023)
   MacBookApple =
