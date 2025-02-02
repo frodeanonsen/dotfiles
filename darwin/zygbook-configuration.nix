@@ -31,6 +31,12 @@
   };
 
   homebrew = {
+
+    taps = [
+      "nikitabobko/tap" # Aerospace
+      "cfergeau/crc" # vfkit
+    ];
+
     casks = [
       "monitorcontrol"
       "vlc"
@@ -42,18 +48,22 @@
     ];
 
     brews = [
-      "aztfexport"
-      "matplotplusplus"
-      "nvm"
-      "stlink"
-      "vfkit"
-      "ktlint"
+      "aztfexport" # Move package to nix and use in devbox instead
+      "nvm" # Node version manager
+      "stlink" # stlink tools
       {
-        name = "libpq";
+        name = "libpq"; # Postgres C API library
         link = true;
       }
-      "filosottile/musl-cross/musl-cross"
-      "borders"
+    ];
+  };
+
+  environment = {
+    systemPackages = with pkgs; [
+      vfkit # Simple command line tool to start VMs through the macOS Virtualization framework
+      colima # Container runtimes with minimal setup
+      podman
+      podman-tui # Podman Terminal UI
     ];
   };
 
@@ -86,6 +96,7 @@
       ".config/wezterm".source = ../config/wezterm;
       ".config/tmux".source = ../config/tmux;
       ".config/nix".source = ../config/nix;
+      ".config/borders".source = ../config/borders;
     };
 
     home.sessionVariables = { };
@@ -103,23 +114,28 @@
       qmk
       yazi
       zellij
-      zoxide
       nmap
-      plantuml
       dfu-util
       slack
       pngpaste
       entr
-      colima
-      podman
-      podman-tui
       dotenvx # .env file manager
       postgresql
+      jankyborders # add colored borders to user windows on macOS
     ];
   };
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
+
+  services.jankyborders = {
+    enable = true;
+    style = "round";
+    width = 6.0;
+    hidpi = false;
+    active_color = "0xffe1e300";
+    inactive_color = "0xff494d64";
+  };
 
   # Testing new settings:
   # keep-outputs = true
