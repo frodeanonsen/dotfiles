@@ -1,7 +1,10 @@
 #!/usr/bin/env sh
 cd ~/.dotfiles || exit
 
-nix flake update
+if [ "$1" = "--flake" ]; then
+	nix flake update
+fi
+
 retries=0
 max_retries=10
 while ! darwin-rebuild switch --flake .#MacBookApple; do

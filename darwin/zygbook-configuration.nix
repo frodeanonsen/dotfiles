@@ -34,7 +34,6 @@
 
     taps = [
       "nikitabobko/tap" # Aerospace
-      "cfergeau/crc" # vfkit
     ];
 
     casks = [
@@ -42,6 +41,7 @@
       "vlc"
       "1password"
       "aerospace"
+      "orcaslicer"
       "openscad@snapshot"
       "ghostty"
       "raspberry-pi-imager"
@@ -61,7 +61,7 @@
   environment = {
     systemPackages = with pkgs; [
       vfkit # Simple command line tool to start VMs through the macOS Virtualization framework
-      colima # Container runtimes with minimal setup
+      colima # Docker container runtimes with minimal setup
       podman
       podman-tui # Podman Terminal UI
     ];
