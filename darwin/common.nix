@@ -47,6 +47,7 @@
       dust # Disk Usage Summary
       duf # Disk Usage/Free Utility
       neofetch # System info script
+      rustup # Rust toolchain installer
     ];
   };
 
