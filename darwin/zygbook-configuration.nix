@@ -49,7 +49,6 @@
 
     brews = [
       "aztfexport" # Move package to nix and use in devbox instead
-      "nvm" # Node version manager
       "stlink" # stlink tools
       {
         name = "libpq"; # Postgres C API library

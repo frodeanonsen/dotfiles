@@ -15,11 +15,11 @@ if status is-interactive
 
     # Install nvm if not installed
     if test -e ~/.config/fish/functions/nvm.fish
-        nvm use latest -s
+        nvm use
     else
-        echo "Installing nvm"
+        echo "Installing nvm. Set version in ~/.nvmrc"
         fisher install jorgebucaran/nvm.fish
-        nvm install latest
+        nvm install
     end
 
     # Install bass
