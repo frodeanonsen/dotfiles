@@ -55,7 +55,6 @@
     watchman
     yazi
     lnav
-    nodejs_22
     cmake
     cmake-lint
     oh-my-posh
