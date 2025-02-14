@@ -69,6 +69,7 @@
     poetry
     openocd
     devbox
+    monaspace
   ];
 
 }
