@@ -64,7 +64,7 @@ in
           };
 
           modules = [ 
-            ./linux-configuration.nix
+            ./zygizo-one-configuration.nix
             # home-manager.nixosModules.home-manager {
             #   home-manager.useGlobalPkgs = false;
             #   home-manager.useUserPackages = true;
