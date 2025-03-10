@@ -41,7 +41,7 @@
       "vlc"
       "1password"
       "aerospace"
-      "orcaslicer"
+      # "orcaslicer" - tmp use beta version
       "openscad@snapshot"
       "ghostty"
       "raspberry-pi-imager"
