@@ -93,6 +93,7 @@
       ".config/fish".source = ../config/fish;
       ".config/aerospace".source = ../config/aerospace;
       ".config/wezterm".source = ../config/wezterm;
+      ".config/kitty".source = ../config/kitty;
       ".config/tmux".source = ../config/tmux;
       ".config/nix".source = ../config/nix;
       ".config/borders".source = ../config/borders;
