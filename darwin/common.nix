@@ -16,6 +16,7 @@
       nixfmt-rfc-style # Nix code formatter
       vim # Text editor
       unstable.neovim # Hyperextensible Vim-based text editor
+      unstable.kitty # terminal emulator
       tree-sitter # Incremental parsing system
       plantuml # uml drawing using text
       tmux # Terminal multiplexer
@@ -43,7 +44,6 @@
       wget # Network downloader
       xquartz # X Window System for macOS
       wezterm # GPU-accelerated terminal emulator
-      kitty # terminal emulator
       devbox # Instant, easy, and predictable development environments
       oh-my-posh # Prompt theme engine for any shell
       zoxide # Smarter cd command
