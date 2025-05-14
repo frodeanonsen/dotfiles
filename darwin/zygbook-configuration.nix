@@ -39,11 +39,10 @@
     casks = [
       "monitorcontrol"
       "vlc"
-      "1password"
       "aerospace"
       # "orcaslicer" - tmp use beta version
       "openscad@snapshot"
-      "ghostty"
+      "gimp"
       "raspberry-pi-imager"
     ];
 
@@ -119,7 +118,7 @@
       slack
       pngpaste
       entr
-      dotenvx # .env file manager
+      # dotenvx # .env file manager
       postgresql
       jankyborders # add colored borders to user windows on macOS
     ];
