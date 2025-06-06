@@ -65,11 +65,13 @@
     ];
   };
 
-  security.pam.enableSudoTouchIdAuth = true;
+  # Removed in 2025.05
+  # security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   home-manager.backupFileExtension = "backup";
   home-manager.users.${vars.user} = {
-    home.stateVersion = "24.11";
+    home.stateVersion = "25.05";
     programs.home-manager.enable = true;
     programs.zsh = {
       initExtra = ''
@@ -125,7 +127,8 @@
   };
 
   # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  # removed in 2025.05
+  # services.nix-daemon.enable = true;
 
   services.jankyborders = {
     enable = true;
@@ -156,18 +159,19 @@
       keep-failed = false
       keep-going = true
     '';
-    configureBuildUsers = true;
-    useDaemon = true;
+    # Removed in 2025.05
+    # configureBuildUsers = true;
+    # useDaemon = true;
     settings = {
       experimental-features = "nix-command flakes";
       trusted-users = [
-        "root"
-        "frode"
+        "@admin"
       ];
     };
   };
 
   system = {
+    primaryUser = "frode";
     defaults = {
       dock.autohide = true;
       dock.mru-spaces = false;

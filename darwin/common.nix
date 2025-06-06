@@ -56,7 +56,9 @@
 
   fonts.packages = with pkgs; [
     # (nerdfonts.override { fonts = [ "Monaspace" ]; })
-    monaspace
+    nerd-fonts.monaspace
+    nerd-fonts.blex-mono
+    nerd-fonts.jetbrains-mono
   ];
 
   programs.zsh.enable = true;
@@ -71,7 +73,6 @@
 
     casks = [
       "obsidian" # Note-taking and knowledge management app
-      "zen-browser" # Minimalist web browser
     ];
   };
 

@@ -48,7 +48,7 @@
           DSDontWriteUSBStores = true;
         };
         # Show battery percentage
-        "~/Library/Preferences/ByHost/com.apple.controlcenter".BatteryShowPercentage = true;
+        # "~/Library/Preferences/ByHost/com.apple.controlcenter".BatteryShowPercentage = true;
         # Privacy
         "com.apple.AdLib".allowApplePersonalizedAdvertising = false;
       };
