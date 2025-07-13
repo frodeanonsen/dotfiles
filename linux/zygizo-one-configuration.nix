@@ -1,9 +1,9 @@
 { pkgs, vars, ... }:
 
 {
-  imports = [
-    ./common.nix
-  ];
+  # imports = [
+  #   ./common.nix
+  # ];
 
   programs.zsh.enable = true;
   programs.home-manager.enable = true;
@@ -26,6 +26,8 @@
   };
 
   home.packages = with pkgs; [
+    vim
+    neovim
     tree-sitter
     tmux
     git
@@ -71,6 +73,8 @@
     openocd
     devbox
     monaspace
+    podman
+    testdisk
   ];
 
 }
