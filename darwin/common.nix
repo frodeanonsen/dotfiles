@@ -17,11 +17,15 @@
       vim # Text editor
       unstable.neovim # Hyperextensible Vim-based text editor
       unstable.kitty # terminal emulator
+      unstable.ghostty-bin # Terminal emulator with multiplexer
+      helix # High-performance text editor
       tree-sitter # Incremental parsing system
       plantuml # uml drawing using text
       tmux # Terminal multiplexer
+      zellij # Terminal multiplexer
       git # Version control system
       gh # GitHub CLI
+      difftastic # Diff tool that understands syntax
       direnv # Environment switcher
       bat # Cat clone with syntax highlighting
       ripgrep # Line-oriented search tool
@@ -39,6 +43,7 @@
       yq # Command-line YAML processor
       lazygit # Simple terminal UI for git commands
       zsh # Z shell
+      fish # Friendly interactive shell
       tldr # Simplified and community-driven man pages
       xh # Friendly and fast tool for sending HTTP requests
       wget # Network downloader
@@ -46,11 +51,16 @@
       wezterm # GPU-accelerated terminal emulator
       devbox # Instant, easy, and predictable development environments
       oh-my-posh # Prompt theme engine for any shell
+      starship # Prompt for any shell
       zoxide # Smarter cd command
       dust # Disk Usage Summary
       duf # Disk Usage/Free Utility
       neofetch # System info script
       rustup # Rust toolchain installer
+      toot # Mastodon tui client
+      fedistar # Mastodon client
+      colima # Docker container runtimes with minimal setup
+      opencode # AI code tool for developers
     ];
   };
 
