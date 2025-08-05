@@ -27,4 +27,7 @@ if status is-interactive
         echo "Installing bass"
         fisher install edc/bass
     end
+
+    # Update theme based on system preference
+    update_theme
 end
