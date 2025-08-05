@@ -60,8 +60,9 @@
     systemPackages = with pkgs; [
       vfkit # Simple command line tool to start VMs through the macOS Virtualization framework
       colima # Docker container runtimes with minimal setup
-      podman
+      podman # Podman container runtime
       podman-tui # Podman Terminal UI
+      ffmpeg-full # Full version of FFmpeg with all codecs
     ];
   };
 
@@ -93,11 +94,13 @@
       ".config/nvim".source = ../config/lazyvim;
       ".config/fish".source = ../config/fish;
       ".config/aerospace".source = ../config/aerospace;
+      ".config/sketchybar".source = ../config/sketchybar;
       ".config/wezterm".source = ../config/wezterm;
       ".config/kitty".source = ../config/kitty;
       ".config/tmux".source = ../config/tmux;
       ".config/nix".source = ../config/nix;
       ".config/borders".source = ../config/borders;
+      ".config/lazygit".source = ../config/lazygit;
     };
 
     home.sessionVariables = { };
@@ -122,6 +125,7 @@
       entr
       # dotenvx # .env file manager
       postgresql
+      sketchybar
       jankyborders # add colored borders to user windows on macOS
     ];
   };
@@ -137,6 +141,10 @@
     hidpi = false;
     active_color = "0xffe1e300";
     inactive_color = "0xff494d64";
+  };
+
+  services.sketchybar = {
+    enable = true;
   };
 
   # Testing new settings:

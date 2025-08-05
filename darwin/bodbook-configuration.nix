@@ -58,6 +58,7 @@
       ".config/wezterm".source = ../config/wezterm;
       ".config/tmux".source = ../config/tmux;
       ".config/nix".source = ../config/nix;
+      ".config/lazygit".source = ../config/lazygit;
     };
 
     home.sessionVariables = { };
@@ -121,4 +122,3 @@
     stateVersion = 5;
   };
 }
-
