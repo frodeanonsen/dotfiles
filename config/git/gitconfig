@@ -4,6 +4,13 @@
 
 [alias]
   co = checkout
+
+    # `git log` with patches shown with difftastic.
+  dl = -c diff.external=difft log -p --ext-diff
+
+  # Show the most recent commit with difftastic.
+  ds = -c diff.external=difft show --ext-diff
+  
   promote = !$ZSH/bin/git-promote
   wtf     = !$ZSH/bin/git-wtf
   rank-contributors = !$ZSH/bin/git-rank-contributors
@@ -27,6 +34,9 @@
 [mergetool]
   keepBackup = false
 
+[diff]
+    external = difft
+
 [difftool]
   prompt = false
 
@@ -43,14 +53,6 @@
 [user]
 	name = Frode Anonsen
 	email = frode@anonsen.org
-
-[magithub]
-	online = false
-
-[magithub "status"]
-	includeStatusHeader = false
-	includePullRequestsSection = false
-	includeIssuesSection = false
 
 [github]
 	user = frodeanonsen
