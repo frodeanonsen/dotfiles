@@ -16,3 +16,5 @@ alias http=xh
 alias df=duf
 
 alias top='btop'
+
+alias lsusb='system_profiler SPUSBDataType'
