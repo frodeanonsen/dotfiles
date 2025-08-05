@@ -13,8 +13,10 @@ after-login-command = []
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
-  'exec-and-forget borders active_color=0xffe1e300 inactive_color=0xff494d64 width=6.0',
+  'exec-and-forget sketchybar',
+  'exec-and-forget borders',
 ]
+# 'exec-and-forget borders active_color=0xffe1e300 inactive_color=0xff494d64 width=6.0',
 
 # Start AeroSpace at login
 start-at-login = true
@@ -26,7 +28,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 30
+accordion-padding = 48
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -44,10 +46,27 @@ key-mapping.preset = 'qwerty'
 # Drop it from your config, if you don't like this behavior
 # See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
-# on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
 # Disabled because of fusion360
 # on-focus-changed = "move-mouse window-lazy-center"
+
+# exec-on-workspace-change callback allows to run arbitrary process when focused
+# workspace changes. It may be useful for integrating with bars.
+# Besides the exec.env-vars, the process has access to the following environment variables:
+# AEROSPACE_FOCUSED_WORKSPACE - the workspace user switched to
+# AEROSPACE_PREV_WORKSPACE - the workspace user switched from
+# Notify Sketchybar about workspace change
+exec-on-workspace-change = [
+  '/bin/bash',
+  '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+]
+
+# You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
+# Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
+# Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
+automatically-unhide-macos-hidden-apps = true
 
 # Gaps between windows (inner-*) and between monitor edges (outer-*).
 # Possible values:
@@ -57,12 +76,16 @@ key-mapping.preset = 'qwerty'
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-inner.horizontal = 8
-inner.vertical = 8
-outer.left = 8
-outer.bottom = 8
-outer.top = 8
-outer.right = 8
+outer.top = [
+  # offset of 32 on internal display, because of notch (16" MPB)
+  { monitor.'built-in.*' = 16 },
+  48,
+]
+outer.right = 24
+outer.bottom = 24
+outer.left = 24
+inner.horizontal = 24
+inner.vertical = 24
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -176,8 +199,16 @@ esc = 'mode main'
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
-esc = ['reload-config', 'mode main']
-r = ['flatten-workspace-tree', 'mode main'] # reset layout
+c = [
+  'reload-config',
+  'mode main',
+  'exec-and-forget sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+]
+r = [
+  'flatten-workspace-tree',
+  'mode main',
+  'exec-and-forget sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 f = [
   'layout floating tiling',
@@ -189,6 +220,13 @@ alt-shift-h = ['join-with left', 'mode main']
 alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
+
+# Back to 'main' mode
+# See: https://nikitabobko.github.io/AeroSpace/commands#mode
+esc = [
+  'mode main',
+  'exec-and-forget sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+]
 
 # Work
 [[on-window-detected]]
