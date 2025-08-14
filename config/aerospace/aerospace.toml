@@ -12,10 +12,12 @@ after-login-command = []
 # You can use it to add commands that run after AeroSpace startup.
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = [
-  'exec-and-forget sketchybar',
-  'exec-and-forget borders',
-]
+
+after-startup-command = []
+
+# Started as services
+#   'exec-and-forget /run/current-system/sw/bin/sketchybar',
+#   'exec-and-forget /run/current-system/sw/bin/borders',
 # 'exec-and-forget borders active_color=0xffe1e300 inactive_color=0xff494d64 width=6.0',
 
 # Start AeroSpace at login
@@ -56,11 +58,11 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 # Besides the exec.env-vars, the process has access to the following environment variables:
 # AEROSPACE_FOCUSED_WORKSPACE - the workspace user switched to
 # AEROSPACE_PREV_WORKSPACE - the workspace user switched from
-# Notify Sketchybar about workspace change
+# Notify /run/current-system/sw/bin/sketchybar about workspace change
 exec-on-workspace-change = [
   '/bin/bash',
   '-c',
-  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+  '/run/current-system/sw/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
@@ -111,29 +113,61 @@ inner.vertical = 24
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
 # alt-enter = 'exec-and-forget open -n /System/Applications/Utilities/Terminal.app'
 
+# --------------------- Hyprland config ----------------------
+
+# Close active window
+alt-q = 'close'
+
+# Kill active process (no direct equivalent, but you can reload config or close all windows)
+# alt-shift-q = ['close-all-windows-but-current']
+
+# Screen lock (replace with your macOS lock command), handled by macOS natively
+# cmd-ctrl-alt-shift-l = 'exec-and-forget /System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend'
+
+# Power menu (replace with your macOS power menu or script)
+alt-p = 'exec-and-forget open -a "System Preferences"'
+
+# Notification panel (no direct equivalent)
+
+# Apps
+# Settings menu (replace with your settings app or script)
+alt-enter = 'exec-and-forget open -n -a "kitty"'
+
+# Layouts
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
+
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
+alt-i = 'layout accordion horizontal vertical'
 
-# See: https://nikitabobko.github.io/AeroSpace/commands#focus
+alt-f = 'balance-sizes'
+alt-shift-f = 'fullscreen'
+
+# Move focus with mainMod + arrow keys
 alt-h = 'focus left'
-alt-j = 'focus down'
-alt-k = 'focus up'
 alt-l = 'focus right'
+alt-k = 'focus up'
+alt-j = 'focus down'
 
-alt-left = 'focus-monitor left'
-alt-right = 'focus-monitor right'
-alt-shift-left = ['move-node-to-monitor left', 'focus-monitor left']
-alt-shift-right = ['move-node-to-monitor right', 'focus-monitor right']
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#move
+# Move windows with cmd+ctrl+arrows
 alt-shift-h = 'move left'
-alt-shift-j = 'move down'
-alt-shift-k = 'move up'
 alt-shift-l = 'move right'
+alt-shift-k = 'move up'
+alt-shift-j = 'move down'
 
+# Swap windows
+cmd-alt-h = 'swap left'
+cmd-alt-l = 'swap right'
+cmd-alt-k = 'swap up'
+cmd-alt-j = 'swap down'
 
-# See: https://nikitabobko.github.io/AeroSpace/commands#workspace
+# Resize windows with cmd+shift+arrows
+cmd-shift-h = 'resize width -50'
+cmd-shift-l = 'resize width +50'
+cmd-shift-k = 'resize height -50'
+cmd-shift-j = 'resize height +50'
+
+# Workspaces: cmd+[1-9,0]
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
@@ -143,58 +177,51 @@ alt-6 = 'workspace 6'
 alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
-alt-b = 'workspace B'
-alt-f = 'workspace F'
-alt-n = 'workspace N'
-alt-p = 'workspace P'
-alt-w = 'workspace W'
-alt-z = 'workspace Z'
+alt-0 = 'workspace 10'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-alt-shift-1 = 'move-node-to-workspace 1'
-alt-shift-2 = 'move-node-to-workspace 2'
-alt-shift-3 = 'move-node-to-workspace 3'
-alt-shift-4 = 'move-node-to-workspace 4'
-alt-shift-5 = 'move-node-to-workspace 5'
-alt-shift-6 = 'move-node-to-workspace 6'
-alt-shift-7 = 'move-node-to-workspace 7'
-alt-shift-8 = 'move-node-to-workspace 8'
-alt-shift-9 = 'move-node-to-workspace 9'
-alt-shift-b = 'move-node-to-workspace B'
-alt-shift-f = 'move-node-to-workspace F'
-alt-shift-n = 'move-node-to-workspace N'
-alt-shift-p = 'move-node-to-workspace P'
-alt-shift-w = 'move-node-to-workspace W'
-alt-shift-z = 'move-node-to-workspace Z'
+# Move window to workspace silently: cmd+ctrl+[1-9,0]
+ctrl-alt-shift-1 = 'move-node-to-workspace 1'
+ctrl-alt-shift-2 = 'move-node-to-workspace 2'
+ctrl-alt-shift-3 = 'move-node-to-workspace 3'
+ctrl-alt-shift-4 = 'move-node-to-workspace 4'
+ctrl-alt-shift-5 = 'move-node-to-workspace 5'
+ctrl-alt-shift-6 = 'move-node-to-workspace 6'
+ctrl-alt-shift-7 = 'move-node-to-workspace 7'
+ctrl-alt-shift-8 = 'move-node-to-workspace 8'
+ctrl-alt-shift-9 = 'move-node-to-workspace 9'
+ctrl-alt-shift-0 = 'move-node-to-workspace 10'
 
-alt-shift-m = 'fullscreen'
+# Move window to workspace: cmd+shift+[1-9,0]
+alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
+alt-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
+alt-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
+alt-shift-4 = ['move-node-to-workspace 4', 'workspace 4']
+alt-shift-5 = ['move-node-to-workspace 5', 'workspace 5']
+alt-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
+alt-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
+alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
+alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
+alt-shift-0 = ['move-node-to-workspace 10', 'workspace 10']
 
-# See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
+# Workspace next/prev: cmd+tab / cmd+shift+tab
 alt-tab = 'workspace-back-and-forth'
-# See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
+# Screenshots - Handled by macOS natively
+# cmd-print = 'exec-and-forget screencapture -i ~/Desktop/screenshot.png'
+# cmd-shift-print = 'exec-and-forget screencapture -i ~/Desktop/screenshot_area.png'
+# cmd-ctrl-print = 'exec-and-forget sleep 5 && screencapture -i ~/Desktop/screenshot_in5.png'
+# cmd-ctrl-shift-print = 'exec-and-forget sleep 10 && screencapture -i ~/Desktop/screenshot_in10.png'
+# alt-print = 'exec-and-forget screencapture -i ~/Desktop/screenshot_active.png'
+
+# -END----------------- Hyprland config ----------------------
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-alt-shift-period = 'mode service'
-
-alt-shift-r = 'mode resize'
-
-alt-shift-e = 'balance-sizes'
-
-[mode.resize.binding]
-h = 'resize width -50'
-j = 'resize height +50'
-k = 'resize height -50'
-l = 'resize width +50'
-b = 'balance-sizes'
-
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#resize
-minus = 'resize smart -50'
-equal = 'resize smart +50'
-
-enter = 'mode main'
-esc = 'mode main'
+alt-shift-period = [
+  'mode service',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=true',
+]
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -202,12 +229,12 @@ esc = 'mode main'
 c = [
   'reload-config',
   'mode main',
-  'exec-and-forget sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
 ]
 r = [
   'flatten-workspace-tree',
   'mode main',
-  'exec-and-forget sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
 ] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 f = [
@@ -225,50 +252,39 @@ alt-shift-l = ['join-with right', 'mode main']
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 esc = [
   'mode main',
-  'exec-and-forget sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
 ]
 
-# Work
+# Comms
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
-run = "move-node-to-workspace Z"
-
-# [[on-window-detected]]
-# if.app-id = 'com.apple.Safari'
-# if.window-title-regex-substring = 'Zygizo'
-# run = "move-node-to-workspace Z"
+run = "move-node-to-workspace 9"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.mail'
-run = "move-node-to-workspace Z"
+run = "move-node-to-workspace 9"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.iCal'
-run = "move-node-to-workspace Z"
+run = "move-node-to-workspace 9"
 
-
-# Web development
-# [[on-window-detected]]
-# if.app-id = 'com.google.Chrome'
-# run = ["move-node-to-workspace W", "workspace W"]
-
-
-# Personal
-# [[on-window-detected]]
-# if.app-id = 'com.apple.Safari'
-# if.window-title-regex-substring = 'Personal'
-# run = "move-node-to-workspace P"
-
+[[on-window-detected]]
+if.app-id = 'com.apple.MobileSMS'
+run = ["move-node-to-workspace 9"]
 
 # Obsidian
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
-run = "move-node-to-workspace N"
+run = "move-node-to-workspace 8"
 
 
 # 3d apps
 [[on-window-detected]]
 if.app-id = 'com.softfever3d.orca-slicer'
+run = "move-node-to-workspace 3"
+
+[[on-window-detected]]
+if.app-id = 'com.bambulab.bambu-studio'
 run = "move-node-to-workspace 3"
 
 [[on-window-detected]]
