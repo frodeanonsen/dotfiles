@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# CONFIG_DIR="$HOME/.config/sketchybar"
+CONFIG_DIR="$HOME/.config/sketchybar"
 source "$CONFIG_DIR/environment"
 source "$THEME_DIR/tokyonight"
 

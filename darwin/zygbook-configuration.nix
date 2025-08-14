@@ -44,6 +44,7 @@
       "openscad@snapshot"
       "gimp"
       "raspberry-pi-imager"
+      "karabiner-elements"
     ];
 
     brews = [
@@ -145,6 +146,7 @@
 
   services.sketchybar = {
     enable = true;
+    package = pkgs.sketchybar;
   };
 
   # Testing new settings:

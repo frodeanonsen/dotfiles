@@ -33,7 +33,7 @@
       sshs # SSH server manager
       portal # Secure file transfer tool
       glow # Markdown renderer
-      btop # Resource monitor
+      bottom # Resource monitor
       fd # Simple, fast and user-friendly alternative to find
       fzf # Command-line fuzzy finder
       eza # Modern replacement for ls
@@ -60,7 +60,8 @@
       toot # Mastodon tui client
       fedistar # Mastodon client
       colima # Docker container runtimes with minimal setup
-      opencode # AI code tool for developers
+      # opencode # AI code tool for developers; Install manually as it updates very frequently
+      # usbimager # Write disk images to USB drives
     ];
   };
 
