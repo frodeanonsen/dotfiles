@@ -18,4 +18,4 @@ alias df=duf
 
 alias cat='bat -p'
 
-alias top='btop'
+alias top='btm'

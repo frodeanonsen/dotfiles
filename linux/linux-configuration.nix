@@ -37,7 +37,6 @@
     termshark
     portal
     glow
-    btop
     bottom
     fd
     fzf
