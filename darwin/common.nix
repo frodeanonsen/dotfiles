@@ -18,6 +18,9 @@
       unstable.neovim # Hyperextensible Vim-based text editor
       unstable.kitty # terminal emulator
       unstable.ghostty-bin # Terminal emulator with multiplexer
+      gh-dash # Github dashboard CLI
+      sesh # Session manager for terminal applications
+      gum # Command-line tool for interactive prompts
       helix # High-performance text editor
       tree-sitter # Incremental parsing system
       plantuml # uml drawing using text
@@ -50,6 +53,7 @@
       xquartz # X Window System for macOS
       wezterm # GPU-accelerated terminal emulator
       devbox # Instant, easy, and predictable development environments
+      devenv # Declarative development environments
       oh-my-posh # Prompt theme engine for any shell
       starship # Prompt for any shell
       zoxide # Smarter cd command
