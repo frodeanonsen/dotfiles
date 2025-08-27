@@ -4,6 +4,8 @@
 
 vim.opt.colorcolumn = "120"
 
+vim.g.ai_cmp = true
+
 function my_paste(reg)
   return function(lines)
     local content = vim.fn.getreg('"')
