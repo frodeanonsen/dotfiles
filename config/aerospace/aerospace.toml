@@ -140,8 +140,8 @@ alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
 alt-i = 'layout accordion horizontal vertical'
 
-alt-f = 'balance-sizes'
-alt-shift-f = 'fullscreen'
+alt-e = 'balance-sizes'
+alt-shift-m = 'fullscreen'
 
 # Move focus with mainMod + arrow keys
 alt-h = 'focus left'
