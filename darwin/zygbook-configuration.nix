@@ -128,6 +128,7 @@
       postgresql
       sketchybar
       jankyborders # add colored borders to user windows on macOS
+      audacity
     ];
   };
 
