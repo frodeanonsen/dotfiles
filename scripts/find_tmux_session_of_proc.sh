@@ -1,3 +1,12 @@
-for pid in $(pgrep nvim); do
-	tmux list-panes -aF '#{pane_id} #{pane_current_command}' | awk -v pid=$pid '$2==pid {print "nvim PID " pid " is in tmux session: " $1}'
-done
+#!/usr/bin/env bash
+
+process="${1:-nvim}"
+
+# Print unique tmux session names that currently host panes running the target command
+TMUX_FORMAT='#{session_name} #{pane_current_command}'
+
+TMUX_CMD=(tmux list-panes -a -F "$TMUX_FORMAT")
+
+"${TMUX_CMD[@]}" \
+  | awk -v process="$process" '$2 == process {print $1}' \
+  | sort -u
