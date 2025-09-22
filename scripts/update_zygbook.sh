@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 cd ~/.dotfiles || exit
 
 if [ "$1" = "--flake" ]; then
