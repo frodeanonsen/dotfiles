@@ -34,6 +34,7 @@
 
     taps = [
       "nikitabobko/tap" # Aerospace
+      "FelixKratz/formulae" # JankyBorders
     ];
 
     casks = [
@@ -54,6 +55,8 @@
         name = "libpq"; # Postgres C API library
         link = true;
       }
+      "borders" # add colored borders to user windows on macOS
+      "sketchybar"
     ];
   };
 
@@ -102,6 +105,7 @@
       ".config/nix".source = ../config/nix;
       ".config/borders".source = ../config/borders;
       ".config/lazygit".source = ../config/lazygit;
+      ".config/starship".source = ../config/starship;
     };
 
     home.sessionVariables = { };
@@ -126,8 +130,8 @@
       entr
       # dotenvx # .env file manager
       postgresql
-      sketchybar
-      jankyborders # add colored borders to user windows on macOS
+      # sketchybar
+      # jankyborders # add colored borders to user windows on macOS, temp moved to homebrew
       audacity
     ];
   };
@@ -136,19 +140,19 @@
   # removed in 2025.05
   # services.nix-daemon.enable = true;
 
-  services.jankyborders = {
-    enable = true;
-    style = "round";
-    width = 6.0;
-    hidpi = false;
-    active_color = "0xffe1e300";
-    inactive_color = "0xff494d64";
-  };
+  # services.jankyborders = {
+  #   enable = true;
+  #   style = "round";
+  #   width = 6.0;
+  #   hidpi = false;
+  #   active_color = "0xffe1e300";
+  #   inactive_color = "0xff494d64";
+  # };
 
-  services.sketchybar = {
-    enable = true;
-    package = pkgs.sketchybar;
-  };
+  # services.sketchybar = {
+  #   enable = true;
+  #   package = pkgs.sketchybar;
+  # };
 
   # Testing new settings:
   # keep-outputs = true
