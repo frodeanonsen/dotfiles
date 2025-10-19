@@ -122,7 +122,6 @@
       exercism
       qmk
       yazi
-      zellij
       nmap
       dfu-util
       slack
@@ -133,6 +132,10 @@
       # sketchybar
       # jankyborders # add colored borders to user windows on macOS, temp moved to homebrew
       audacity
+
+      # Language servers (for Zed)
+      nil
+      nixd
     ];
   };
 

@@ -18,6 +18,7 @@
       unstable.neovim # Hyperextensible Vim-based text editor
       unstable.kitty # terminal emulator
       unstable.ghostty-bin # Terminal emulator with multiplexer
+      unstable.zed-editor # Editor for the modern age
       gh-dash # Github dashboard CLI
       sesh # Session manager for terminal applications
       gum # Command-line tool for interactive prompts
