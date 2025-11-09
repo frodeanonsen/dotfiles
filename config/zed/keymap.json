@@ -3,7 +3,7 @@
   {
     "context": "Workspace || Terminal || Editor",
     "bindings": {
-      "ctrl-m": "workspace::ToggleZoom"
+      "ctrl-shift-m": "workspace::ToggleZoom"
     }
   },
   // Terminal
@@ -30,11 +30,16 @@
       "q": "git_panel::Close"
     }
   },
+  // {
+  //   "context": "!menu && vim_mode != insert && AgentPanel",
+  //   "bindings": {
+  //     "space a a": "workspace::ToggleRightDock"
+  //   }
+  // },
   {
-    "context": "AgentPanel",
+    "context": "Editor && VimControl && !VimWaiting && !menu && !AgentPanel",
     "bindings": {
-      "ctrl-\\": "workspace::ToggleRightDock",
-      "cmd-k": "workspace::ToggleRightDock"
+      "space a a": "agent::ToggleFocus"
     }
   },
   // File panel (netrw)
@@ -68,7 +73,8 @@
       "shift-g": "menu::SelectLast",
       "g g": "menu::SelectFirst",
       "-": "project_panel::SelectParent",
-      "ctrl-6": "pane::AlternateFile"
+      "ctrl-6": "pane::AlternateFile",
+      "shift-i": "project_panel::ToggleHideGitIgnore"
     }
   },
   // Empty pane, set of keybindings that are available when there is no active editor
@@ -93,12 +99,7 @@
       // Refactoring
       "space c r ": "editor::Rename",
       // Chat with AI
-      "space a a": "agent::ToggleFocus",
-      "ctrl-\\": "workspace::ToggleRightDock",
-      "cmd-k": "workspace::ToggleRightDock",
       "space a e": "assistant::InlineAssist",
-      "cmd-l": "assistant::InlineAssist",
-      "space a t": "workspace::ToggleRightDock",
       // Git
       "space g g": [
         "task::Spawn",
@@ -118,8 +119,6 @@
       // Open markdown preview
       "space m p": "markdown::OpenPreview",
       "space m P": "markdown::OpenPreviewToTheSide",
-      // Open recent project
-      "space f p": "projects::OpenRecent",
       // Search word under cursor in current pane
       "space s w": "buffer_search::Deploy",
       // Search word under cursor in all panes
@@ -143,14 +142,13 @@
       // Close buffer
       "space b d": "pane::CloseActiveItem",
       // Close inactive buffers
-      "space b q": "pane::CloseOtherItems",
+      "space b o": "pane::CloseOtherItems",
       // New file
       "space b n": "workspace::NewFile",
       // Search in the current buffer
       "space s b": "vim::Search",
       // Search in all the files
       "space s g": "workspace::NewSearch",
-      "space f n": "workspace::NewFile",
       // Search
       "space /": "workspace::NewSearch",
       // Git
@@ -162,9 +160,7 @@
       // Format
       "space c f": "editor::Format",
       // File explorer
-      "space e": "workspace::ToggleLeftDock",
-      // Telescope
-      "space f f": "file_finder::Toggle",
+      "space e": "project_panel::ToggleFocus",
       "space space": "file_finder::Toggle",
       // Quit zed
       "space q q": "zed::Quit",
@@ -177,6 +173,14 @@
       "space |": "pane::SplitRight",
       "space w c": "pane::CloseAllItems",
       "space w d": "pane::CloseAllItems",
+
+      // Files
+      "space f f": "file_finder::Toggle",
+      "space f n": "workspace::NewFile",
+      "space f p": "projects::OpenRecent",
+      "space f c": "zed::OpenSettingsFile",
+      "space f k": "zed::OpenKeymapFile",
+
       // Jump to hunks
       "] h": "editor::GoToHunk",
       "[ h": "editor::GoToPreviousHunk",
@@ -191,8 +195,30 @@
       "] q": "editor::MoveToStartOfNextExcerpt",
       "[ q": "editor::MoveToStartOfExcerpt",
 
-      // Other stuff
-      "ctrl-s": "workspace::Save"
+      // Build and run
+      "space r t": "task::Spawn",
+      "space r b": [
+        "task::Spawn",
+        {
+          "task_name": "build",
+          "reveal_target": "dock"
+        }
+      ],
+      "space r w": [
+        "task::Spawn",
+        {
+          "task_name": "watch",
+          "reveal_target": "dock"
+        }
+      ],
+      "space r c": [
+        "task::Spawn",
+        {
+          "task_name": "bacon",
+          "reveal_target": "dock"
+        }
+      ],
+      "space t t": "editor::SpawnNearestTask"
     }
   },
   {
@@ -233,6 +259,64 @@
     "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
     "bindings": {
       "b": "vim::AnyBrackets"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-s": "workspace::Save"
+    }
+  },
+  {
+    "context": "(VimControl || !Editor)",
+    "bindings": {
+      "ctrl-shift-k": "vim::ResizePaneUp"
+    }
+  },
+  {
+    "context": "(VimControl || !Editor)",
+    "bindings": {
+      "ctrl-shift-j": "vim::ResizePaneDown"
+    }
+  },
+  {
+    "context": "VimControl || !Editor",
+    "bindings": {
+      "ctrl-shift-h": "vim::ResizePaneLeft"
+    }
+  },
+  {
+    "context": "(VimControl || !Editor)",
+    "bindings": {
+      "ctrl-shift-l": "vim::ResizePaneRight"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-a ctrl-l": ["terminal::SendKeystroke", "ctrl-l"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "shift-l": "vim::GoToTab"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "shift-h": "vim::GoToPreviousTab"
+    }
+  },
+  {
+    "bindings": {
+      "cmd-v": "terminal::Paste"
+    }
+  },
+  {
+    "bindings": {
+      "cmd-c": "terminal::Copy"
     }
   }
 ]

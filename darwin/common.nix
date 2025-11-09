@@ -16,7 +16,7 @@
       nixfmt-rfc-style # Nix code formatter
       vim # Text editor
       unstable.neovim # Hyperextensible Vim-based text editor
-      unstable.kitty # terminal emulator
+      unstable.alacritty-graphics # terminal emulator
       unstable.ghostty-bin # Terminal emulator with multiplexer
       unstable.zed-editor # Editor for the modern age
       gh-dash # Github dashboard CLI
@@ -54,7 +54,7 @@
       xquartz # X Window System for macOS
       wezterm # GPU-accelerated terminal emulator
       devbox # Instant, easy, and predictable development environments
-      devenv # Declarative development environments
+      unstable.devenv # Declarative development environments
       oh-my-posh # Prompt theme engine for any shell
       starship # Prompt for any shell
       zoxide # Smarter cd command
@@ -67,6 +67,12 @@
       colima # Docker container runtimes with minimal setup
       # opencode # AI code tool for developers; Install manually as it updates very frequently
       # usbimager # Write disk images to USB drives
+      codex # OpenAI Codex CLI
+      keepassxc # Offline password manager
+      unstable.bitwarden-desktop # Password manager
+      unstable.bitwarden-cli # Password manager
+      openssh # OpenSSH
+      unstable.ungoogled-chromium # Chrome browser
     ];
   };
 

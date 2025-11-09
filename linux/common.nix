@@ -1,6 +1,7 @@
 {
   pkgs,
   vars,
+  unstable,
   ...
 }:
 
@@ -13,7 +14,11 @@
     systemPackages = with pkgs; [
       nixfmt-rfc-style # Nix code formatter
       vim # Text editor
-      neovim # Hyperextensible Vim-based text editor
+      unstable.neovim # Hyperextensible Vim-based text editor
+      unstable.alacritty-graphics # terminal emulator
+      unstable.ghostty-bin # Terminal emulator with multiplexer
+      unstable.zed-editor # Editor for the modern age
+      onedrive # Microsoft OneDrive
     ];
   };
 
