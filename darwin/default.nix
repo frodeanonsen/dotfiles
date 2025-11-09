@@ -34,7 +34,7 @@ in
 {
   BodBook =
     let
-      inherit (systemConfig "x86_64-darwin") system pkgs stable;
+      inherit (systemConfig "x86_64-darwin") system pkgs unstable;
     in
     darwin.lib.darwinSystem {
       inherit system;
@@ -43,7 +43,7 @@ in
           inputs
           system
           pkgs
-          stable
+          unstable
           vars
           ;
       };
@@ -54,6 +54,15 @@ in
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = {
+            inherit
+              inputs
+              system
+              pkgs
+              unstable
+              vars
+              ;
+          };
         }
       ];
     };
@@ -81,6 +90,15 @@ in
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = {
+            inherit
+              inputs
+              system
+              pkgs
+              unstable
+              vars
+              ;
+          };
         }
       ];
     };

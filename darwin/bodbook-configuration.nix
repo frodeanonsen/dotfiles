@@ -30,7 +30,7 @@
     shell = pkgs.zsh;
   };
 
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   home-manager.backupFileExtension = "backup";
   home-manager.users.${vars.user} = {
@@ -74,7 +74,8 @@
   };
 
   # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  # Removed in 2025.05
+  # services.nix-daemon.enable = true;
 
   # Testing new settings:
   # keep-outputs = true
@@ -96,8 +97,9 @@
       keep-failed = false
       keep-going = true
     '';
-    configureBuildUsers = true;
-    useDaemon = true;
+    # Removed in 2025.05
+    # configureBuildUsers = true;
+    # useDaemon = true;
     settings = {
       experimental-features = "nix-command flakes";
       trusted-users = [
@@ -108,6 +110,7 @@
   };
 
   system = {
+    primaryUser = "frode";
     defaults = {
       dock.autohide = true;
       dock.mru-spaces = false;
@@ -119,6 +122,6 @@
       screensaver.askForPasswordDelay = 10;
     };
 
-    stateVersion = 5;
+    stateVersion = 4;
   };
 }

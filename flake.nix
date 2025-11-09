@@ -24,6 +24,12 @@
       url = "github:LnL7/nix-darwin/nix-darwin-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Firefox addons
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -34,6 +40,7 @@
       nixos-hardware,
       home-manager,
       darwin,
+      firefox-addons,
       ...
     }:
     let
@@ -51,6 +58,7 @@
           nixos-hardware
           home-manager
           darwin
+          firefox-addons
           ;
       };
     in

@@ -6,6 +6,12 @@
 }:
 
 {
+  home-manager.users.${vars.user} = {
+    imports = [
+      ../common/common.nix
+    ];
+  };
+
   environment = {
     variables = {
       EDITOR = "${vars.editor}";
@@ -72,7 +78,6 @@
       unstable.bitwarden-desktop # Password manager
       unstable.bitwarden-cli # Password manager
       openssh # OpenSSH
-      unstable.ungoogled-chromium # Chrome browser
     ];
   };
 
