@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "colorize_brackets": true,
   "base_keymap": "VSCode",
   "git": {
     "inline_blame": {
@@ -14,14 +15,20 @@
     }
   },
   "project_panel": {
+    "hide_hidden": false,
     "hide_gitignore": false
   },
   "load_direnv": "direct",
   "ssh_connections": [
     {
-      "host": "zygizo-one",
+      "host": "zygizo-two",
       "args": [],
       "projects": [
+        {
+          "paths": [
+            "/etc/nixos"
+          ]
+        },
         {
           "paths": [
             "/home/frode/1"
@@ -33,16 +40,60 @@
           ]
         }
       ]
+    },
+    {
+      "host": "bodbook",
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "frodespc1",
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "homebook",
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "hyper",
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/home/frode/zygizo"
+          ]
+        }
+      ]
     }
   ],
   "agent": {
-    "play_sound_when_agent_done": true,
-    "default_profile": "write",
     "always_allow_tool_actions": true,
     "default_model": {
       "provider": "copilot_chat",
       "model": "claude-sonnet-4.5"
-    }
+    },
+    "default_profile": "write",
+    "model_parameters": []
   },
   "ui_font_family": "JetBrainsMono Nerd Font",
   "buffer_font_family": "JetBrainsMono Nerd Font",
@@ -54,9 +105,19 @@
   "icon_theme": "Catppuccin Mocha",
   "vim_mode": true,
   "inlay_hints": {
-    "show_background": true
+    "show_type_hints": true,
+    "enabled": false,
+    "show_background": true,
+    // A set of modifiers which, when pressed, will toggle the visibility of inlay hints.
+    "toggle_on_modifiers_press": {
+      "control": true,
+      "shift": false,
+      "alt": false,
+      "platform": false,
+      "function": false
+    }
   },
-  "relative_line_numbers": true,
+  "relative_line_numbers": "enabled",
   "cursor_blink": false,
   "ui_font_size": 16,
   "buffer_font_size": 15,
@@ -72,7 +133,7 @@
   "theme": {
     "mode": "system",
     "light": "Catppuccin Macchiato",
-    "dark": "Catppuccin Mocha"
+    "dark": "Gruvbox Dark Hard"
   },
   "languages": {
     "Rust": {

@@ -7,27 +7,76 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "base_keymap": "VSCode",
+  "git": {
+    "inline_blame": {
+      "enabled": false
+    }
+  },
   "project_panel": {
+    "hide_hidden": false,
     "hide_gitignore": true
   },
   "load_direnv": "direct",
   "ssh_connections": [
     {
-      "host": "zygizo-one",
+      "host": "zygizo-two",
+      "args": [],
       "projects": [
         {
-          "paths": ["/home/frode/git/zygizo/stm/radar-sensor-firmware/./"]
+          "paths": [
+            "/etc/nixos"
+          ]
+        },
+        {
+          "paths": [
+            "/home/frode/1"
+          ]
+        },
+        {
+          "paths": [
+            "/home/frode/git/zygizo/stm/radar-sensor-firmware/./"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "bodbook",
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "frodespc1",
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "homebook",
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/etc/nixos"
+          ]
         }
       ]
     }
   ],
   "agent": {
-    "default_profile": "write",
-    "always_allow_tool_actions": true,
-    "default_model": {
-      "provider": "copilot_chat",
-      "model": "claude-sonnet-4.5"
-    }
+    "default_profile": "ask",
+    "model_parameters": []
   },
   "ui_font_family": "JetBrainsMono Nerd Font",
   "buffer_font_family": "JetBrainsMono Nerd Font",
@@ -60,24 +109,39 @@
     "dark": "Catppuccin Mocha"
   },
   "languages": {
+    "Rust": {
+      "preferred_line_length": 100
+    },
     "Nix": {
       "language_servers": ["nixd", "!nil"]
     },
     "Python": {
       "language_servers": ["ruff", "basedpyright", "!pyright"],
       "formatter": [
-        {
-          "code_actions": {
-            "source.organizeImports.ruff": true,
-            "source.fixAll.ruff": true
-          }
-        },
+        { "code_action": "source.organizeImports.ruff" },
+        { "code_action": "source.fixAll.ruff" },
         {
           "language_server": {
             "name": "ruff"
           }
         }
       ]
+    }
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "cargo": {
+          "allFeatures": true // Enable all features
+        }
+      },
+      "procMacro": {
+        "ignored": [
+          // optional:
+          // "component",
+          "server"
+        ]
+      }
     }
   },
   "features": {
