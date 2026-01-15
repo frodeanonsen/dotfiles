@@ -60,7 +60,7 @@
       xquartz # X Window System for macOS
       wezterm # GPU-accelerated terminal emulator
       devbox # Instant, easy, and predictable development environments
-      unstable.devenv # Declarative development environments
+      # devenv # Declarative development environments - Use devbox
       oh-my-posh # Prompt theme engine for any shell
       starship # Prompt for any shell
       zoxide # Smarter cd command

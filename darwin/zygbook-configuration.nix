@@ -12,6 +12,7 @@
 {
   pkgs,
   vars,
+  unstable,
   ...
 }:
 
@@ -41,11 +42,9 @@
       "monitorcontrol"
       "vlc"
       "aerospace"
-      # "orcaslicer" - tmp use beta version
       "openscad@snapshot"
       "gimp"
-      "raspberry-pi-imager"
-      "karabiner-elements"
+      "ungoogled-chromium"
     ];
 
     brews = [
@@ -67,6 +66,11 @@
       podman # Podman container runtime
       podman-tui # Podman Terminal UI
       ffmpeg-full # Full version of FFmpeg with all codecs
+      unstable.talosctl # Talos CLI tool
+      kubectl
+      kubectx
+      k9s
+      stern
     ];
   };
 
@@ -170,7 +174,7 @@
       options = "--delete-older-than 7d";
     };
     extraOptions = ''
-      auto-optimise-store = true
+      auto-optimise-store = false
       experimental-features = nix-command flakes
       keep-outputs = true
       keep-derivations = true
@@ -184,6 +188,10 @@
       experimental-features = "nix-command flakes";
       trusted-users = [
         "@admin"
+      ];
+      substituters = [
+        "https://cache.nixos.org"
+        # add others like Cachix here
       ];
     };
   };

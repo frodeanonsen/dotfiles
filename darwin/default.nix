@@ -19,15 +19,33 @@
 }:
 
 let
+  # Overlay to disable tests for cachix
+  cachixNoTestsOverlay = (
+    final: prev: {
+      cachix =
+        let
+          # In most nixpkgs, pkgs.cachix is the Haskell package derivation.
+          # But if it's not there, fall back to haskellPackages.cachix.
+          base = if prev ? cachix then prev.cachix else prev.haskellPackages.cachix;
+        in
+        base.overrideAttrs (old: {
+          # Disable the test phases
+          doCheck = false;
+          doInstallCheck = false;
+        });
+    }
+  );
   systemConfig = system: {
     system = system;
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
+      overlays = [ cachixNoTestsOverlay ];
     };
     unstable = import nixpkgs-unstable {
       inherit system;
       config.allowUnfree = true;
+      overlays = [ cachixNoTestsOverlay ];
     };
   };
 in

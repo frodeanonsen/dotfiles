@@ -5,6 +5,18 @@ if [ "$1" = "--flake" ]; then
 	nix flake update
 fi
 
+if [ "$1" = "--repair" ]; then
+	echo "Verifying and repairing store..."
+	sudo nix-store --verify --check-contents --repair
+	exit 0
+fi
+
+if [ "$1" = "--optimize" ]; then
+	echo "Optimizing store..."
+	sudo nix-store --optimise
+	exit 0
+fi
+
 retries=0
 max_retries=10
 while ! sudo darwin-rebuild switch --flake .#MacBookApple; do
