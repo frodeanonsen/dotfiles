@@ -3,15 +3,15 @@
   {
     "context": "Workspace || Terminal || Editor",
     "bindings": {
-      "ctrl-shift-m": "workspace::ToggleZoom"
-    }
+      "ctrl-shift-m": "workspace::ToggleZoom",
+    },
   },
   // Terminal
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-/": "workspace::ToggleBottomDock"
-    }
+      "ctrl-/": "workspace::ToggleBottomDock",
+    },
   },
   // Window's navigation
   {
@@ -21,14 +21,14 @@
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown"
-    }
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
   },
   {
     "context": "GitPanel",
     "bindings": {
-      "q": "git_panel::Close"
-    }
+      "q": "git_panel::Close",
+    },
   },
   // {
   //   "context": "!menu && vim_mode != insert && AgentPanel",
@@ -39,8 +39,8 @@
   {
     "context": "Editor && VimControl && !VimWaiting && !menu && !AgentPanel",
     "bindings": {
-      "space a a": "agent::ToggleFocus"
-    }
+      "space a a": "agent::ToggleFocus",
+    },
   },
   // File panel (netrw)
   {
@@ -74,8 +74,8 @@
       "g g": "menu::SelectFirst",
       "-": "project_panel::SelectParent",
       "ctrl-6": "pane::AlternateFile",
-      "shift-i": "project_panel::ToggleHideGitIgnore"
-    }
+      "shift-i": "project_panel::ToggleHideGitIgnore",
+    },
   },
   // Empty pane, set of keybindings that are available when there is no active editor
   {
@@ -90,8 +90,8 @@
       // Search in all the files
       "space s g": "workspace::NewSearch",
       // Quit zed
-      "space q q": "zed::Quit"
-    }
+      "space q q": "zed::Quit",
+    },
   },
   {
     "context": "Editor && VimControl && !VimWaiting && !menu",
@@ -105,8 +105,8 @@
         "task::Spawn",
         {
           "task_name": "start lazygit",
-          "reveal_target": "center"
-        }
+          "reveal_target": "center",
+        },
       ],
       "space g h d": "editor::ExpandAllDiffHunks",
       "space g h D": "git::Diff",
@@ -203,33 +203,33 @@
         "task::Spawn",
         {
           "task_name": "build",
-          "reveal_target": "dock"
-        }
+          "reveal_target": "dock",
+        },
       ],
       "space r w": [
         "task::Spawn",
         {
           "task_name": "watch",
-          "reveal_target": "dock"
-        }
+          "reveal_target": "dock",
+        },
       ],
       "space r c": [
         "task::Spawn",
         {
           "task_name": "bacon",
-          "reveal_target": "dock"
-        }
+          "reveal_target": "dock",
+        },
       ],
-      "space t t": "editor::SpawnNearestTask"
-    }
+      "space t t": "editor::SpawnNearestTask",
+    },
   },
   {
     "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
     "bindings": {
       // Line's Motions
       "shift-j": "editor::MoveLineDown",
-      "shift-k": "editor::MoveLineUp"
-    }
+      "shift-k": "editor::MoveLineUp",
+    },
   },
   // Center the cursor on the screen when scrolling and find all references
   {
@@ -240,90 +240,96 @@
       "n": ["workspace::SendKeystrokes", "n z z z v"],
       "shift-n": ["workspace::SendKeystrokes", "shift-n z z z v"],
       "shift-g": ["workspace::SendKeystrokes", "shift-g z z"],
-      "g r": "editor::FindAllReferences"
-    }
+      "g r": "editor::FindAllReferences",
+    },
   },
   {
     "context": "vim_operator == d",
     "bindings": {
       "o": "editor::ExpandAllDiffHunks",
-      "r": "git::Restore"
-    }
+      "r": "git::Restore",
+    },
   },
   {
     "context": "vim_mode == normal || vim_mode == visual",
     "bindings": {
       "s": "vim::PushSneak",
-      "S": "vim::PushSneakBackward"
-    }
+      "S": "vim::PushSneakBackward",
+    },
   },
   {
     "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
     "bindings": {
-      "b": "vim::AnyBrackets"
-    }
+      "b": "vim::AnyBrackets",
+    },
   },
   {
     "context": "Editor",
     "bindings": {
-      "ctrl-s": "workspace::Save"
-    }
+      "ctrl-s": "workspace::Save",
+    },
   },
   {
     "context": "(VimControl || !Editor)",
     "bindings": {
-      "ctrl-shift-k": "vim::ResizePaneUp"
-    }
+      "ctrl-shift-k": "vim::ResizePaneUp",
+    },
   },
   {
     "context": "(VimControl || !Editor)",
     "bindings": {
-      "ctrl-shift-j": "vim::ResizePaneDown"
-    }
+      "ctrl-shift-j": "vim::ResizePaneDown",
+    },
   },
   {
     "context": "VimControl || !Editor",
     "bindings": {
-      "ctrl-shift-h": "vim::ResizePaneLeft"
-    }
+      "ctrl-shift-h": "vim::ResizePaneLeft",
+    },
   },
   {
     "context": "(VimControl || !Editor)",
     "bindings": {
-      "ctrl-shift-l": "vim::ResizePaneRight"
-    }
+      "ctrl-shift-l": "vim::ResizePaneRight",
+    },
   },
   {
     "context": "Terminal",
     "bindings": {
-      "ctrl-a ctrl-l": ["terminal::SendKeystroke", "ctrl-l"]
-    }
+      "ctrl-a ctrl-l": ["terminal::SendKeystroke", "ctrl-l"],
+    },
   },
   {
     "context": "Editor && vim_mode == normal",
     "bindings": {
-      "shift-l": "vim::GoToTab"
-    }
+      "shift-l": "vim::GoToTab",
+    },
   },
   {
     "context": "Editor && vim_mode == normal",
     "bindings": {
-      "shift-h": "vim::GoToPreviousTab"
-    }
+      "shift-h": "vim::GoToPreviousTab",
+    },
   },
   {
     "bindings": {
-      "cmd-v": "terminal::Paste"
-    }
+      "cmd-v": "terminal::Paste",
+    },
   },
   {
     "bindings": {
-      "cmd-c": "terminal::Copy"
-    }
+      "cmd-c": "terminal::Copy",
+    },
   },
   {
     "bindings": {
-      "cmd-q": null
-    }
-  }
+      "cmd-q": null,
+    },
+  },
+  {
+    "context": "(VimControl && !menu)",
+    "bindings": {
+      "space": null, // Disable the default action vim::WrappingRight
+    },
+  },
 ]
