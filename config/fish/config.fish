@@ -13,15 +13,6 @@ if status is-interactive
         curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
     end
 
-    # Install nvm if not installed
-    if test -e ~/.config/fish/functions/nvm.fish
-        nvm use
-    else
-        echo "Installing nvm. Set version in ~/.nvmrc"
-        fisher install jorgebucaran/nvm.fish
-        nvm install
-    end
-
     # Install bass
     if not test -e ~/.config/fish/functions/bass.fish
         echo "Installing bass"

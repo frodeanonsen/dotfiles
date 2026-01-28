@@ -6,7 +6,6 @@
 #/Users/frode/.sdkman/candidates/gradle/current/bin
 #/Users/frode/.sdkman/candidates/asciidoctorj/current/bin
 #/Users/frode/.local/bin
-#/Users/frode/.nvm/versions/node/v20.3.1/bin
 #/Users/frode/.jenv/shims
 #/Users/frode/.jenv/bin
 #/Users/frode/bin
