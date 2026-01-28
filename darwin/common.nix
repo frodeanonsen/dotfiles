@@ -78,6 +78,11 @@
       unstable.bitwarden-desktop # Password manager
       unstable.bitwarden-cli # Password manager
       openssh # OpenSSH
+      unstable.obsidian # Knowledge base that works on local Markdown files
+      # netscanner # Network scanner
+      unstable.gitlogue # Cinematic Git commit replay tool for the terminal
+      unstable.mise # The front-end to your dev env
+      unstable.timr-tui # Pomodoro timer in terminal
     ];
   };
 
@@ -97,10 +102,6 @@
       upgrade = true;
       cleanup = "zap";
     };
-
-    casks = [
-      "obsidian" # Note-taking and knowledge management app
-    ];
   };
 
 }
