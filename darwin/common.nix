@@ -24,7 +24,7 @@
       unstable.neovim # Hyperextensible Vim-based text editor
       unstable.alacritty-graphics # terminal emulator
       unstable.ghostty-bin # Terminal emulator with multiplexer
-      unstable.zed-editor # Editor for the modern age
+      # unstable.zed-editor # Editor for the modern age
       gh-dash # Github dashboard CLI
       sesh # Session manager for terminal applications
       gum # Command-line tool for interactive prompts
@@ -75,14 +75,17 @@
       # usbimager # Write disk images to USB drives
       codex # OpenAI Codex CLI
       keepassxc # Offline password manager
-      unstable.bitwarden-desktop # Password manager
-      unstable.bitwarden-cli # Password manager
+      # unstable.bitwarden-desktop # Password manager
+      # unstable.bitwarden-cli # Password manager
       openssh # OpenSSH
       unstable.obsidian # Knowledge base that works on local Markdown files
       # netscanner # Network scanner
       unstable.gitlogue # Cinematic Git commit replay tool for the terminal
       unstable.mise # The front-end to your dev env
       unstable.timr-tui # Pomodoro timer in terminal
+      nodejs_22
+      delta # diff pager for git and diff output
+      unstable.diffnav # diff navigator for git and diff output
     ];
   };
 

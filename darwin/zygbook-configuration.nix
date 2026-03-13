@@ -101,8 +101,8 @@
       ".config/ohmyposh".source = ../config/ohmyposh;
       ".config/nvim".source = ../config/lazyvim;
       ".config/fish".source = ../config/fish;
-      ".config/aerospace".source = ../config/aerospace;
-      ".config/sketchybar".source = ../config/sketchybar;
+      # ".config/aerospace".source = ../config/aerospace;
+      # ".config/sketchybar".source = ../config/sketchybar;
       ".config/wezterm".source = ../config/wezterm;
       ".config/kitty".source = ../config/kitty;
       ".config/tmux".source = ../config/tmux;
@@ -192,6 +192,14 @@
       substituters = [
         "https://cache.nixos.org"
         # add others like Cachix here
+        "https://nix-community.cachix.org"
+      ];
+
+      trusted-public-keys = [
+        # cache.nixos.org is usually already present by default,
+        # but keeping it explicit is fine:
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
     };
   };
