@@ -1,7 +1,21 @@
-[window]
-opacity = 0.9
+general.import = [
+  # uncomment the flavour you want below:
+  # "~/.config/alacritty/catppuccin-latte.toml",
+  # "~/.config/alacritty/catppuccin-frappe.toml",
+  "~/.config/alacritty/catppuccin-macchiato.toml",
+  # "~/.config/alacritty/catppuccin-mocha.toml"
+]
+
+# [window]
+# opacity = 0.9
+
+# [colors.primary]
+# background = "#ff00ff"
 
 [font]
-normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+normal = { family = "JetBrainsMono Nerd Font Propo", style = "Regular" }
 # bold = { family = "Monaspace Krypton", style = "Bold" }
 size = 16.0
+
+[terminal]
+osc52 = "CopyPaste"
