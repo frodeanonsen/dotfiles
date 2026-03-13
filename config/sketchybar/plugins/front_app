@@ -6,7 +6,16 @@
 # https://felixkratz.github.io/SketchyBar/config/events#events-and-scripting
 SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
 
-if [ "$SENDER" = "front_app_switched" ] && [ ! -z "$INFO" ]; then
-  "$SKETCHYBAR_BIN" --set "$NAME" \
-                   label="$INFO"
+current_front_app() {
+  /usr/bin/osascript -e 'tell application "System Events" to get name of first application process whose frontmost is true' 2>/dev/null
+}
+
+label="${INFO:-}"
+
+if [ -z "$label" ]; then
+  label="$(current_front_app)"
+fi
+
+if [ -n "$label" ] && [ -n "$NAME" ]; then
+  "$SKETCHYBAR_BIN" --set "$NAME" label="$label"
 fi

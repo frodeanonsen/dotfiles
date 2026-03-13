@@ -30,10 +30,10 @@ fi
 is_active="$(printf '%s\n' "$workspace_json" | "$JQ_BIN" -r '.is_active')"
 window_count="$(printf '%s\n' "$workspace_json" | "$JQ_BIN" -r '.window_count')"
 
+    # background.drawing=on \
 if [ "$is_active" = "true" ]; then
   "$SKETCHYBAR_BIN" --set "$NAME" \
     drawing=on \
-    background.drawing=on \
     label.highlight=on \
     label.font="$LABEL_HIGHLIGHT_FONT"
 elif [ "${window_count:-0}" -gt 0 ]; then

@@ -42,6 +42,7 @@ default=(
 
 # Left
 bash "$ITEM_DIR/rift"
+bash "$ITEM_DIR/rift_rebuild"
 bash "$ITEM_DIR/spacer"
 bash "$ITEM_DIR/front_app"
 

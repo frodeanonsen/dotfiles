@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+source "$CONFIG_DIR/environment"
+
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+
+if ! "$SKETCHYBAR_BIN" --query rift_workspace_rebuild >/dev/null 2>&1; then
+  "$SKETCHYBAR_BIN" --add item rift_workspace_rebuild left
+fi
+
+"$SKETCHYBAR_BIN" --subscribe rift_workspace_rebuild display_change system_woke \
+  --set rift_workspace_rebuild \
+  drawing=off \
+  script="bash $ITEM_DIR/rift && bash $ITEM_DIR/spacer && bash $ITEM_DIR/front_app && $SKETCHYBAR_BIN --move front_app_spacer_left after bracket_spacer && $SKETCHYBAR_BIN --move front_app after front_app_spacer_left && $SKETCHYBAR_BIN --move front_app_spacer_right after front_app && $SKETCHYBAR_BIN --move front_app_bracket after front_app_spacer_right && NAME=front_app $PLUGIN_DIR/front_app && $SKETCHYBAR_BIN --trigger rift_workspace_change"

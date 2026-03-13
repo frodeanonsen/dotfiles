@@ -7,6 +7,10 @@ SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
 FRONT_APP_LABEL_COLOR="$red"
 FRONT_APP_BACKGROUND_BORDER_COLOR="$red"
 
+for item in front_app_spacer_left front_app front_app_spacer_right front_app_bracket; do
+	"$SKETCHYBAR_BIN" --remove "$item" >/dev/null 2>&1 || true
+done
+
 "$SKETCHYBAR_BIN" --add item front_app_spacer_left left \
 	--set front_app_spacer_left \
 	background.drawing=off
