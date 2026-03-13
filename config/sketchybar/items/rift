@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+
+source "$CONFIG_DIR/environment"
+source "$THEME_DIR/tokyonight"
+
+RIFT_CLI="${RIFT_CLI:-/Users/frode/.cargo/bin/rift-cli}"
+JQ_BIN="${JQ_BIN:-/run/current-system/sw/bin/jq}"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+
+safe_uuid() {
+  printf '%s' "$1" | tr '-' '_'
+}
+
+ensure_item() {
+  local name="$1"
+  local position="$2"
+
+  if ! "$SKETCHYBAR_BIN" --query "$name" >/dev/null 2>&1; then
+    "$SKETCHYBAR_BIN" --add item "$name" "$position"
+  fi
+}
+
+ensure_bracket() {
+  local name="$1"
+  shift
+
+  if ! "$SKETCHYBAR_BIN" --query "$name" >/dev/null 2>&1; then
+    "$SKETCHYBAR_BIN" --add bracket "$name" "$@"
+  fi
+}
+
+"$SKETCHYBAR_BIN" --add event rift_workspace_change
+"$SKETCHYBAR_BIN" --add event rift_windows_change
+
+display_count="$("$RIFT_CLI" query displays | "$JQ_BIN" 'length')"
+
+if ! "$SKETCHYBAR_BIN" --query workspaces_spacer_left >/dev/null 2>&1; then
+  "$SKETCHYBAR_BIN" --add item workspaces_spacer_left left \
+    --set workspaces_spacer_left \
+    width=4 \
+    background.drawing=off \
+    label.drawing=off
+fi
+
+if ! "$SKETCHYBAR_BIN" --query workspaces_spacer_right >/dev/null 2>&1; then
+  "$SKETCHYBAR_BIN" --add item workspaces_spacer_right left \
+    --set workspaces_spacer_right \
+    width=4 \
+    background.drawing=off \
+    label.drawing=off
+fi
+
+while IFS=$'\t' read -r arrangement_id display_uuid display_name space_id; do
+  [ -n "$display_uuid" ] || continue
+
+  safe_display_uuid="$(safe_uuid "$display_uuid")"
+  display_item="workspaces.display.$safe_display_uuid"
+  bracket_item="workspaces.$safe_display_uuid"
+  bracket_members=()
+
+  if [ "$display_count" -gt 1 ]; then
+    ensure_item "$display_item" left
+    "$SKETCHYBAR_BIN" --set "$display_item" \
+      display="$arrangement_id" \
+      background.drawing=off \
+      click_script="$RIFT_CLI execute display focus --uuid $display_uuid" \
+      label="$display_name" \
+      label.font="$LABEL_HIGHLIGHT_FONT" \
+      label.padding_left=10 \
+      label.padding_right=8
+    bracket_members+=("$display_item")
+  fi
+
+  while IFS=$'\t' read -r workspace_index workspace_name; do
+    [ -n "$workspace_index" ] || continue
+
+    item_name="workspaces.$safe_display_uuid.$workspace_index"
+    ensure_item "$item_name" left
+    "$SKETCHYBAR_BIN" --subscribe "$item_name" rift_workspace_change rift_windows_change display_change space_change system_woke
+    "$SKETCHYBAR_BIN" --set "$item_name" \
+      display="$arrangement_id" \
+      background.drawing=off \
+      click_script="sh -c '$RIFT_CLI execute display focus --uuid \"\$1\" >/dev/null 2>&1; $RIFT_CLI execute workspace switch \"\$2\"' sh \"$display_uuid\" \"$workspace_index\"" \
+      label="$((workspace_index + 1))" \
+      label.width=25 \
+      script="$PLUGIN_DIR/rift $display_uuid $workspace_index"
+    bracket_members+=("$item_name")
+  done < <("$RIFT_CLI" query workspaces --space-id "$space_id" | "$JQ_BIN" -r '.[] | [.index, .name] | @tsv')
+
+  ensure_bracket "$bracket_item" "${bracket_members[@]}"
+  "$SKETCHYBAR_BIN" --set "$bracket_item" \
+    display="$arrangement_id" \
+    background.padding_left=50 \
+    background.corner_radius="$BRACKET_BACKGROUND_CORNER_RADIUS" \
+    background.border_width="$BRACKET_BACKGROUND_BORDER_WIDTH"
+done < <(
+  "$SKETCHYBAR_BIN" --query displays | "$JQ_BIN" -r '
+    map({arrangement_id: ."arrangement-id", uuid: .UUID}) as $barDisplays
+    | $barDisplays[] as $bar
+    | $bar.arrangement_id as $arrangementId
+    | $bar.uuid as $uuid
+    | [$arrangementId, $uuid]
+    | @tsv
+  ' | while IFS=$'\t' read -r arrangement_id display_uuid; do
+    "$RIFT_CLI" query displays |
+      "$JQ_BIN" -r --arg uuid "$display_uuid" --arg arrangement_id "$arrangement_id" '
+        .[]
+        | select(.uuid == $uuid)
+        | [$arrangement_id, .uuid, .name, (.space | tostring)]
+        | @tsv
+      '
+  done
+)

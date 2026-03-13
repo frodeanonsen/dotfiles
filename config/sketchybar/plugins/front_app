@@ -4,7 +4,9 @@
 # variable. E.g. the front_app_switched event sends the name of the newly
 # focused application in the $INFO variable:
 # https://felixkratz.github.io/SketchyBar/config/events#events-and-scripting
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+
 if [ "$SENDER" = "front_app_switched" ] && [ ! -z "$INFO" ]; then
-  sketchybar --set "$NAME" \
+  "$SKETCHYBAR_BIN" --set "$NAME" \
                    label="$INFO"
 fi

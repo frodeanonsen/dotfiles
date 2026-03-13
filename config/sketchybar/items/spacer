@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
 
-sketchybar --add item bracket_spacer left \
+"$SKETCHYBAR_BIN" --add item bracket_spacer left \
 	--set bracket_spacer \
 	width=20 \
 	background.drawing=off

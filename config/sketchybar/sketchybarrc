@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 CONFIG_DIR="$HOME/.config/sketchybar"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+export CONFIG_DIR SKETCHYBAR_BIN
 source "$CONFIG_DIR/environment"
 source "$THEME_DIR/tokyonight"
 
@@ -17,7 +19,7 @@ bar=(
 	padding_right="$BAR_PADDING"
 	y_offset="$BAR_Y_OFFSET"
 )
-sketchybar --bar "${bar[@]}"
+"$SKETCHYBAR_BIN" --bar "${bar[@]}"
 
 # Configure default values for later defined items.
 default=(
@@ -36,21 +38,21 @@ default=(
 	label.padding_right="$LABEL_PADDING"
 	y_offset="$Y_OFFSET"
 )
-sketchybar --default "${default[@]}"
+"$SKETCHYBAR_BIN" --default "${default[@]}"
 
 # Left
-source "$ITEM_DIR/aerospace"
-source "$ITEM_DIR/spacer"
-source "$ITEM_DIR/front_app"
+bash "$ITEM_DIR/rift"
+bash "$ITEM_DIR/spacer"
+bash "$ITEM_DIR/front_app"
 
 # Right
-source "$ITEM_DIR/clock"
+bash "$ITEM_DIR/clock"
 
 # Automatically apply configuration changes
-sketchybar --hotload on
+"$SKETCHYBAR_BIN" --hotload on
 
 # Force all scripts to run the first time (never do this in a script)
-sketchybar --update
+"$SKETCHYBAR_BIN" --update
 
-# Initialize focused workspace
-sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused)"
+# Initialize Rift workspace state
+"$SKETCHYBAR_BIN" --trigger rift_workspace_change

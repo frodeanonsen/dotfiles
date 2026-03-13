@@ -4,15 +4,16 @@ THEME_DIR="$CONFIG_DIR/themes"
 ITEM_DIR="$CONFIG_DIR/items"
 source "$CONFIG_DIR/environment"
 source "$THEME_DIR/tokyonight"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
 
 CLOCK_LABEL_COLOR="$magenta"
 CLOCK_BACKGROUND_BORDER_COLOR="$magenta"
 
-sketchybar --add item clock_spacer_right right \
+"$SKETCHYBAR_BIN" --add item clock_spacer_right right \
 	--set clock_spacer_right \
 	background.drawing=off
 
-sketchybar --add item clock right \
+"$SKETCHYBAR_BIN" --add item clock right \
 	--set clock \
 	background.drawing=off \
 	label.color="$CLOCK_LABEL_COLOR" \
@@ -21,11 +22,11 @@ sketchybar --add item clock right \
 	update_freq=10 \
 	script="$PLUGIN_DIR/clock"
 
-sketchybar --add item clock_spacer_left right \
+"$SKETCHYBAR_BIN" --add item clock_spacer_left right \
 	--set clock_spacer_left \
 	background.drawing=off
 
-sketchybar --add bracket clock_bracket clock_spacer_left clock clock_spacer_right \
+"$SKETCHYBAR_BIN" --add bracket clock_bracket clock_spacer_left clock clock_spacer_right \
 	--set clock_bracket \
 	background.border_color="$CLOCK_BACKGROUND_BORDER_COLOR" \
 	background.corner_radius="$BRACKET_BACKGROUND_CORNER_RADIUS" \

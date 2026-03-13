@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+source "$CONFIG_DIR/environment"
+source "$THEME_DIR/tokyonight"
+
+RIFT_CLI="${RIFT_CLI:-/Users/frode/.cargo/bin/rift-cli}"
+JQ_BIN="${JQ_BIN:-/run/current-system/sw/bin/jq}"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+
+display_uuid="$1"
+workspace_index="$2"
+
+[ -n "$display_uuid" ] || exit 0
+[ -n "$workspace_index" ] || exit 0
+
+space_id="$("$RIFT_CLI" query displays | "$JQ_BIN" -r --arg uuid "$display_uuid" '.[] | select(.uuid == $uuid) | .space')"
+
+if [ -z "$space_id" ] || [ "$space_id" = "null" ]; then
+  "$SKETCHYBAR_BIN" --set "$NAME" drawing=off
+  exit 0
+fi
+
+workspace_json="$("$RIFT_CLI" query workspaces --space-id "$space_id" | "$JQ_BIN" -r --argjson index "$workspace_index" '.[] | select(.index == $index)')"
+
+if [ -z "$workspace_json" ]; then
+  "$SKETCHYBAR_BIN" --set "$NAME" drawing=off
+  exit 0
+fi
+
+is_active="$(printf '%s\n' "$workspace_json" | "$JQ_BIN" -r '.is_active')"
+window_count="$(printf '%s\n' "$workspace_json" | "$JQ_BIN" -r '.window_count')"
+
+if [ "$is_active" = "true" ]; then
+  "$SKETCHYBAR_BIN" --set "$NAME" \
+    drawing=on \
+    background.drawing=on \
+    label.highlight=on \
+    label.font="$LABEL_HIGHLIGHT_FONT"
+elif [ "${window_count:-0}" -gt 0 ]; then
+  "$SKETCHYBAR_BIN" --set "$NAME" \
+    drawing=on \
+    background.drawing=off \
+    label.highlight=off \
+    label.font="$LABEL_FONT" \
+    label.color="$white"
+else
+  "$SKETCHYBAR_BIN" --set "$NAME" \
+    drawing=on \
+    background.drawing=off \
+    label.highlight=off \
+    label.font="$LABEL_FONT" \
+    label.color="$LABEL_COLOR"
+fi

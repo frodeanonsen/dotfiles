@@ -2,15 +2,16 @@
 
 source "$CONFIG_DIR/environment"
 source "$THEME_DIR/tokyonight"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
 
 FRONT_APP_LABEL_COLOR="$red"
 FRONT_APP_BACKGROUND_BORDER_COLOR="$red"
 
-sketchybar --add item front_app_spacer_left left \
+"$SKETCHYBAR_BIN" --add item front_app_spacer_left left \
 	--set front_app_spacer_left \
 	background.drawing=off
 
-sketchybar --add item front_app left \
+"$SKETCHYBAR_BIN" --add item front_app left \
 	--subscribe front_app front_app_switched \
 	--set front_app \
 	background.drawing=off \
@@ -19,11 +20,11 @@ sketchybar --add item front_app left \
 	label.padding_right=0 \
 	script="$PLUGIN_DIR/front_app"
 
-sketchybar --add item front_app_spacer_right left \
+"$SKETCHYBAR_BIN" --add item front_app_spacer_right left \
 	--set front_app_spacer_right \
 	background.drawing=off
 
-sketchybar --add bracket front_app_bracket front_app_spacer_left front_app front_app_spacer_right \
+"$SKETCHYBAR_BIN" --add bracket front_app_bracket front_app_spacer_left front_app front_app_spacer_right \
 	--set front_app_bracket \
 	background.border_color="$FRONT_APP_BACKGROUND_BORDER_COLOR" \
 	background.corner_radius="$BRACKET_BACKGROUND_CORNER_RADIUS" \
