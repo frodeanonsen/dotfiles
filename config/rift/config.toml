@@ -58,7 +58,7 @@ auto_focus_blacklist = []
 # ]
 run_on_start = [
   "/Users/frode/.cargo/bin/rift-cli subscribe cli --event workspace_changed --command sh --args -c --args '/opt/homebrew/bin/sketchybar --trigger rift_workspace_change RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WORKSPACE_NAME=\"$RIFT_WORKSPACE_NAME\" RIFT_SPACE_ID=\"$RIFT_SPACE_ID\" RIFT_DISPLAY_UUID=\"$RIFT_DISPLAY_UUID\"'",
-  "/Users/frode/.cargo/bin/rift-cli subscribe cli --event windows_changed --command sh --args -c --args '/opt/homebrew/bin/sketchybar --trigger rift_windows_change RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WORKSPACE_NAME=\"$RIFT_WORKSPACE_NAME\" RIFT_WINDOW_COUNT=\"$RIFT_WINDOW_COUNT\" RIFT_SPACE_ID=\"$RIFT_SPACE_ID\" RIFT_DISPLAY_UUID=\"$RIFT_DISPLAY_UUID\"'"
+  "/Users/frode/.cargo/bin/rift-cli subscribe cli --event windows_changed --command sh --args -c --args '/opt/homebrew/bin/sketchybar --trigger rift_windows_change RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WORKSPACE_NAME=\"$RIFT_WORKSPACE_NAME\" RIFT_WINDOW_COUNT=\"$RIFT_WINDOW_COUNT\" RIFT_SPACE_ID=\"$RIFT_SPACE_ID\" RIFT_DISPLAY_UUID=\"$RIFT_DISPLAY_UUID\"'",
 ]
 
 # run_on_start = []
@@ -144,7 +144,7 @@ default_orientation = "perpendicular"
 
 [settings.layout.gaps.outer]
 top = 50
-left =8
+left = 8
 bottom = 8
 right = 8
 
@@ -235,10 +235,10 @@ drag_swap_fraction = 0.3
 #   that's already active, it will switch to the last workspace instead
 # - reapply_app_rules_on_title_change: if true, app rules are re-evaluated when a window's title changes
 enabled = true
-default_workspace_count =10
+default_workspace_count = 10
 auto_assign_windows = true
 preserve_focus_per_workspace = true
-workspace_auto_back_and_forth = true
+workspace_auto_back_and_forth = false
 reapply_app_rules_on_title_change = false
 
 # Workspace-specific rules
@@ -260,16 +260,16 @@ workspace_rules = []
 # remaining workspaces are named "Workspace X".
 # Do not provide more names than default_workspace_count.
 workspace_names = [
-    "personal",
-	"ui",
-	"api",
-	"3d",
-	"db",
-	"fw",
-	"ai",
-	"m1",
-	"m2",
-	"chat"
+  "personal",
+  "ui",
+  "api",
+  "3d",
+  "db",
+  "fw",
+  "ai",
+  "m1",
+  "m2",
+  "chat",
 ]
 
 # App rules (automatic assignment)
@@ -424,27 +424,28 @@ comb1 = "Alt + Shift"
 "Alt + Tab" = "switch_to_last_workspace"
 
 # commands to change the layout engine of the active workspace
-# "Alt + Ctrl + 1" = { set_workspace_layout = { mode = "traditional" } }
-# "Alt + Ctrl + 2" = { set_workspace_layout = { mode = "bsp" } }
-# "Alt + Ctrl + 3" = { set_workspace_layout = { mode = "master_stack" } }
-# "Alt + Ctrl + 4" = { set_workspace_layout = { mode = "scrolling" } }
+"Alt + Ctrl + 1" = { set_workspace_layout = { mode = "traditional" } }
+"Alt + Ctrl + 2" = { set_workspace_layout = { mode = "stack" } }
+"Alt + Ctrl + 3" = { set_workspace_layout = { mode = "bsp" } }
+"Alt + Ctrl + 4" = { set_workspace_layout = { mode = "master_stack" } }
+"Alt + Ctrl + 5" = { set_workspace_layout = { mode = "scrolling" } }
 
-"Alt + Shift + Left" = { join_window = "left" }
-"Alt + Shift + Right" = { join_window = "right" }
-"Alt + Shift + Up" = { join_window = "up" }
-"Alt + Shift + Down" = { join_window = "down" }
+"comb1 + Left" = { join_window = "left" }
+"comb1 + Right" = { join_window = "right" }
+"comb1 + Up" = { join_window = "up" }
+"comb1 + Down" = { join_window = "down" }
 "Alt + Comma" = "toggle_stack"
 "Alt + Slash" = "toggle_orientation"
 "Alt + Ctrl + E" = "unjoin_windows"
 
-"Alt + Shift + Space" = "toggle_window_floating"
-"Alt + F" = "toggle_fullscreen"
-"Alt + Shift + F" = "toggle_fullscreen_within_gaps"
+"comb1 + Space" = "toggle_window_floating"
 "comb1 + Ctrl + Space" = "toggle_focus_floating" # briefly bring focus to floating window
+"Alt + F" = "toggle_fullscreen"
+"comb1 + F" = "toggle_fullscreen_within_gaps"
 
 # smartly resize windows
-"Alt + Shift + Equal" = "resize_window_grow"
-"Alt + Shift + Minus" = "resize_window_shrink"
+"comb1 + Equal" = "resize_window_grow"
+"comb1 + Minus" = "resize_window_shrink"
 
 # Move mouse cursor to display by index (0-based) or UUID
 # Examples:
@@ -467,7 +468,11 @@ comb1 = "Alt + Shift"
 # this will show the mission control view shown in the readme
 # "Alt + Ctrl + M" = "show_mission_control_all"
 
-"Alt + Enter" = { "exec" = ["/bin/bash", "-c", "open -a \"/run/current-system/sw/bin/alacritty\""] }
+"Alt + Enter" = { "exec" = [
+  "/bin/bash",
+  "-c",
+  "open -a \"/run/current-system/sw/bin/alacritty\"",
+] }
 
 "Alt + Shift + D" = "debug" # prints layout tree
 
