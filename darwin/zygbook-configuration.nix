@@ -49,6 +49,8 @@
 
     brews = [
       "aztfexport" # Move package to nix and use in devbox instead
+      "mole" # macOS cleanup utility
+      "open-ocd" # On-chip debugging, in-system programming and boundary-scan testing
       "stlink" # stlink tools
       {
         name = "libpq"; # Postgres C API library
@@ -62,7 +64,7 @@
   environment = {
     systemPackages = with pkgs; [
       vfkit # Simple command line tool to start VMs through the macOS Virtualization framework
-      colima # Docker container runtimes with minimal setup
+      unstable.colima # Docker container runtimes with minimal setup
       podman # Podman container runtime
       podman-tui # Podman Terminal UI
       ffmpeg-full # Full version of FFmpeg with all codecs

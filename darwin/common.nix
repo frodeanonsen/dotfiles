@@ -57,10 +57,8 @@
       tldr # Simplified and community-driven man pages
       xh # Friendly and fast tool for sending HTTP requests
       wget # Network downloader
-      xquartz # X Window System for macOS
       wezterm # GPU-accelerated terminal emulator
       devbox # Instant, easy, and predictable development environments
-      # devenv # Declarative development environments - Use devbox
       oh-my-posh # Prompt theme engine for any shell
       starship # Prompt for any shell
       zoxide # Smarter cd command
@@ -70,11 +68,10 @@
       rustup # Rust toolchain installer
       toot # Mastodon tui client
       fedistar # Mastodon client
-      colima # Docker container runtimes with minimal setup
       # opencode # AI code tool for developers; Install manually as it updates very frequently
       # usbimager # Write disk images to USB drives
       codex # OpenAI Codex CLI
-      keepassxc # Offline password manager
+      # keepassxc # Offline password manager
       # unstable.bitwarden-desktop # Password manager
       # unstable.bitwarden-cli # Password manager
       openssh # OpenSSH
