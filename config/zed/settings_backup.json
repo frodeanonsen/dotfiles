@@ -7,14 +7,32 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "git_panel": {
+    "tree_view": true
+  },
+  "agent_servers": {
+    "github-copilot-cli": {
+      "type": "registry"
+    },
+    "codex": {
+      "default_config_options": {
+        "model": "gpt-5.4",
+        "mode": "full-access"
+      }
+    }
+  },
+  "which_key": {
+    "enabled": true,
+    "delay_ms": 100,
+  },
+  "colorize_brackets": true,
   "base_keymap": "VSCode",
   "git": {
     "inline_blame": {
-      "enabled": false
-    }
+      "enabled": false,
+    },
   },
   "project_panel": {
-    "hide_hidden": false,
     "hide_gitignore": true
   },
   "load_direnv": "direct",
@@ -30,12 +48,22 @@
         },
         {
           "paths": [
-            "/home/frode/1"
+            "/home/frode/git"
           ]
         },
         {
           "paths": [
-            "/home/frode/git/zygizo/stm/radar-sensor-firmware/./"
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-antenna_calibration"
+          ]
+        },
+        {
+          "paths": [
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-main/./"
+          ]
+        },
+        {
+          "paths": [
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-ota"
           ]
         }
       ]
@@ -72,48 +100,86 @@
           ]
         }
       ]
+    },
+    {
+      "host": "hyper",
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/home/frode/zygizo"
+          ]
+        }
+      ]
     }
   ],
   "agent": {
-    "default_profile": "ask",
-    "model_parameters": []
+    "favorite_models": [
+      {
+        "provider": "copilot_chat",
+        "model": "claude-sonnet-4.6",
+        "enable_thinking": false
+      },
+      {
+        "provider": "copilot_chat",
+        "model": "claude-opus-4.6",
+        "enable_thinking": false
+      }
+    ],
+    "always_allow_tool_actions": true,
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "claude-opus-4.6",
+    },
+    "default_profile": "write",
+    "model_parameters": [],
   },
   "ui_font_family": "JetBrainsMono Nerd Font",
   "buffer_font_family": "JetBrainsMono Nerd Font",
   "terminal": {
     "font_family": "JetBrainsMono Nerd Font",
     "cursor_shape": "underline",
-    "line_height": "standard"
+    "line_height": "standard",
   },
   "icon_theme": "Catppuccin Mocha",
   "vim_mode": true,
   "inlay_hints": {
-    "show_background": true
+    "show_type_hints": true,
+    "enabled": false,
+    "show_background": true,
+    // A set of modifiers which, when pressed, will toggle the visibility of inlay hints.
+    "toggle_on_modifiers_press": {
+      "control": true,
+      "shift": false,
+      "alt": false,
+      "platform": false,
+      "function": false,
+    },
   },
-  "relative_line_numbers": true,
+  "relative_line_numbers": "enabled",
   "cursor_blink": false,
   "ui_font_size": 16,
   "buffer_font_size": 15,
   "scrollbar": {
-    "show": "never"
+    "show": "never",
   },
   "indent_guides": {
     "enabled": true,
-    "coloring": "indent_aware"
+    "coloring": "indent_aware",
   },
   "wrap_guides": [80, 120],
   "show_wrap_guides": true,
   "theme": {
     "mode": "system",
-    "light": "Catppuccin Macchiato",
-    "dark": "Catppuccin Mocha"
+    "light": "Tokyo Night Light",
+    "dark": "Catppuccin Mocha",
   },
   "languages": {
     "Rust": {
-      "preferred_line_length": 100
+      "preferred_line_length": 100,
     },
     "Nix": {
-      "language_servers": ["nixd", "!nil"]
+      "language_servers": ["nixd", "!nil"],
     },
     "Python": {
       "language_servers": ["ruff", "basedpyright", "!pyright"],
@@ -122,30 +188,30 @@
         { "code_action": "source.fixAll.ruff" },
         {
           "language_server": {
-            "name": "ruff"
-          }
-        }
-      ]
-    }
+            "name": "ruff",
+          },
+        },
+      ],
+    },
   },
   "lsp": {
     "rust-analyzer": {
       "initialization_options": {
         "cargo": {
-          "allFeatures": true // Enable all features
-        }
+          "allFeatures": true, // Enable all features
+        },
       },
       "procMacro": {
         "ignored": [
           // optional:
           // "component",
-          "server"
-        ]
-      }
-    }
+          "server",
+        ],
+      },
+    },
   },
   "features": {
     "edit_prediction_provider": "copilot"
   },
-  "tab_bar": { "show": true }
+  "tab_bar": { "show": true },
 }

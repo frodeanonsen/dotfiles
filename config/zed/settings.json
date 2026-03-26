@@ -7,6 +7,24 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "edit_predictions": {
+    "provider": "zed"
+  },
+  "git_panel": {
+    "tree_view": true
+  },
+  "agent_servers": {
+    "codex-acp": {
+      "type": "registry",
+      "default_config_options": {
+        "model": "gpt-5.4",
+        "mode": "full-access"
+      }
+    },
+    "github-copilot-cli": {
+      "type": "registry"
+    }
+  },
   "which_key": {
     "enabled": true,
     "delay_ms": 100,
@@ -19,8 +37,7 @@
     },
   },
   "project_panel": {
-    "hide_hidden": false,
-    "hide_gitignore": false,
+    "hide_gitignore": true
   },
   "load_direnv": "direct",
   "ssh_connections": [
@@ -29,58 +46,106 @@
       "args": [],
       "projects": [
         {
-          "paths": ["/etc/nixos"],
+          "paths": [
+            "/etc/nixos"
+          ]
         },
         {
-          "paths": ["/home/frode/1"],
+          "paths": [
+            "/home/frode"
+          ]
         },
         {
-          "paths": ["/home/frode/git/zygizo/stm/radar-sensor-firmware/./"],
+          "paths": [
+            "/home/frode/git"
+          ]
         },
-      ],
+        {
+          "paths": [
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-antenna_calibration"
+          ]
+        },
+        {
+          "paths": [
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-main/./"
+          ]
+        },
+        {
+          "paths": [
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-ota"
+          ]
+        },
+        {
+          "paths": [
+            "/home/frode/git/zygizo/code/snowflow/./"
+          ]
+        }
+      ]
     },
     {
       "host": "bodbook",
       "args": [],
       "projects": [
         {
-          "paths": ["/etc/nixos"],
-        },
-      ],
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
     },
     {
       "host": "frodespc1",
       "args": [],
       "projects": [
         {
-          "paths": ["/etc/nixos"],
-        },
-      ],
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
     },
     {
       "host": "homebook",
       "args": [],
       "projects": [
         {
-          "paths": ["/etc/nixos"],
-        },
-      ],
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
     },
     {
       "host": "hyper",
       "args": [],
       "projects": [
         {
-          "paths": ["/home/frode/zygizo"],
-        },
-      ],
-    },
+          "paths": [
+            "/home/frode/zygizo"
+          ]
+        }
+      ]
+    }
   ],
   "agent": {
-    "always_allow_tool_actions": true,
+    "tool_permissions": {
+      "default": "allow"
+    },
+    "favorite_models": [
+      {
+        "provider": "copilot_chat",
+        "model": "claude-sonnet-4.6",
+        "enable_thinking": false
+      },
+      {
+        "provider": "copilot_chat",
+        "model": "claude-opus-4.6",
+        "enable_thinking": false
+      }
+    ],
     "default_model": {
       "provider": "copilot_chat",
-      "model": "gpt-5.2-codex",
+      "model": "claude-opus-4.6",
     },
     "default_profile": "write",
     "model_parameters": [],
@@ -123,7 +188,7 @@
   "theme": {
     "mode": "system",
     "light": "Tokyo Night Light",
-    "dark": "Gruvbox Dark Hard",
+    "dark": "Catppuccin Mocha",
   },
   "languages": {
     "Rust": {
@@ -160,9 +225,6 @@
         ],
       },
     },
-  },
-  "features": {
-    "edit_prediction_provider": "zed",
   },
   "tab_bar": { "show": true },
 }
