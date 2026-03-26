@@ -6,7 +6,10 @@ source "$THEME_DIR/tokyonight"
 RIFT_CLI="${RIFT_CLI:-/Users/frode/.cargo/bin/rift-cli}"
 JQ_BIN="${JQ_BIN:-/run/current-system/sw/bin/jq}"
 SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
-STATE_FILE="${STATE_FILE:-$CONFIG_DIR/.rift-workspace-items}"
+STATE_DIR="${STATE_DIR:-$HOME/.cache/sketchybar}"
+STATE_FILE="${STATE_FILE:-$STATE_DIR/rift-workspace-items}"
+
+mkdir -p "$STATE_DIR"
 
 safe_uuid() {
   printf '%s' "$1" | tr '-' '_'
@@ -181,4 +184,11 @@ done < <(
     '
 )
 
-printf '%s\n' "${created_items[@]}" > "$STATE_FILE"
+tmp_state_file="$(mktemp "${STATE_FILE}.XXXXXX")"
+printf '%s\n' "${created_items[@]}" > "$tmp_state_file"
+
+if [ ! -f "$STATE_FILE" ] || ! cmp -s "$tmp_state_file" "$STATE_FILE"; then
+  mv "$tmp_state_file" "$STATE_FILE"
+else
+  rm -f "$tmp_state_file"
+fi
