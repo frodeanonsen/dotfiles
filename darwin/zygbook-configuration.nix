@@ -95,26 +95,6 @@
       '';
     };
 
-    home.file = {
-      ".zshrc".source = ../config/zsh/zshrc;
-      ".bashrc".source = ../config/bash/bashrc;
-      ".gitignore".source = ../config/git/gitignore;
-      ".gitconfig".source = ../config/git/gitconfig;
-      ".editorconfig".source = ../config/system/editorconfig;
-      ".config/ohmyposh".source = ../config/ohmyposh;
-      ".config/nvim".source = ../config/lazyvim;
-      ".config/fish".source = ../config/fish;
-      # ".config/aerospace".source = ../config/aerospace;
-      # ".config/sketchybar".source = ../config/sketchybar;
-      ".config/wezterm".source = ../config/wezterm;
-      ".config/kitty".source = ../config/kitty;
-      ".config/tmux".source = ../config/tmux;
-      ".config/nix".source = ../config/nix;
-      ".config/borders".source = ../config/borders;
-      ".config/lazygit".source = ../config/lazygit;
-      ".config/starship".source = ../config/starship;
-    };
-
     home.sessionVariables = { };
 
     home.sessionPath = [
@@ -134,10 +114,7 @@
       slack
       pngpaste
       entr
-      # dotenvx # .env file manager
       postgresql
-      # sketchybar
-      # jankyborders # add colored borders to user windows on macOS, temp moved to homebrew
       audacity
 
       # Language servers (for Zed)
@@ -145,24 +122,6 @@
       nixd
     ];
   };
-
-  # Auto upgrade nix package and the daemon service.
-  # removed in 2025.05
-  # services.nix-daemon.enable = true;
-
-  # services.jankyborders = {
-  #   enable = true;
-  #   style = "round";
-  #   width = 6.0;
-  #   hidpi = false;
-  #   active_color = "0xffe1e300";
-  #   inactive_color = "0xff494d64";
-  # };
-
-  # services.sketchybar = {
-  #   enable = true;
-  #   package = pkgs.sketchybar;
-  # };
 
   launchd.agents.borders = {
     serviceConfig = {
@@ -179,11 +138,6 @@
     };
   };
 
-  # Testing new settings:
-  # keep-outputs = true
-  # keep-derivations = true
-  # keep-failed = false
-  # keep-going = true
   nix = {
     package = pkgs.nix;
     gc = {
@@ -199,9 +153,6 @@
       keep-failed = false
       keep-going = true
     '';
-    # Removed in 2025.05
-    # configureBuildUsers = true;
-    # useDaemon = true;
     settings = {
       experimental-features = "nix-command flakes";
       trusted-users = [
@@ -223,6 +174,34 @@
   };
 
   system = {
+    activationScripts.postActivation.text = ''
+      user_home="/Users/${vars.user}"
+
+      # Symlink dotfiles config to user home
+      dotfiles="$user_home/.dotfiles/config"
+      run_as_user() {
+        sudo -u ${vars.user} "$@"
+      }
+
+      run_as_user mkdir -p "$user_home/.config"
+
+      run_as_user ln -sfn "$dotfiles/zsh/zshrc" "$user_home/.zshrc"
+      run_as_user ln -sfn "$dotfiles/bash/bashrc" "$user_home/.bashrc"
+      run_as_user ln -sfn "$dotfiles/git/gitignore" "$user_home/.gitignore"
+      run_as_user ln -sfn "$dotfiles/git/gitconfig" "$user_home/.gitconfig"
+      run_as_user ln -sfn "$dotfiles/system/editorconfig" "$user_home/.editorconfig"
+
+      run_as_user ln -sfn "$dotfiles/lazyvim" "$user_home/.config/nvim"
+      run_as_user ln -sfn "$dotfiles/fish" "$user_home/.config/fish"
+      run_as_user ln -sfn "$dotfiles/sketchybar" "$user_home/.config/sketchybar"
+      run_as_user ln -sfn "$dotfiles/tmux" "$user_home/.config/tmux"
+      run_as_user ln -sfn "$dotfiles/nix" "$user_home/.config/nix"
+      run_as_user ln -sfn "$dotfiles/borders" "$user_home/.config/borders"
+      run_as_user ln -sfn "$dotfiles/lazygit" "$user_home/.config/lazygit"
+      run_as_user ln -sfn "$dotfiles/starship" "$user_home/.config/starship"
+      run_as_user ln -sfn "$dotfiles/sol" "$user_home/.config/sol"
+    '';
+
     primaryUser = "frode";
     defaults = {
       dock.autohide = true;
