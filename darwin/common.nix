@@ -48,7 +48,7 @@
       fzf # Command-line fuzzy finder
       eza # Modern replacement for ls
       gawk # GNU version of AWK
-      raycast # Productivity tool
+      # raycast # Productivity tool
       jq # Command-line JSON processor
       yq # Command-line YAML processor
       lazygit # Simple terminal UI for git commands

@@ -34,17 +34,18 @@
   homebrew = {
 
     taps = [
-      "nikitabobko/tap" # Aerospace
+      # "nikitabobko/tap" # Aerospace - replaced by Raft
       "FelixKratz/formulae" # JankyBorders
     ];
 
     casks = [
       "monitorcontrol"
       "vlc"
-      "aerospace"
-      "openscad@snapshot"
-      "gimp"
-      "ungoogled-chromium"
+      # "aerospace" # macOS window manager - replaced by Raft
+      "openscad@snapshot" # OpenSCAD 3D modeling software
+      "gimp" # GIMP photo editor
+      "ungoogled-chromium" # Chromium
+      "sol" # MacOS Launcher, alternative to Raycast, etc.
     ];
 
     brews = [
@@ -162,6 +163,21 @@
   #   enable = true;
   #   package = pkgs.sketchybar;
   # };
+
+  launchd.agents.borders = {
+    serviceConfig = {
+      ProgramArguments = [
+        "/bin/bash"
+        "-lc"
+        "exec \"$HOME/.config/borders/bordersrc\""
+      ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/tmp/borders.log";
+      StandardErrorPath = "/tmp/borders.err.log";
+      ProcessType = "Interactive";
+    };
+  };
 
   # Testing new settings:
   # keep-outputs = true
