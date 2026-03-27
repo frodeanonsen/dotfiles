@@ -12,50 +12,50 @@ STATE_FILE="${STATE_FILE:-$STATE_DIR/rift-workspace-items}"
 mkdir -p "$STATE_DIR"
 
 safe_uuid() {
-  printf '%s' "$1" | tr '-' '_'
+	printf '%s' "$1" | tr '-' '_'
 }
 
 workspace_keycap() {
-  case "$1" in
-    0) printf '0️⃣' ;;
-    1) printf '1️⃣' ;;
-    2) printf '2️⃣' ;;
-    3) printf '3️⃣' ;;
-    4) printf '4️⃣' ;;
-    5) printf '5️⃣' ;;
-    6) printf '6️⃣' ;;
-    7) printf '7️⃣' ;;
-    8) printf '8️⃣' ;;
-    9) printf '9️⃣' ;;
-    *) printf '%s' "$1" ;;
-  esac
+	case "$1" in
+	0) printf '0️⃣' ;;
+	1) printf '1️⃣' ;;
+	2) printf '2️⃣' ;;
+	3) printf '3️⃣' ;;
+	4) printf '4️⃣' ;;
+	5) printf '5️⃣' ;;
+	6) printf '6️⃣' ;;
+	7) printf '7️⃣' ;;
+	8) printf '8️⃣' ;;
+	9) printf '9️⃣' ;;
+	*) printf '%s' "$1" ;;
+	esac
 }
 
 ensure_item() {
-  local name="$1"
-  local position="$2"
+	local name="$1"
+	local position="$2"
 
-  if ! "$SKETCHYBAR_BIN" --query "$name" >/dev/null 2>&1; then
-    "$SKETCHYBAR_BIN" --add item "$name" "$position"
-  fi
+	if ! "$SKETCHYBAR_BIN" --query "$name" >/dev/null 2>&1; then
+		"$SKETCHYBAR_BIN" --add item "$name" "$position"
+	fi
 }
 
 ensure_bracket() {
-  local name="$1"
-  shift
+	local name="$1"
+	shift
 
-  if ! "$SKETCHYBAR_BIN" --query "$name" >/dev/null 2>&1; then
-    "$SKETCHYBAR_BIN" --add bracket "$name" "$@"
-  fi
+	if ! "$SKETCHYBAR_BIN" --query "$name" >/dev/null 2>&1; then
+		"$SKETCHYBAR_BIN" --add bracket "$name" "$@"
+	fi
 }
 
 cleanup_previous_items() {
-  [ -f "$STATE_FILE" ] || return 0
+	[ -f "$STATE_FILE" ] || return 0
 
-  while IFS= read -r item_name; do
-    [ -n "$item_name" ] || continue
-    "$SKETCHYBAR_BIN" --remove "$item_name" >/dev/null 2>&1 || true
-  done < "$STATE_FILE"
+	while IFS= read -r item_name; do
+		[ -n "$item_name" ] || continue
+		"$SKETCHYBAR_BIN" --remove "$item_name" >/dev/null 2>&1 || true
+	done <"$STATE_FILE"
 }
 
 "$SKETCHYBAR_BIN" --add event rift_workspace_change
@@ -70,82 +70,99 @@ sketchybar_displays_json="$("$SKETCHYBAR_BIN" --query displays)"
 display_count="$(printf '%s\n' "$rift_displays_json" | "$JQ_BIN" 'length')"
 
 if ! "$SKETCHYBAR_BIN" --query workspaces_spacer_left >/dev/null 2>&1; then
-  "$SKETCHYBAR_BIN" --add item workspaces_spacer_left left \
-    --set workspaces_spacer_left \
-    width=4 \
-    background.drawing=off \
-    label.drawing=off
+	"$SKETCHYBAR_BIN" --add item workspaces_spacer_left left \
+		--set workspaces_spacer_left \
+		width=8 \
+		background.drawing=off \
+		label.drawing=off
 fi
 
 if ! "$SKETCHYBAR_BIN" --query workspaces_spacer_right >/dev/null 2>&1; then
-  "$SKETCHYBAR_BIN" --add item workspaces_spacer_right left \
-    --set workspaces_spacer_right \
-    width=4 \
-    background.drawing=off \
-    label.drawing=off
+	"$SKETCHYBAR_BIN" --add item workspaces_spacer_right left \
+		--set workspaces_spacer_right \
+		width=4 \
+		background.drawing=off \
+		label.drawing=off
 fi
 
 while IFS=$'\t' read -r arrangement_id display_uuid display_name space_id; do
-  [ -n "$display_uuid" ] || continue
+	[ -n "$display_uuid" ] || continue
 
-  safe_display_uuid="$(safe_uuid "$display_uuid")"
-  display_item="workspaces.display.$safe_display_uuid"
-  bracket_item="workspaces.$safe_display_uuid"
-  bracket_members=()
+	safe_display_uuid="$(safe_uuid "$display_uuid")"
+	display_item="workspaces.display.$safe_display_uuid"
+	bracket_item="workspaces.$safe_display_uuid"
+	inner_spacer_item="workspaces.inner_spacer.$safe_display_uuid"
+	bracket_members=()
 
-  if [ "$display_count" -gt 1 ]; then
-    ensure_item "$display_item" left
-    created_items+=("$display_item")
-    "$SKETCHYBAR_BIN" --set "$display_item" \
-      display="$arrangement_id" \
-      background.drawing=off \
-      click_script="$RIFT_CLI execute display focus --uuid $display_uuid" \
-      label="$display_name" \
-      label.font="$LABEL_HIGHLIGHT_FONT" \
-      label.padding_left=10 \
-      label.padding_right=8
-    bracket_members+=("$display_item")
-  fi
+	ensure_item "$inner_spacer_item" left
+	created_items+=("$inner_spacer_item")
+	"$SKETCHYBAR_BIN" --set "$inner_spacer_item" \
+		display="$arrangement_id" \
+		width=6 \
+		background.drawing=off \
+		icon.drawing=off \
+		label.drawing=off
+	bracket_members+=("$inner_spacer_item")
 
-  while IFS=$'\t' read -r workspace_index workspace_name; do
-    [ -n "$workspace_index" ] || continue
+	if [ "$display_count" -gt 1 ]; then
+		ensure_item "$display_item" left
+		created_items+=("$display_item")
+		"$SKETCHYBAR_BIN" --set "$display_item" \
+			display="$arrangement_id" \
+			background.drawing=off \
+			background.height="$RIFT_AREA_HEIGHT" \
+			click_script="$RIFT_CLI execute display focus --uuid $display_uuid" \
+			label="$display_name" \
+			label.font="$LABEL_HIGHLIGHT_FONT" \
+			label.padding_left=10 \
+			label.padding_right=8
+		bracket_members+=("$display_item")
+	fi
 
-    item_name="workspaces.$safe_display_uuid.$workspace_index"
-    workspace_icon="$(workspace_keycap "$workspace_index")"
-    ensure_item "$item_name" left
-    created_items+=("$item_name")
-    "$SKETCHYBAR_BIN" --subscribe "$item_name" rift_workspace_change rift_windows_change display_change space_change system_woke
-    "$SKETCHYBAR_BIN" --set "$item_name" \
-      display="$arrangement_id" \
-      background.drawing=off \
-      click_script="sh -c '$RIFT_CLI execute display focus --uuid \"\$1\" >/dev/null 2>&1; $RIFT_CLI execute workspace switch \"\$2\"' sh \"$display_uuid\" \"$workspace_index\"" \
-      icon.drawing=on \
-      icon="$workspace_icon" \
-      icon.color="$LABEL_HIGHLIGHT_COLOR" \
-      icon.font="$ICON_BASE_FONT:Bold:12.0" \
-      icon.padding_left=6 \
-      icon.padding_right=1 \
-      label="$workspace_name" \
-      label.padding_left=2 \
-      label.padding_right=12 \
-      script="$PLUGIN_DIR/rift $display_uuid $workspace_index"
-    bracket_members+=("$item_name")
-  done < <(
-    "$RIFT_CLI" query workspaces --space-id "$space_id" \
-      | "$JQ_BIN" -r 'sort_by(if .index == 0 then 999 else .index end)[] | [.index, .name] | @tsv'
-  )
+	while IFS=$'\t' read -r workspace_index workspace_name; do
+		[ -n "$workspace_index" ] || continue
 
-  ensure_bracket "$bracket_item" "${bracket_members[@]}"
-  created_items+=("$bracket_item")
-  "$SKETCHYBAR_BIN" --set "$bracket_item" \
-    display="$arrangement_id" \
-    background.padding_left=50 \
-    background.corner_radius="$BRACKET_BACKGROUND_CORNER_RADIUS" \
-    background.border_width="$BRACKET_BACKGROUND_BORDER_WIDTH"
+		item_name="workspaces.$safe_display_uuid.$workspace_index"
+		workspace_icon="$(workspace_keycap "$workspace_index")"
+		ensure_item "$item_name" left
+		created_items+=("$item_name")
+		"$SKETCHYBAR_BIN" --subscribe "$item_name" rift_workspace_change rift_windows_change display_change space_change system_woke
+		"$SKETCHYBAR_BIN" --set "$item_name" \
+			display="$arrangement_id" \
+			background.drawing=off \
+			background.height="$RIFT_AREA_HEIGHT" \
+			click_script="sh -c '$RIFT_CLI execute display focus --uuid \"\$1\" >/dev/null 2>&1; $RIFT_CLI execute workspace switch \"\$2\"' sh \"$display_uuid\" \"$workspace_index\"" \
+			icon.drawing=on \
+			icon="$workspace_icon" \
+			icon.color="$LABEL_HIGHLIGHT_COLOR" \
+			icon.font="$ICON_BASE_FONT:Bold:12.0" \
+			icon.y_offset=1 \
+			icon.padding_left=6 \
+			icon.padding_right=1 \
+			label="$workspace_name" \
+			label.padding_left=2 \
+			label.padding_right=12 \
+			script="$PLUGIN_DIR/rift $display_uuid $workspace_index"
+		bracket_members+=("$item_name")
+	done < <(
+		"$RIFT_CLI" query workspaces --space-id "$space_id" |
+			"$JQ_BIN" -r 'sort_by(if .index == 0 then 999 else .index end)[] | [.index, .name] | @tsv'
+	)
+
+	FRONT_APP_BACKGROUND_BORDER_COLOR="$magenta"
+	ensure_bracket "$bracket_item" "${bracket_members[@]}"
+	created_items+=("$bracket_item")
+	"$SKETCHYBAR_BIN" --set "$bracket_item" \
+		display="$arrangement_id" \
+		background.padding_left=156 \
+		background.corner_radius="$BRACKET_BACKGROUND_CORNER_RADIUS" \
+		background.border_width="$BRACKET_BACKGROUND_BORDER_WIDTH" \
+		background.border_color="$FRONT_APP_BACKGROUND_BORDER_COLOR"
+
 done < <(
-  "$JQ_BIN" -rn \
-    --argjson riftDisplays "$rift_displays_json" \
-    --argjson barDisplays "$sketchybar_displays_json" '
+	"$JQ_BIN" -rn \
+		--argjson riftDisplays "$rift_displays_json" \
+		--argjson barDisplays "$sketchybar_displays_json" '
       def normalized_bar_displays:
         $barDisplays
         | to_entries
@@ -185,10 +202,10 @@ done < <(
 )
 
 tmp_state_file="$(mktemp "${STATE_FILE}.XXXXXX")"
-printf '%s\n' "${created_items[@]}" > "$tmp_state_file"
+printf '%s\n' "${created_items[@]}" >"$tmp_state_file"
 
 if [ ! -f "$STATE_FILE" ] || ! cmp -s "$tmp_state_file" "$STATE_FILE"; then
-  mv "$tmp_state_file" "$STATE_FILE"
+	mv "$tmp_state_file" "$STATE_FILE"
 else
-  rm -f "$tmp_state_file"
+	rm -f "$tmp_state_file"
 fi
