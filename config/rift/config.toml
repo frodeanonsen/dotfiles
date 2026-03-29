@@ -95,10 +95,10 @@ new_window_placement = "master"
 # these settings only apply when layout mode == "scrolling"
 [settings.layout.scrolling]
 # width of the active column (0..1 of screen width)
-column_width_ratio = 0.7
+column_width_ratio = 1.0
 # min_column_width_ratio / max_column_width_ratio: clamp bounds used by resize commands
-min_column_width_ratio = 0.3
-max_column_width_ratio = 0.9
+min_column_width_ratio = 0.2
+max_column_width_ratio = 1.0
 # Alignment for the focused column: "left", "center", or "right"
 alignment = "center"
 # Horizontal focus behavior:
@@ -108,7 +108,7 @@ alignment = "center"
 focus_navigation_style = "niri"
 # the scrolling layout tends to function better without animations,
 # so you can disable them if you like
-# animate = false
+animate = false
 
 [settings.layout.scrolling.gestures]
 # Enable horizontal scroll gestures to switch columns
@@ -131,7 +131,7 @@ stack_offset = 40.0
 # - "perpendicular" (default): choose the perpendicular orientation to the parent layout
 # - "same": use the same orientation as the parent layout
 # - "horizontal"/"vertical": force a specific orientation
-default_orientation = "perpendicular"
+default_orientation = "horizontal"
 
 [settings.layout.gaps]
 # Gap configuration
@@ -143,13 +143,13 @@ default_orientation = "perpendicular"
 #   Use the display's UUID as the key (for example, from system profiler or via rift CLI).
 
 [settings.layout.gaps.outer]
-top = 50
-left = 8
-bottom = 8
-right = 8
+top = 10
+left = 4
+bottom = 4
+right = 4
 
 [settings.layout.gaps.inner]
-horizontal = 14
+horizontal =12
 vertical = 0
 
 # Example per-display overrides:
@@ -168,14 +168,14 @@ vertical = 0
 enabled = true
 # if enabled, it will show all workspaces including empty ones. disabled because this
 # tends to take up too much room in the menubar and then is auto hidden by macos
-show_empty = false
+show_empty = true
 # choose between drawing every workspace or only the active workspace
-mode = "all"
+mode = "active"
 # when showing workspaces as labels ("index" or "name"), choose which label to render
-active_label = "index"
+active_label = "name"
 # when displaying workspaces, choose whether to draw the layout preview or a set of labels
 # options are "layout" or "label"
-display_style = "layout"
+display_style = "label"
 
 [settings.ui.stack_line]
 # experimental stack line indicator (defaults to off)
@@ -200,14 +200,14 @@ fade_duration_ms = 180.0
 # Trackpad gestures
 [settings.gestures]
 # Enable horizontal swipes to switch virtual workspaces
-enabled = false
+enabled = true
 # Invert horizontal direction (swap next/prev)
 invert_horizontal_swipe = false
 # Maximum vertical travel allowed for the horizontal swipe to register.
 # Accepts normalized fraction (0..1) or percent (0..100). Example: 0.4 or 40.0
 swipe_vertical_tolerance = 0.4
 # Skip empty workspaces when swiping
-skip_empty = true
+skip_empty = false
 # Number of fingers required for swipe
 fingers = 3
 # Normalized horizontal distance (0..1) to trigger swipe for NSTouch-based detection
@@ -335,7 +335,17 @@ workspace_names = [
 #       ]
 #
 # By default there are no app rules; add or uncomment rules below as needed.
-app_rules = []
+app_rules = [
+    { title_substring = ".dotfiles", workspace = "personal" },
+    { title_substring = "Blizzard", workspace = "ui" },
+    { app_name = "Bambu Studio", workspace = "3d"},
+    { app_name = "Fusion", workspace = "3d"},
+    { app_name = "OrcaSlicer", workspace = "3d"},
+    { app_name = "Calendar", workspace = "chat" },
+    { app_name = "Mail", workspace = "chat" },
+    { app_name = "Slack", workspace = "chat" },
+    { app_name = "Messages", workspace = "chat" },
+]
 
 # Modifier combinations that can be reused in key bindings
 # Define common modifier combinations to avoid repetition.
@@ -471,7 +481,7 @@ comb1 = "Alt + Shift"
 "Alt + Enter" = { "exec" = [
   "/bin/bash",
   "-c",
-  "open -a \"/run/current-system/sw/bin/alacritty\"",
+  "open -n -a \"/run/current-system/sw/bin/alacritty\"",
 ] }
 
 "Alt + Shift + D" = "debug" # prints layout tree
