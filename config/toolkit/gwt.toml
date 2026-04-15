@@ -1,0 +1,2 @@
+git_root = "~/git"
+editor = "zed -n"
