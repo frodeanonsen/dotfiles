@@ -18,3 +18,5 @@ alias df=duf
 alias top='btm'
 
 alias lsusb='system_profiler SPUSBDataType'
+
+alias m=mise
