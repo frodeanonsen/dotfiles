@@ -8,22 +8,22 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "edit_predictions": {
-    "provider": "zed"
+    "provider": "copilot",
   },
   "git_panel": {
-    "tree_view": true
+    "tree_view": true,
   },
   "agent_servers": {
     "codex-acp": {
       "type": "registry",
       "default_config_options": {
         "model": "gpt-5.4",
-        "mode": "full-access"
-      }
+        "mode": "full-access",
+      },
     },
     "github-copilot-cli": {
-      "type": "registry"
-    }
+      "type": "registry",
+    },
   },
   "which_key": {
     "enabled": true,
@@ -35,9 +35,11 @@
     "inline_blame": {
       "enabled": false,
     },
+    "worktree_directory": "worktrees",
   },
   "project_panel": {
-    "hide_gitignore": true
+    "hide_hidden": false,
+    "hide_gitignore": true,
   },
   "load_direnv": "direct",
   "ssh_connections": [
@@ -46,102 +48,86 @@
       "args": [],
       "projects": [
         {
-          "paths": [
-            "/etc/nixos"
-          ]
+          "paths": ["/etc/nixos"],
+        },
+        {
+          "paths": ["/home/frode"],
+        },
+        {
+          "paths": ["/home/frode/git"],
         },
         {
           "paths": [
-            "/home/frode"
-          ]
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-antenna_calibration",
+          ],
         },
         {
           "paths": [
-            "/home/frode/git"
-          ]
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-main/./",
+          ],
         },
         {
           "paths": [
-            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-antenna_calibration"
-          ]
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-ota",
+          ],
         },
         {
-          "paths": [
-            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-main/./"
-          ]
+          "paths": ["/home/frode/git/zygizo/code/snowflow/./"],
         },
-        {
-          "paths": [
-            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-ota"
-          ]
-        },
-        {
-          "paths": [
-            "/home/frode/git/zygizo/code/snowflow/./"
-          ]
-        }
-      ]
+      ],
     },
     {
       "host": "bodbook",
       "args": [],
       "projects": [
         {
-          "paths": [
-            "/etc/nixos"
-          ]
-        }
-      ]
+          "paths": ["/etc/nixos"],
+        },
+      ],
     },
     {
       "host": "frodespc1",
       "args": [],
       "projects": [
         {
-          "paths": [
-            "/etc/nixos"
-          ]
-        }
-      ]
+          "paths": ["/etc/nixos"],
+        },
+      ],
     },
     {
       "host": "homebook",
       "args": [],
       "projects": [
         {
-          "paths": [
-            "/etc/nixos"
-          ]
-        }
-      ]
+          "paths": ["/etc/nixos"],
+        },
+      ],
     },
     {
       "host": "hyper",
       "args": [],
       "projects": [
         {
-          "paths": [
-            "/home/frode/zygizo"
-          ]
-        }
-      ]
-    }
+          "paths": ["/home/frode/zygizo"],
+        },
+      ],
+    },
   ],
   "agent": {
     "tool_permissions": {
-      "default": "allow"
+      "default": "allow",
     },
     "favorite_models": [
       {
         "provider": "copilot_chat",
         "model": "claude-sonnet-4.6",
-        "enable_thinking": false
+        "enable_thinking": false,
       },
       {
         "provider": "copilot_chat",
         "model": "claude-opus-4.6",
-        "enable_thinking": false
-      }
+        "enable_thinking": false,
+      },
     ],
     "default_model": {
       "provider": "copilot_chat",
