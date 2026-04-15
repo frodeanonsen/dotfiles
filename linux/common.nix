@@ -19,6 +19,7 @@
       unstable.ghostty-bin # Terminal emulator with multiplexer
       unstable.zed-editor # Editor for the modern age
       onedrive # Microsoft OneDrive
+      starship # Prompt for any shell
     ];
   };
 

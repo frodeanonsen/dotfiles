@@ -74,6 +74,7 @@
     monaspace
     podman
     testdisk
+    starship
   ];
 
 }
