@@ -22,8 +22,8 @@ animation_fps = 100.0
 # - focus_follows_mouse: moving the mouse into a window focuses it
 # - mouse_follows_focus: when focus changes, move the mouse to the focused window
 # - mouse_hides_on_focus: hide the mouse cursor after focusing a window
-focus_follows_mouse = true
-mouse_follows_focus = true
+focus_follows_mouse = false
+mouse_follows_focus = false
 mouse_hides_on_focus = true
 # focus_follows_mouse_disable_hotkey temporarily suspends focus-follows-mouse while held
 # e.g. "Fn"; omit or set to null to keep focus-follows-mouse always active
@@ -92,10 +92,11 @@ master_side = "left"
 # Where new windows go when the master area is already full (master | stack | focused)
 new_window_placement = "master"
 
+
 # these settings only apply when layout mode == "scrolling"
 [settings.layout.scrolling]
 # width of the active column (0..1 of screen width)
-column_width_ratio = 1.0
+column_width_ratio = 0.3
 # min_column_width_ratio / max_column_width_ratio: clamp bounds used by resize commands
 min_column_width_ratio = 0.2
 max_column_width_ratio = 1.0
@@ -143,14 +144,14 @@ default_orientation = "horizontal"
 #   Use the display's UUID as the key (for example, from system profiler or via rift CLI).
 
 [settings.layout.gaps.outer]
-top = 10
+top = 44
 left = 4
 bottom = 4
 right = 4
 
 [settings.layout.gaps.inner]
-horizontal =12
-vertical = 0
+horizontal = 12
+vertical = 12
 
 # Example per-display overrides:
 # Replace the quoted key with your display's UUID. Only specify values you want to override.
@@ -163,6 +164,13 @@ vertical = 0
 # [settings.layout.gaps.per_display."11111111-2222-3333-4444-555555555555".inner]
 # horizontal = 8
 # vertical = 8
+
+[settings.layout.gaps.per_display."37D8832A-2D66-02CA-B9F7-8F30A301B230".outer]
+top = 12
+left = 4
+bottom = 4
+right = 4
+
 [settings.ui.menu_bar]
 # enable menu bar workspace indicators
 enabled = true
@@ -336,15 +344,15 @@ workspace_names = [
 #
 # By default there are no app rules; add or uncomment rules below as needed.
 app_rules = [
-    { title_substring = ".dotfiles", workspace = "personal" },
-    { title_substring = "Blizzard", workspace = "ui" },
-    { app_name = "Bambu Studio", workspace = "3d"},
-    { app_name = "Fusion", workspace = "3d"},
-    { app_name = "OrcaSlicer", workspace = "3d"},
-    { app_name = "Calendar", workspace = "chat" },
-    { app_name = "Mail", workspace = "chat" },
-    { app_name = "Slack", workspace = "chat" },
-    { app_name = "Messages", workspace = "chat" },
+  { title_substring = ".dotfiles", workspace = "personal" },
+  { title_substring = "Blizzard", workspace = "ui" },
+  { app_name = "Bambu Studio", workspace = "3d" },
+  { app_name = "Fusion", workspace = "3d" },
+  { app_name = "OrcaSlicer", workspace = "3d" },
+  { app_name = "Calendar", workspace = "chat" },
+  { app_name = "Mail", workspace = "chat" },
+  { app_name = "Slack", workspace = "chat" },
+  { app_name = "Messages", workspace = "chat" },
 ]
 
 # Modifier combinations that can be reused in key bindings
