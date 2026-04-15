@@ -7,3 +7,4 @@ SETUVAR _fisher_jorgebucaran_2F_fisher_files:\x7e/\x2econfig/fish/functions/fish
 SETUVAR _fisher_plugins:jorgebucaran/fisher\x1eedc/bass\x1ecatppuccin/fish\x1efolke/tokyonight\x2envim
 SETUVAR _fisher_upgraded_to_4_4:\x1d
 SETUVAR fish_greeting:
+SETUVAR fish_key_bindings:fish_default_key_bindings
