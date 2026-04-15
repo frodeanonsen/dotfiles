@@ -53,7 +53,7 @@
       yq # Command-line YAML processor
       lazygit # Simple terminal UI for git commands
       zsh # Z shell
-      fish # Friendly interactive shell
+      unstable.fish # Friendly interactive shell
       tldr # Simplified and community-driven man pages
       xh # Friendly and fast tool for sending HTTP requests
       wget # Network downloader
@@ -93,7 +93,18 @@
     nerd-fonts.jetbrains-mono
   ];
 
-  programs.zsh.enable = true;
+  programs = {
+    zsh.enable = true;
+    fish = {
+      enable = true;
+      shellAliases = {
+        l = "eza -l --icons --git --group-directories-first --time-style=long-iso";
+        ll = "eza -l --icons --git --group-directories-first --time-style=long-iso";
+        la = "eza -l --icons --git -a --group-directories-first --time-style=long-iso";
+        lt = "eza --tree --level=2 --icons --git -a --group-directories-first --time-style=long-iso";
+      };
+    };
+  };
 
   homebrew = {
     enable = true;
