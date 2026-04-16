@@ -2,7 +2,7 @@
 
 source "$CONFIG_DIR/environment"
 source "$THEME_DIR/tokyonight"
-SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/run/current-system/sw/bin/sketchybar}"
 
 FRONT_APP_LABEL_COLOR="$red"
 FRONT_APP_BACKGROUND_BORDER_COLOR="$red"

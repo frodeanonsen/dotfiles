@@ -58,7 +58,6 @@
         link = true;
       }
       "borders" # add colored borders to user windows on macOS
-      "sketchybar"
     ];
   };
 
@@ -80,6 +79,8 @@
   # Removed in 2025.05
   # security.pam.enableSudoTouchIdAuth = true;
   security.pam.services.sudo_local.touchIdAuth = true;
+
+  services.sketchybar.enable = true;
 
   home-manager.backupFileExtension = "backup";
   home-manager.users.${vars.user} = {

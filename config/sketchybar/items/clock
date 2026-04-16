@@ -4,7 +4,7 @@ THEME_DIR="$CONFIG_DIR/themes"
 ITEM_DIR="$CONFIG_DIR/items"
 source "$CONFIG_DIR/environment"
 source "$THEME_DIR/tokyonight"
-SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/run/current-system/sw/bin/sketchybar}"
 
 CLOCK_LABEL_COLOR="$magenta"
 CLOCK_BACKGROUND_BORDER_COLOR="$magenta"

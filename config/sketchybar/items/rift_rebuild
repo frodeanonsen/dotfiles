@@ -2,7 +2,7 @@
 
 source "$CONFIG_DIR/environment"
 
-SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/run/current-system/sw/bin/sketchybar}"
 
 if ! "$SKETCHYBAR_BIN" --query rift_workspace_rebuild >/dev/null 2>&1; then
   "$SKETCHYBAR_BIN" --add item rift_workspace_rebuild left

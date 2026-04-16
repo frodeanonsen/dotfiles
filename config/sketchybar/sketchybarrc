@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 CONFIG_DIR="$HOME/.config/sketchybar"
-SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/run/current-system/sw/bin/sketchybar}"
 export CONFIG_DIR SKETCHYBAR_BIN
 source "$CONFIG_DIR/environment"
 source "$THEME_DIR/tokyonight"

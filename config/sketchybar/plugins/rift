@@ -5,7 +5,7 @@ source "$THEME_DIR/tokyonight"
 
 RIFT_CLI="${RIFT_CLI:-/Users/frode/.cargo/bin/rift-cli}"
 JQ_BIN="${JQ_BIN:-/run/current-system/sw/bin/jq}"
-SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/run/current-system/sw/bin/sketchybar}"
 
 display_uuid="$1"
 workspace_index="$2"

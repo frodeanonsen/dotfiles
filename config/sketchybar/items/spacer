@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/opt/homebrew/bin/sketchybar}"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/run/current-system/sw/bin/sketchybar}"
 
  "$SKETCHYBAR_BIN" --remove bracket_spacer >/dev/null 2>&1 || true
 

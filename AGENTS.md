@@ -8,6 +8,7 @@ Configurations are defined through `flake.nix`, which wires together platform-sp
 
 ./scripts is added to the path in `.envrc` and contains helper scripts to build and apply nix environments.
 Refresh inputs via `nix flake update` before large changes. Build target systems with `darwin-rebuild build --flake .#<host>` (MacOS) or `home-manager build --flake .#<host>` (Linux). Apply macOS changes locally via `sudo darwin-rebuild switch --flake .#<host>`; Linux environments should run `sudo home-manager switch --flake .#<host>`. `nix flake check` lints the flake and should stay clean prior to pushing.
+For the local macOS host backed by `.#MacBookApple`, prefer `scripts/update_zygbook.sh` for rebuilds and updates instead of invoking `darwin-rebuild switch` directly. Use `scripts/update_zygbook.sh --flake` when you also want to refresh flake inputs before rebuilding.
 
 ## Coding Style & Naming Conventions
 
