@@ -57,7 +57,6 @@
         name = "libpq"; # Postgres C API library
         link = true;
       }
-      "borders" # add colored borders to user windows on macOS
     ];
   };
 
@@ -81,6 +80,14 @@
   security.pam.services.sudo_local.touchIdAuth = true;
 
   services.sketchybar.enable = true;
+  services.jankyborders = {
+    enable = true;
+    active_color = "0xfff7768e";
+    inactive_color = "0xff7aa2f7";
+    hidpi = true;
+    style = "round";
+    width = 10.0;
+  };
 
   home-manager.backupFileExtension = "backup";
   home-manager.users.${vars.user} = {
@@ -122,21 +129,6 @@
       nil
       nixd
     ];
-  };
-
-  launchd.agents.borders = {
-    serviceConfig = {
-      ProgramArguments = [
-        "/bin/bash"
-        "-lc"
-        "exec \"$HOME/.config/borders/bordersrc\""
-      ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/tmp/borders.log";
-      StandardErrorPath = "/tmp/borders.err.log";
-      ProcessType = "Interactive";
-    };
   };
 
   nix = {
@@ -197,7 +189,6 @@
       run_as_user ln -sfn "$dotfiles/sketchybar" "$user_home/.config/sketchybar"
       run_as_user ln -sfn "$dotfiles/tmux" "$user_home/.config/tmux"
       run_as_user ln -sfn "$dotfiles/nix" "$user_home/.config/nix"
-      run_as_user ln -sfn "$dotfiles/borders" "$user_home/.config/borders"
       run_as_user ln -sfn "$dotfiles/lazygit" "$user_home/.config/lazygit"
       run_as_user ln -sfn "$dotfiles/starship" "$user_home/.config/starship"
       run_as_user ln -sfn "$dotfiles/sol" "$user_home/.config/sol"
