@@ -97,6 +97,7 @@
     zsh.enable = true;
     fish = {
       enable = true;
+      # shellAliases must be duplicated here as the .config aliases gets overridden
       shellAliases = {
         l = "eza -l --icons --git --group-directories-first --time-style=long-iso";
         ll = "eza -l --icons --git --group-directories-first --time-style=long-iso";

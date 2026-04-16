@@ -33,15 +33,9 @@
 
   homebrew = {
 
-    taps = [
-      # "nikitabobko/tap" # Aerospace - replaced by Raft
-      "FelixKratz/formulae" # JankyBorders
-    ];
-
     casks = [
       "monitorcontrol"
       "vlc"
-      # "aerospace" # macOS window manager - replaced by Raft
       "openscad@snapshot" # OpenSCAD 3D modeling software
       "gimp" # GIMP photo editor
       "ungoogled-chromium" # Chromium
@@ -93,15 +87,6 @@
   home-manager.users.${vars.user} = {
     home.stateVersion = "25.05";
     programs.home-manager.enable = true;
-    programs.zsh = {
-      initExtra = ''
-        # Add any additional configurations here
-        export PATH=/run/current-system/sw/bin:$HOME/.nix-profile/bin:$PATH
-        if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-          . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-        fi
-      '';
-    };
 
     home.sessionVariables = { };
 
