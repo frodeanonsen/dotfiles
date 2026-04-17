@@ -57,8 +57,8 @@ auto_focus_blacklist = []
 #   "rift-cli subscribe cli --event windows_changed --command sh --args -c --args 'sketchybar --trigger rift_windows_changed RIFT_WORKSPACE_NAME=\"$RIFT_WORKSPACE_NAME\" RIFT_WINDOW_COUNT=\"$RIFT_WINDOW_COUNT\"'"
 # ]
 run_on_start = [
-  "/Users/frode/.cargo/bin/rift-cli subscribe cli --event workspace_changed --command sh --args -c --args '/opt/homebrew/bin/sketchybar --trigger rift_workspace_change RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WORKSPACE_NAME=\"$RIFT_WORKSPACE_NAME\" RIFT_SPACE_ID=\"$RIFT_SPACE_ID\" RIFT_DISPLAY_UUID=\"$RIFT_DISPLAY_UUID\"'",
-  "/Users/frode/.cargo/bin/rift-cli subscribe cli --event windows_changed --command sh --args -c --args '/opt/homebrew/bin/sketchybar --trigger rift_windows_change RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WORKSPACE_NAME=\"$RIFT_WORKSPACE_NAME\" RIFT_WINDOW_COUNT=\"$RIFT_WINDOW_COUNT\" RIFT_SPACE_ID=\"$RIFT_SPACE_ID\" RIFT_DISPLAY_UUID=\"$RIFT_DISPLAY_UUID\"'",
+  "/Users/frode/.cargo/bin/rift-cli subscribe cli --event workspace_changed --command sh --args -c --args '/run/current-system/sw/bin/sketchybar --trigger rift_workspace_change RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WORKSPACE_NAME=\"$RIFT_WORKSPACE_NAME\" RIFT_SPACE_ID=\"$RIFT_SPACE_ID\" RIFT_DISPLAY_UUID=\"$RIFT_DISPLAY_UUID\"'",
+  "/Users/frode/.cargo/bin/rift-cli subscribe cli --event windows_changed --command sh --args -c --args '/run/current-system/sw/bin/sketchybar --trigger rift_windows_change RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WORKSPACE_NAME=\"$RIFT_WORKSPACE_NAME\" RIFT_WINDOW_COUNT=\"$RIFT_WINDOW_COUNT\" RIFT_SPACE_ID=\"$RIFT_SPACE_ID\" RIFT_DISPLAY_UUID=\"$RIFT_DISPLAY_UUID\"'",
 ]
 
 # run_on_start = []
