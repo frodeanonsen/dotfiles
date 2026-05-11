@@ -2,47 +2,69 @@
 
 source "$CONFIG_DIR/environment"
 source "$THEME_DIR/tokyonight"
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/run/current-system/sw/bin/sketchybar}"
+AEROSPACE_BIN="${AEROSPACE_BIN:-/opt/homebrew/bin/aerospace}"
+STATE_DIR="${STATE_DIR:-$HOME/.cache/sketchybar}"
+STATE_FILE="${STATE_FILE:-$STATE_DIR/aerospace-workspace-items}"
 
-if [ "$1" = "$FOCUSED_WORKSPACE" ]; then
-	echo "Workspace $1 is focused"
-	sketchybar --set $NAME background.drawing=on
-else
-	sketchybar --set $NAME background.drawing=off
+mkdir -p "$STATE_DIR"
+
+cleanup_previous_items() {
+	[ -f "$STATE_FILE" ] || return 0
+
+	while IFS= read -r item_name; do
+		[ -n "$item_name" ] || continue
+		"$SKETCHYBAR_BIN" --remove "$item_name" >/dev/null 2>&1 || true
+	done <"$STATE_FILE"
+}
+
+if [ "${1:-}" = "--cleanup" ]; then
+	cleanup_previous_items
+	rm -f "$STATE_FILE"
+	exit 0
 fi
 
 create_workspace_bracket_for_monitor() {
 	parameters=("$@")
 	monitor_id=${parameters[0]}
 	monitor_workspaces=("${parameters[@]:1}")
+	bracket_members=()
 
 	if [ $monitor_id -eq 1 ]; then
-		sketchybar --add item workspaces_spacer_left left \
+		"$SKETCHYBAR_BIN" --add item workspaces_spacer_left left \
 			--set workspaces_spacer_left \
 			width=4 \
 			background.drawing=off \
 			label.drawing=off
+		created_items+=("workspaces_spacer_left")
 	fi
 
 	for workspace_id in ${monitor_workspaces[@]}; do
-		sketchybar --add item workspaces."$monitor_id"."$workspace_id" left \
-			--subscribe workspaces."$monitor_id"."$workspace_id" aerospace_workspace_change \
-			--set workspaces."$monitor_id"."$workspace_id" \
+		item_name="workspaces.$monitor_id.$workspace_id"
+		"$SKETCHYBAR_BIN" --add item "$item_name" left \
+			--subscribe "$item_name" aerospace_workspace_change \
+			--set "$item_name" \
 			background.drawing=off \
-			click_script="aerospace workspace $workspace_id" \
+			click_script="$AEROSPACE_BIN workspace $workspace_id" \
 			label="$workspace_id" \
 			label.width="25" \
 			script="$PLUGIN_DIR/aerospace $workspace_id"
+		bracket_members+=("$item_name")
+		created_items+=("$item_name")
 	done
 
 	if [ $monitor_id -lt ${#monitor_ids[@]} ]; then
-		sketchybar --add item workspaces_monitor_separator."$monitor_id" left \
-			--set workspaces_monitor_separator."$monitor_id" \
+		separator_name="workspaces_monitor_separator.$monitor_id"
+		"$SKETCHYBAR_BIN" --add item "$separator_name" left \
+			--set "$separator_name" \
 			background.drawing=off \
 			label.padding_left=-6 \
 			label.font.size="$BACKGROUND_HEIGHT" \
 			label="|"
+		bracket_members+=("$separator_name")
+		created_items+=("$separator_name")
 	else
-		sketchybar --add item workspaces_service_mode left \
+		"$SKETCHYBAR_BIN" --add item workspaces_service_mode left \
 			--subscribe workspaces_service_mode aerospace_service_mode_enabled_changed \
 			--set workspaces_service_mode \
 			background.drawing=off \
@@ -52,31 +74,43 @@ create_workspace_bracket_for_monitor() {
 			label="[s]" \
 			label.padding_right=10 \
 			script="$PLUGIN_DIR/aerospace $AEROSPACE_SERVICE_MODE_ENABLED"
+		bracket_members+=("workspaces_service_mode")
+		created_items+=("workspaces_service_mode")
 
-		sketchybar --add item workspaces_spacer_right left \
+		"$SKETCHYBAR_BIN" --add item workspaces_spacer_right left \
 			--set workspaces_spacer_right \
 			width=4 \
 			background.drawing=off \
 			label.drawing=off
+		bracket_members+=("workspaces_spacer_right")
+		created_items+=("workspaces_spacer_right")
 	fi
 
-	sketchybar --add bracket workspaces."$monitor_id" /workspaces\.*/ \
-		--set workspaces."$monitor_id" \
+	bracket_name="workspaces.$monitor_id"
+	"$SKETCHYBAR_BIN" --add bracket "$bracket_name" "${bracket_members[@]}" \
+		--set "$bracket_name" \
 		background.padding_left="50" \
 		background.corner_radius="$BRACKET_BACKGROUND_CORNER_RADIUS" \
 		background.border_width="$BRACKET_BACKGROUND_BORDER_WIDTH"
+	created_items+=("$bracket_name")
 }
 
-sketchybar --add event aerospace_workspace_change
-sketchybar --add event aerospace_service_mode_enabled_changed
+"$SKETCHYBAR_BIN" --add event aerospace_workspace_change
+"$SKETCHYBAR_BIN" --add event aerospace_service_mode_enabled_changed
 
-monitor_ids=($(aerospace list-monitors | awk '{print $1}'))
+cleanup_previous_items
+created_items=()
+monitor_ids=($("$AEROSPACE_BIN" list-monitors | awk '{print $1}'))
 
 # TODO:
 # - Update this view when moving workspaces to a different monitors.
 # - Only show workspaces with active windows or currently selected like in i3
 #   default configuration.
 for monitor_id in ${monitor_ids[@]}; do
-	workspaces_for_monitor_id=($(aerospace list-workspaces --monitor $monitor_id))
+	workspaces_for_monitor_id=($("$AEROSPACE_BIN" list-workspaces --monitor $monitor_id))
 	create_workspace_bracket_for_monitor $monitor_id "${workspaces_for_monitor_id[@]}"
 done
+
+tmp_state_file="$(mktemp "${STATE_FILE}.XXXXXX")"
+printf '%s\n' "${created_items[@]}" >"$tmp_state_file"
+mv "$tmp_state_file" "$STATE_FILE"

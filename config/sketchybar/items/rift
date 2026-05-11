@@ -58,6 +58,12 @@ cleanup_previous_items() {
 	done <"$STATE_FILE"
 }
 
+if [ "${1:-}" = "--cleanup" ]; then
+	cleanup_previous_items
+	rm -f "$STATE_FILE"
+	exit 0
+fi
+
 "$SKETCHYBAR_BIN" --add event rift_workspace_change
 "$SKETCHYBAR_BIN" --add event rift_windows_change
 

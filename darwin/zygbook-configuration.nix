@@ -40,6 +40,7 @@
       "gimp" # GIMP photo editor
       "ungoogled-chromium" # Chromium
       "sol" # MacOS Launcher, alternative to Raycast, etc.
+      "nikitabobko/tap/aerospace" # Aerospace window manager
     ];
 
     brews = [

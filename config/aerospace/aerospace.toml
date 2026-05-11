@@ -1,6 +1,8 @@
 # Place a copy of this config to ~/.aerospace.toml
 # After that, you can edit ~/.aerospace.toml to your liking
 
+config-version = 2
+
 # It's not necessary to copy all keys to your config.
 # If the key is missing in your config, "default-config.toml" will serve as a fallback
 
@@ -62,13 +64,17 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 exec-on-workspace-change = [
   '/bin/bash',
   '-c',
-  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+  '/run/current-system/sw/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
 # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
 # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
 automatically-unhide-macos-hidden-apps = true
+
+# Keep the same 10 workspace slots alive as Rift:
+# 0=personal, 1=ui, 2=api, 3=3d, 4=db, 5=fw, 6=ai, 7=m1, 8=m2, 9=chat
+persistent-workspaces = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 # Gaps between windows (inner-*) and between monitor edges (outer-*).
 # Possible values:
@@ -83,11 +89,11 @@ outer.top = [
   { monitor.'built-in.*' = 16 },
   48,
 ]
-outer.right = 24
-outer.bottom = 24
-outer.left = 24
-inner.horizontal = 24
-inner.vertical = 24
+outer.right = 8
+outer.bottom = 4
+outer.left = 8
+inner.horizontal = 10
+inner.vertical = 6
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -138,10 +144,9 @@ alt-enter = 'exec-and-forget open -n -a "alacritty"'
 
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
-alt-i = 'layout accordion horizontal vertical'
 
 alt-e = 'balance-sizes'
-alt-shift-m = 'fullscreen'
+alt-f = 'fullscreen'
 
 # Move focus with mainMod + arrow keys
 alt-h = 'focus left'
@@ -167,7 +172,9 @@ cmd-shift-l = 'resize width +50'
 cmd-shift-k = 'resize height -50'
 cmd-shift-j = 'resize height +50'
 
-# Workspaces: cmd+[1-9,0]
+# Workspaces.
+# This matches Rift's 0-based workspace numbering:
+# 0=personal, 1=ui, 2=api, 3=3d, 4=db, 5=fw, 6=ai, 7=m1, 8=m2, 9=chat
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
@@ -177,36 +184,27 @@ alt-6 = 'workspace 6'
 alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
-alt-0 = 'workspace 10'
+alt-0 = 'workspace 0'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-# Move window to workspace silently: cmd+ctrl+[1-9,0]
-ctrl-alt-shift-1 = 'move-node-to-workspace 1'
-ctrl-alt-shift-2 = 'move-node-to-workspace 2'
-ctrl-alt-shift-3 = 'move-node-to-workspace 3'
-ctrl-alt-shift-4 = 'move-node-to-workspace 4'
-ctrl-alt-shift-5 = 'move-node-to-workspace 5'
-ctrl-alt-shift-6 = 'move-node-to-workspace 6'
-ctrl-alt-shift-7 = 'move-node-to-workspace 7'
-ctrl-alt-shift-8 = 'move-node-to-workspace 8'
-ctrl-alt-shift-9 = 'move-node-to-workspace 9'
-ctrl-alt-shift-0 = 'move-node-to-workspace 10'
-
-# Move window to workspace: cmd+shift+[1-9,0]
-alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
-alt-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
-alt-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
-alt-shift-4 = ['move-node-to-workspace 4', 'workspace 4']
-alt-shift-5 = ['move-node-to-workspace 5', 'workspace 5']
-alt-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
-alt-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
-alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
-alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
-alt-shift-0 = ['move-node-to-workspace 10', 'workspace 10']
+# Match Rift's move-window-to-workspace bindings.
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-5 = 'move-node-to-workspace 5'
+alt-shift-6 = 'move-node-to-workspace 6'
+alt-shift-7 = 'move-node-to-workspace 7'
+alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-9 = 'move-node-to-workspace 9'
+alt-shift-0 = 'move-node-to-workspace 0'
 
 # Workspace next/prev: cmd+tab / cmd+shift+tab
 alt-tab = 'workspace-back-and-forth'
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# Closest equivalent to Rift's toggle_space_activated.
+alt-z = 'enable toggle'
 
 # Screenshots - Handled by macOS natively
 # cmd-print = 'exec-and-forget screencapture -i ~/Desktop/screenshot.png'
@@ -220,7 +218,7 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-period = [
   'mode service',
-  'exec-and-forget sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=true',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=true',
 ]
 
 # 'service' binding mode declaration.
@@ -229,12 +227,12 @@ alt-shift-period = [
 c = [
   'reload-config',
   'mode main',
-  'exec-and-forget sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
 ]
 r = [
   'flatten-workspace-tree',
   'mode main',
-  'exec-and-forget sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
 ] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 f = [
@@ -252,10 +250,19 @@ alt-shift-l = ['join-with right', 'mode main']
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 esc = [
   'mode main',
-  'exec-and-forget sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
 ]
 
-# Comms
+# Match Rift-style routing where AeroSpace supports the same signal.
+[[on-window-detected]]
+if.window-title-regex-substring = '\\.dotfiles'
+run = 'move-node-to-workspace 0'
+
+[[on-window-detected]]
+if.window-title-regex-substring = 'Blizzard'
+run = 'move-node-to-workspace 1'
+
+# Chat / comms
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
 run = "move-node-to-workspace 9"

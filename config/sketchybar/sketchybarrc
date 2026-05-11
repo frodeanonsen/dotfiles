@@ -41,10 +41,7 @@ default=(
 "$SKETCHYBAR_BIN" --default "${default[@]}"
 
 # Left
-bash "$ITEM_DIR/rift"
-bash "$ITEM_DIR/rift_rebuild"
-bash "$ITEM_DIR/spacer"
-bash "$ITEM_DIR/front_app"
+bash "$ITEM_DIR/workspaces"
 
 # Right
 bash "$ITEM_DIR/clock"
@@ -54,6 +51,3 @@ bash "$ITEM_DIR/clock"
 
 # Force all scripts to run the first time (never do this in a script)
 "$SKETCHYBAR_BIN" --update
-
-# Initialize Rift workspace state
-"$SKETCHYBAR_BIN" --trigger rift_workspace_change

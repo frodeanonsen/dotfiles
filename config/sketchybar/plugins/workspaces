@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+source "$CONFIG_DIR/environment"
+
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/run/current-system/sw/bin/sketchybar}"
+RIFT_CLI="${RIFT_CLI:-/Users/frode/.cargo/bin/rift-cli}"
+AEROSPACE_BIN="${AEROSPACE_BIN:-/opt/homebrew/bin/aerospace}"
+STATE_DIR="${STATE_DIR:-$HOME/.cache/sketchybar}"
+ACTIVE_WM_FILE="${ACTIVE_WM_FILE:-$STATE_DIR/active-window-manager}"
+
+mkdir -p "$STATE_DIR"
+
+detect_window_manager() {
+	case "${WINDOW_MANAGER:-}" in
+	aerospace | rift)
+		printf '%s\n' "$WINDOW_MANAGER"
+		return 0
+		;;
+	esac
+
+	if [ -x "$AEROSPACE_BIN" ] && "$AEROSPACE_BIN" list-monitors >/dev/null 2>&1; then
+		printf 'aerospace\n'
+		return 0
+	fi
+
+	if [ -x "$RIFT_CLI" ] && "$RIFT_CLI" query displays >/dev/null 2>&1; then
+		printf 'rift\n'
+		return 0
+	fi
+
+	printf 'none\n'
+}
+
+workspace_items_present() {
+	"$SKETCHYBAR_BIN" --query workspaces_spacer_left >/dev/null 2>&1
+}
+
+cleanup_workspace_items() {
+	bash "$ITEM_DIR/rift" --cleanup
+	bash "$ITEM_DIR/aerospace" --cleanup
+}
+
+rebuild_common_items() {
+	bash "$ITEM_DIR/spacer"
+	bash "$ITEM_DIR/front_app"
+	NAME=front_app "$PLUGIN_DIR/front_app"
+}
+
+rebuild_rift() {
+	bash "$ITEM_DIR/rift"
+	rebuild_common_items
+	"$SKETCHYBAR_BIN" --move front_app_spacer_left after bracket_spacer
+	"$SKETCHYBAR_BIN" --move front_app after front_app_spacer_left
+	"$SKETCHYBAR_BIN" --move front_app_spacer_right after front_app
+	"$SKETCHYBAR_BIN" --move front_app_bracket after front_app_spacer_right
+	"$SKETCHYBAR_BIN" --trigger rift_workspace_change
+}
+
+rebuild_aerospace() {
+	bash "$ITEM_DIR/aerospace"
+	rebuild_common_items
+	focused_workspace="$("$AEROSPACE_BIN" list-workspaces --focused 2>/dev/null | head -n 1)"
+	if [ -n "$focused_workspace" ]; then
+		"$SKETCHYBAR_BIN" --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$focused_workspace"
+	fi
+	"$SKETCHYBAR_BIN" --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false
+}
+
+current_wm="$(detect_window_manager)"
+previous_wm="$(cat "$ACTIVE_WM_FILE" 2>/dev/null || true)"
+should_rebuild=false
+
+case "${SENDER:-manual}" in
+display_change | system_woke)
+	[ "$current_wm" != "none" ] && should_rebuild=true
+	;;
+*)
+	[ "$current_wm" != "$previous_wm" ] && should_rebuild=true
+	;;
+esac
+
+if ! workspace_items_present && [ "$current_wm" != "none" ]; then
+	should_rebuild=true
+fi
+
+if [ "$current_wm" = "none" ]; then
+	if [ -n "$previous_wm" ] && [ "$previous_wm" != "none" ]; then
+		cleanup_workspace_items
+		printf 'none\n' >"$ACTIVE_WM_FILE"
+	fi
+	exit 0
+fi
+
+if [ "$should_rebuild" != true ]; then
+	exit 0
+fi
+
+cleanup_workspace_items
+
+case "$current_wm" in
+aerospace)
+	rebuild_aerospace
+	;;
+rift)
+	rebuild_rift
+	;;
+esac
+
+printf '%s\n' "$current_wm" >"$ACTIVE_WM_FILE"

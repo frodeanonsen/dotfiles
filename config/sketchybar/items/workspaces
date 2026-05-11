@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+source "$CONFIG_DIR/environment"
+
+SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-/run/current-system/sw/bin/sketchybar}"
+
+if ! "$SKETCHYBAR_BIN" --query workspace_loader >/dev/null 2>&1; then
+	"$SKETCHYBAR_BIN" --add item workspace_loader left
+fi
+
+"$SKETCHYBAR_BIN" --subscribe workspace_loader display_change system_woke \
+	--set workspace_loader \
+	drawing=off \
+	update_freq=5 \
+	script="$PLUGIN_DIR/workspaces"
+
+bash "$PLUGIN_DIR/workspaces"
