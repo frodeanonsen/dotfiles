@@ -11,8 +11,8 @@
   "showUpcomingEvent": true,
   "scratchPadColor": "SYSTEM",
   "searchFolders": [],
-  "searchEngine": "google",
-  "customSearchUrl": "https://google.com/search?q=%s",
+  "searchEngine": "custom",
+  "customSearchUrl": "https://www.startpage.com/do/search?q=%s",
   "shortcuts": {
     "resize_fullscreen": "control+option+return",
     "lock": "command+option+q",
