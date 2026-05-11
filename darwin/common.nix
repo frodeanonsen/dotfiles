@@ -70,7 +70,7 @@
       fedistar # Mastodon client
       # opencode # AI code tool for developers; Install manually as it updates very frequently
       # usbimager # Write disk images to USB drives
-      codex # OpenAI Codex CLI
+      unstable.codex # OpenAI Codex CLI
       # keepassxc # Offline password manager
       # unstable.bitwarden-desktop # Password manager
       # unstable.bitwarden-cli # Password manager

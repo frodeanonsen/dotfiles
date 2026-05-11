@@ -109,10 +109,14 @@
       entr
       postgresql
       audacity
+      just
 
       # Language servers (for Zed)
       nil
       nixd
+
+      # VSCode for nRF development
+      vscode
     ];
   };
 
