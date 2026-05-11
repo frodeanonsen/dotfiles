@@ -7,10 +7,17 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
   "edit_predictions": {
     "provider": "copilot",
   },
   "git_panel": {
+    "dock": "right",
     "tree_view": true,
   },
   "agent_servers": {
@@ -38,8 +45,9 @@
     "worktree_directory": "worktrees",
   },
   "project_panel": {
+    "dock": "right",
     "hide_hidden": false,
-    "hide_gitignore": true,
+    "hide_gitignore": false,
   },
   "load_direnv": "direct",
   "ssh_connections": [
@@ -48,72 +56,94 @@
       "args": [],
       "projects": [
         {
-          "paths": ["/etc/nixos"],
-        },
-        {
-          "paths": ["/home/frode"],
-        },
-        {
-          "paths": ["/home/frode/git"],
+          "paths": [
+            "/etc/nixos"
+          ]
         },
         {
           "paths": [
-            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-antenna_calibration",
-          ],
+            "/home/frode"
+          ]
         },
         {
           "paths": [
-            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-main/./",
-          ],
+            "/home/frode/git"
+          ]
         },
         {
           "paths": [
-            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-ota",
-          ],
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-antenna_calibration"
+          ]
         },
         {
-          "paths": ["/home/frode/git/zygizo/code/snowflow/./"],
+          "paths": [
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-main/./"
+          ]
         },
-      ],
+        {
+          "paths": [
+            "/home/frode/git/zygizo/code/radar-sensor-firmware/radar-sensor-firmware-ota"
+          ]
+        },
+        {
+          "paths": [
+            "/home/frode/git/zygizo/code/snowflow/./"
+          ]
+        }
+      ]
     },
     {
       "host": "bodbook",
       "args": [],
       "projects": [
         {
-          "paths": ["/etc/nixos"],
-        },
-      ],
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
     },
     {
       "host": "frodespc1",
       "args": [],
       "projects": [
         {
-          "paths": ["/etc/nixos"],
-        },
-      ],
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
     },
     {
       "host": "homebook",
       "args": [],
       "projects": [
         {
-          "paths": ["/etc/nixos"],
-        },
-      ],
+          "paths": [
+            "/etc/nixos"
+          ]
+        }
+      ]
     },
     {
       "host": "hyper",
       "args": [],
       "projects": [
         {
-          "paths": ["/home/frode/zygizo"],
+          "paths": [
+            "/home/frode/docker/firefly/./"
+          ]
         },
-      ],
-    },
+        {
+          "paths": [
+            "/home/frode/zygizo"
+          ]
+        }
+      ]
+    }
   ],
   "agent": {
+    "dock": "left",
     "tool_permissions": {
       "default": "allow",
     },
@@ -130,8 +160,10 @@
       },
     ],
     "default_model": {
+      "effort": "high",
+      "enable_thinking": true,
       "provider": "copilot_chat",
-      "model": "claude-opus-4.6",
+      "model": "gpt-5.4",
     },
     "default_profile": "write",
     "model_parameters": [],
