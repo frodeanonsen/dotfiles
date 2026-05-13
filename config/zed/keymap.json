@@ -30,12 +30,30 @@
       "q": "git_panel::Close",
     },
   },
-  // {
-  //   "context": "!menu && vim_mode != insert && AgentPanel",
-  //   "bindings": {
-  //     "space a a": "workspace::ToggleRightDock"
-  //   }
-  // },
+  {
+    "context": "AgentPanel && !Editor && !menu",
+    "bindings": {
+      "space a a": "workspace::CloseActiveDock",
+    },
+  },
+  {
+    "context": "AgentPanel > Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "space a a": "workspace::CloseActiveDock",
+    },
+  },
+  {
+    "context": "AcpThread > Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "space a a": "workspace::CloseActiveDock",
+    },
+  },
+  {
+    "context": "MessageEditor > Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "space a a": "workspace::CloseActiveDock",
+    },
+  },
   {
     "context": "Editor && VimControl && !VimWaiting && !menu && !AgentPanel",
     "bindings": {
@@ -56,6 +74,7 @@
       // Close project panel as project file panel on the right
       "q": "workspace::ToggleLeftDock",
       "space e": "workspace::ToggleLeftDock",
+      "space E": "workspace::ToggleLeftDock",
       ":": "command_palette::Toggle",
       "%": "project_panel::NewFile",
       "/": "project_panel::NewSearchInDirectory",
@@ -97,7 +116,7 @@
     "context": "Editor && VimControl && !VimWaiting && !menu",
     "bindings": {
       // Refactoring
-      "space c r ": "editor::Rename",
+      "space c r": "editor::Rename",
       // Chat with AI
       "space a e": "assistant::InlineAssist",
       // Git
@@ -114,6 +133,7 @@
       "space g h R": "git::RestoreFile",
       // Toggle inlay hints
       "space u i": "editor::ToggleInlayHints",
+      "space u h": "editor::ToggleInlayHints",
       // Toggle soft wrap
       "space u w": "editor::ToggleSoftWrap",
       // Open markdown preview
@@ -148,7 +168,7 @@
       // New file
       "space b n": "workspace::NewFile",
       // Search in the current buffer
-      "space s b": "vim::Search",
+      "space s b": "buffer_search::Deploy",
       // Search in all the files
       "space s g": "workspace::NewSearch",
       // Search
@@ -157,12 +177,16 @@
       "space g b": "git::Blame",
       // LSP & Code actions
       "space c a": "editor::ToggleCodeActions",
+      "space c d": "diagnostics::Deploy",
       "space s d": "diagnostics::Deploy",
       "space s s": "outline::Toggle",
       // Format
       "space c f": "editor::Format",
       // File explorer
       "space e": "project_panel::ToggleFocus",
+      "space E": "project_panel::ToggleFocus",
+      "space f e": "project_panel::ToggleFocus",
+      "space f E": "project_panel::ToggleFocus",
       "space space": "file_finder::Toggle",
       // Quit zed
       "space q q": "zed::Quit",

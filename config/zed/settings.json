@@ -29,6 +29,9 @@
       },
     },
     "github-copilot-cli": {
+      "default_config_options": {
+        "allow_all": "on"
+      },
       "type": "registry",
     },
   },
@@ -45,7 +48,7 @@
     "worktree_directory": "worktrees",
   },
   "project_panel": {
-    "dock": "right",
+    "dock": "left",
     "hide_hidden": false,
     "hide_gitignore": false,
   },
