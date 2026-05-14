@@ -120,13 +120,7 @@
       // Chat with AI
       "space a e": "assistant::InlineAssist",
       // Git
-      "space g g": [
-        "task::Spawn",
-        {
-          "task_name": "start lazygit",
-          "reveal_target": "center",
-        },
-      ],
+      "space g g": "git_panel::ToggleFocus",
       "space g h d": "editor::ExpandAllDiffHunks",
       "space g h D": "git::Diff",
       "space g h r": "git::Restore",
