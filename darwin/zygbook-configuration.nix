@@ -53,6 +53,9 @@ in
   };
 
   homebrew = {
+    taps = [
+      "nikitabobko/tap"
+    ];
 
     casks = [
       "monitorcontrol"
@@ -61,8 +64,11 @@ in
       "gimp" # GIMP photo editor
       "ungoogled-chromium" # Chromium
       "sol" # MacOS Launcher, alternative to Raycast, etc.
-      "nikitabobko/tap/aerospace" # Aerospace window manager
     ];
+
+    extraConfig = ''
+      cask "nikitabobko/tap/aerospace", trusted: true
+    '';
 
     brews = [
       "aztfexport" # Move package to nix and use in devbox instead
@@ -171,6 +177,7 @@ in
     '';
     settings = {
       experimental-features = "nix-command flakes";
+      ssl-cert-file = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt";
       trusted-users = [
         "@admin"
       ];

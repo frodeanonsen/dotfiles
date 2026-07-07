@@ -32,6 +32,7 @@
       tree-sitter # Incremental parsing system
       plantuml # uml drawing using text
       tmux # Terminal multiplexer
+      unstable.herdr # Terminal multiplexer
       zellij # Terminal multiplexer
       git # Version control system
       gh # GitHub CLI
