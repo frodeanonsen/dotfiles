@@ -1,10 +1,6 @@
 { pkgs, vars, ... }:
 
 {
-  # imports = [
-  #   ./common.nix
-  # ];
-
   programs.zsh.enable = true;
   programs.home-manager.enable = true;
 

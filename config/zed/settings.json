@@ -7,20 +7,29 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "buffer_font_weight": 300.0,
   "outline_panel": {
-    "dock": "right"
+    "dock": "right",
   },
   "collaboration_panel": {
-    "dock": "right"
+    "dock": "right",
   },
   "edit_predictions": {
-    "provider": "copilot",
+    "provider": "zed",
   },
   "git_panel": {
-    "dock": "right",
+    "dock": "left",
     "tree_view": true,
   },
   "agent_servers": {
+    "claude-acp": {
+      "default_config_options": {
+        "effort": "medium",
+        "model": "opus[1m]",
+        "mode": "acceptEdits"
+      },
+      "type": "registry"
+    },
     "codex-acp": {
       "type": "registry",
       "default_config_options": {
@@ -30,7 +39,8 @@
     },
     "github-copilot-cli": {
       "default_config_options": {
-        "allow_all": "on"
+        "model": "gpt-5.5",
+        "allow_all": "on",
       },
       "type": "registry",
     },
@@ -70,7 +80,17 @@
         },
         {
           "paths": [
+            "/home/frode/backup"
+          ]
+        },
+        {
+          "paths": [
             "/home/frode/git"
+          ]
+        },
+        {
+          "paths": [
+            "/home/frode/git/radar-sensor-firmware/wt/radar-sensor-firmware-instrumentation/./"
           ]
         },
         {
@@ -146,7 +166,9 @@
     }
   ],
   "agent": {
-    "dock": "left",
+    "limit_content_width": false,
+    "sidebar_side": "right",
+    "dock": "right",
     "tool_permissions": {
       "default": "allow",
     },
@@ -166,7 +188,7 @@
       "effort": "high",
       "enable_thinking": true,
       "provider": "copilot_chat",
-      "model": "gpt-5.4",
+      "model": "gpt-5.5",
     },
     "default_profile": "write",
     "model_parameters": [],
@@ -196,7 +218,7 @@
   "relative_line_numbers": "enabled",
   "cursor_blink": false,
   "ui_font_size": 16,
-  "buffer_font_size": 15,
+  "buffer_font_size": 16.0,
   "scrollbar": {
     "show": "never",
   },
@@ -208,7 +230,7 @@
   "show_wrap_guides": true,
   "theme": {
     "mode": "system",
-    "light": "Tokyo Night Light",
+    "light": "Catppuccin Latte",
     "dark": "Catppuccin Mocha",
   },
   "languages": {

@@ -15,7 +15,6 @@
     ./apps/firefox.nix
     # Add more app configurations here as they are created
     # ./apps/vscode.nix
-    # ./apps/alacritty.nix
     # etc...
   ];
 }

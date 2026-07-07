@@ -16,6 +16,27 @@
   ...
 }:
 
+let
+  syncAlacrittyTheme = pkgs.writeShellScriptBin "sync-alacritty-theme" ''
+    set -eu
+
+    state_dir="/Users/${vars.user}/.local/state/alacritty"
+    theme_file="$state_dir/theme.toml"
+    light_theme="/Users/${vars.user}/.config/alacritty/catppuccin-latte.toml"
+    dark_theme="/Users/${vars.user}/.config/alacritty/catppuccin-macchiato.toml"
+    source_theme="$dark_theme"
+
+    mkdir -p "$state_dir"
+
+    if ! defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then
+      source_theme="$light_theme"
+    fi
+
+    if ! cmp -s "$source_theme" "$theme_file" 2>/dev/null; then
+      cp "$source_theme" "$theme_file"
+    fi
+  '';
+in
 {
   imports = [
     ./common.nix
@@ -57,6 +78,7 @@
 
   environment = {
     systemPackages = with pkgs; [
+      syncAlacrittyTheme
       vfkit # Simple command line tool to start VMs through the macOS Virtualization framework
       unstable.colima # Docker container runtimes with minimal setup
       podman # Podman container runtime
@@ -68,6 +90,17 @@
       k9s
       stern
     ];
+  };
+
+  launchd.user.agents.alacritty-theme-sync = {
+    serviceConfig = {
+      Label = "org.nixos.alacritty-theme-sync";
+      ProgramArguments = [ "${syncAlacrittyTheme}/bin/sync-alacritty-theme" ];
+      RunAtLoad = true;
+      WatchPaths = [ "/Users/${vars.user}/Library/Preferences/.GlobalPreferences.plist" ];
+      StandardOutPath = "/tmp/alacritty-theme-sync.out";
+      StandardErrorPath = "/tmp/alacritty-theme-sync.err";
+    };
   };
 
   # Removed in 2025.05
@@ -176,12 +209,14 @@
 
       run_as_user ln -sfn "$dotfiles/lazyvim" "$user_home/.config/nvim"
       run_as_user ln -sfn "$dotfiles/fish" "$user_home/.config/fish"
+      run_as_user ln -sfn "$dotfiles/alacritty" "$user_home/.config/alacritty"
       run_as_user ln -sfn "$dotfiles/sketchybar" "$user_home/.config/sketchybar"
       run_as_user ln -sfn "$dotfiles/tmux" "$user_home/.config/tmux"
       run_as_user ln -sfn "$dotfiles/nix" "$user_home/.config/nix"
       run_as_user ln -sfn "$dotfiles/lazygit" "$user_home/.config/lazygit"
       run_as_user ln -sfn "$dotfiles/starship" "$user_home/.config/starship"
       run_as_user ln -sfn "$dotfiles/sol" "$user_home/.config/sol"
+      run_as_user ${syncAlacrittyTheme}/bin/sync-alacritty-theme
     '';
 
     primaryUser = "frode";

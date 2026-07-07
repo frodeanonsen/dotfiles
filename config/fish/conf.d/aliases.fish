@@ -20,3 +20,5 @@ alias top='btm'
 alias lsusb='system_profiler SPUSBDataType'
 
 alias m=mise
+
+alias k=kubectl

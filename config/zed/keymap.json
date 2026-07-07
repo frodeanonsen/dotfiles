@@ -27,6 +27,12 @@
   {
     "context": "GitPanel",
     "bindings": {
+      "q": null,
+    },
+  },
+  {
+    "context": "GitPanel",
+    "bindings": {
       "q": "git_panel::Close",
     },
   },

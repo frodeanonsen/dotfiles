@@ -2,3 +2,5 @@
 *~
 *.swp
 worktrees/
+
+**/.claude/settings.local.json
