@@ -35,7 +35,7 @@
       unstable.herdr # Terminal multiplexer
       zellij # Terminal multiplexer
       git # Version control system
-      gh # GitHub CLI
+      unstable.gh # GitHub CLI
       difftastic # Diff tool that understands syntax
       direnv # Environment switcher
       bat # Cat clone with syntax highlighting
@@ -84,6 +84,8 @@
       nodejs_22
       delta # diff pager for git and diff output
       unstable.diffnav # diff navigator for git and diff output
+      magic-wormhole-rs # file
+      magic-wormhole
     ];
   };
 
