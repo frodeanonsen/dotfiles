@@ -39,7 +39,9 @@
     },
     "github-copilot-cli": {
       "default_config_options": {
-        "model": "gpt-5.5",
+        "mode": "https://agentclientprotocol.com/protocol/session-modes#agent",
+        "reasoning_effort": "high",
+        "model": "gpt-5.6-sol",
         "allow_all": "on",
       },
       "type": "registry",
