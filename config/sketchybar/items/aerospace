@@ -100,14 +100,14 @@ create_workspace_bracket_for_monitor() {
 
 cleanup_previous_items
 created_items=()
-monitor_ids=($("$AEROSPACE_BIN" list-monitors | awk '{print $1}'))
+monitor_ids=($(sb_timeout "$SB_TIMEOUT_SECS" "$AEROSPACE_BIN" list-monitors | awk '{print $1}'))
 
 # TODO:
 # - Update this view when moving workspaces to a different monitors.
 # - Only show workspaces with active windows or currently selected like in i3
 #   default configuration.
 for monitor_id in ${monitor_ids[@]}; do
-	workspaces_for_monitor_id=($("$AEROSPACE_BIN" list-workspaces --monitor $monitor_id))
+	workspaces_for_monitor_id=($(sb_timeout "$SB_TIMEOUT_SECS" "$AEROSPACE_BIN" list-workspaces --monitor $monitor_id))
 	create_workspace_bracket_for_monitor $monitor_id "${workspaces_for_monitor_id[@]}"
 done
 

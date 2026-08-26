@@ -3,3 +3,38 @@
 export PLUGIN_DIR="$CONFIG_DIR/plugins"
 export ITEM_DIR="$CONFIG_DIR/items"
 export THEME_DIR="$CONFIG_DIR/themes"
+
+# Default deadline for window-manager CLI calls. A wedged aerospace/rift/sketchybar
+# server never answers, and the workspaces plugin runs on a 5s timer, so an
+# unbounded call leaks a process pair every tick until the machine is restarted.
+export SB_TIMEOUT_SECS="${SB_TIMEOUT_SECS:-3}"
+
+# sb_timeout <seconds> <command...>
+# Runs the command with a hard deadline. Exits 124 on timeout, like GNU timeout.
+# The killer subshell drops stdout so it never holds a command-substitution pipe
+# open, which would otherwise make every call block for the full deadline.
+sb_timeout() {
+	local secs="$1"
+	shift
+
+	"$@" &
+	local cmd_pid=$!
+
+	(
+		sleep "$secs"
+		kill -9 "$cmd_pid" 2>/dev/null
+	) >/dev/null 2>&1 &
+	local killer_pid=$!
+
+	local rc=0
+	wait "$cmd_pid" 2>/dev/null || rc=$?
+	kill "$killer_pid" 2>/dev/null
+	wait "$killer_pid" 2>/dev/null
+
+	# SIGKILL only ever comes from the killer above, so report it as a timeout.
+	if [ "$rc" -eq 137 ]; then
+		rc=124
+	fi
+
+	return $rc
+}

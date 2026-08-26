@@ -70,7 +70,7 @@ fi
 cleanup_previous_items
 created_items=()
 
-rift_displays_json="$("$RIFT_CLI" query displays)"
+rift_displays_json="$(sb_timeout "$SB_TIMEOUT_SECS" "$RIFT_CLI" query displays)"
 sketchybar_displays_json="$("$SKETCHYBAR_BIN" --query displays)"
 
 display_count="$(printf '%s\n' "$rift_displays_json" | "$JQ_BIN" 'length')"
@@ -151,7 +151,7 @@ while IFS=$'\t' read -r arrangement_id display_uuid display_name space_id; do
 			script="$PLUGIN_DIR/rift $display_uuid $workspace_index"
 		bracket_members+=("$item_name")
 	done < <(
-		"$RIFT_CLI" query workspaces --space-id "$space_id" |
+		sb_timeout "$SB_TIMEOUT_SECS" "$RIFT_CLI" query workspaces --space-id "$space_id" |
 			"$JQ_BIN" -r 'sort_by(if .index == 0 then 999 else .index end)[] | [.index, .name] | @tsv'
 	)
 

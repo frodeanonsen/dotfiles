@@ -36,6 +36,52 @@ let
       cp "$source_theme" "$theme_file"
     fi
   '';
+
+  # sketchybar can deadlock its main thread against CoreVideo when a display
+  # reconfiguration lands while an animation frame is in flight: main blocks in
+  # CVDisplayLink::stop() while the display-link thread blocks in
+  # CVCGDisplayLink::finalize(). The process stays alive, so launchd's KeepAlive
+  # never fires, but the bar stops drawing and every client call hangs forever.
+  # Probe it on a timer and restart it when it stops answering.
+  sketchybarWatchdog = pkgs.writeShellScriptBin "sketchybar-watchdog" ''
+    set -u
+
+    sketchybar_bin="${pkgs.sketchybar}/bin/sketchybar"
+    deadline=5
+
+    reply="$(mktemp)"
+    trap 'rm -f "$reply"' EXIT
+
+    # A wedged daemon answers the query with an empty body rather than blocking,
+    # so the exit code alone proves nothing; the deadline only guards the case
+    # where it stops draining its mach port entirely.
+    "$sketchybar_bin" --query bar >"$reply" 2>/dev/null &
+    probe_pid=$!
+    (
+      sleep "$deadline"
+      kill -9 "$probe_pid" 2>/dev/null
+    ) >/dev/null 2>&1 &
+    killer_pid=$!
+
+    rc=0
+    wait "$probe_pid" 2>/dev/null || rc=$?
+    kill "$killer_pid" 2>/dev/null
+    wait "$killer_pid" 2>/dev/null
+
+    if [ "$rc" -eq 0 ] && grep -q '"position"' "$reply"; then
+      exit 0
+    fi
+
+    if [ "$rc" -eq 0 ]; then
+      reason="answered an empty bar query"
+    else
+      reason="did not answer within ''${deadline}s (rc=$rc)"
+    fi
+
+    echo "$(date -Iseconds) sketchybar $reason, restarting"
+    launchctl kickstart -k "gui/$(id -u)/org.nixos.sketchybar"
+  '';
+
 in
 {
   imports = [
@@ -85,6 +131,7 @@ in
   environment = {
     systemPackages = with pkgs; [
       syncAlacrittyTheme
+      sketchybarWatchdog
       vfkit # Simple command line tool to start VMs through the macOS Virtualization framework
       unstable.colima # Docker container runtimes with minimal setup
       podman # Podman container runtime
@@ -106,6 +153,17 @@ in
       WatchPaths = [ "/Users/${vars.user}/Library/Preferences/.GlobalPreferences.plist" ];
       StandardOutPath = "/tmp/alacritty-theme-sync.out";
       StandardErrorPath = "/tmp/alacritty-theme-sync.err";
+    };
+  };
+
+  launchd.user.agents.sketchybar-watchdog = {
+    serviceConfig = {
+      Label = "org.nixos.sketchybar-watchdog";
+      ProgramArguments = [ "${sketchybarWatchdog}/bin/sketchybar-watchdog" ];
+      RunAtLoad = true;
+      StartInterval = 60;
+      StandardOutPath = "/tmp/sketchybar-watchdog.out";
+      StandardErrorPath = "/tmp/sketchybar-watchdog.err";
     };
   };
 

@@ -10,6 +10,31 @@ ACTIVE_WM_FILE="${ACTIVE_WM_FILE:-$STATE_DIR/active-window-manager}"
 
 mkdir -p "$STATE_DIR"
 
+# This plugin runs on a 5s timer and on display/wake events, so overlapping runs
+# are routine. Serialising them keeps a slow rebuild from being torn apart by the
+# next tick's cleanup, and keeps runs from stacking up if one does stall.
+LOCK_DIR="$STATE_DIR/workspaces.lock"
+
+acquire_lock() {
+	if mkdir "$LOCK_DIR" 2>/dev/null; then
+		printf '%s\n' "$$" >"$LOCK_DIR/pid"
+		return 0
+	fi
+
+	holder="$(cat "$LOCK_DIR/pid" 2>/dev/null || true)"
+	if [ -n "$holder" ] && kill -0 "$holder" 2>/dev/null; then
+		return 1
+	fi
+
+	# Holder is gone, so the lock is stale. Reclaim it.
+	rm -rf "$LOCK_DIR"
+	mkdir "$LOCK_DIR" 2>/dev/null || return 1
+	printf '%s\n' "$$" >"$LOCK_DIR/pid"
+}
+
+acquire_lock || exit 0
+trap 'rm -rf "$LOCK_DIR"' EXIT
+
 detect_window_manager() {
 	case "${WINDOW_MANAGER:-}" in
 	aerospace | rift)
@@ -18,12 +43,12 @@ detect_window_manager() {
 		;;
 	esac
 
-	if [ -x "$AEROSPACE_BIN" ] && "$AEROSPACE_BIN" list-monitors >/dev/null 2>&1; then
+	if [ -x "$AEROSPACE_BIN" ] && sb_timeout "$SB_TIMEOUT_SECS" "$AEROSPACE_BIN" list-monitors >/dev/null 2>&1; then
 		printf 'aerospace\n'
 		return 0
 	fi
 
-	if [ -x "$RIFT_CLI" ] && "$RIFT_CLI" query displays >/dev/null 2>&1; then
+	if [ -x "$RIFT_CLI" ] && sb_timeout "$SB_TIMEOUT_SECS" "$RIFT_CLI" query displays >/dev/null 2>&1; then
 		printf 'rift\n'
 		return 0
 	fi
@@ -32,7 +57,7 @@ detect_window_manager() {
 }
 
 workspace_items_present() {
-	"$SKETCHYBAR_BIN" --query workspaces_spacer_left >/dev/null 2>&1
+	sb_timeout "$SB_TIMEOUT_SECS" "$SKETCHYBAR_BIN" --query workspaces_spacer_left >/dev/null 2>&1
 }
 
 cleanup_workspace_items() {
@@ -59,7 +84,7 @@ rebuild_rift() {
 rebuild_aerospace() {
 	bash "$ITEM_DIR/aerospace"
 	rebuild_common_items
-	focused_workspace="$("$AEROSPACE_BIN" list-workspaces --focused 2>/dev/null | head -n 1)"
+	focused_workspace="$(sb_timeout "$SB_TIMEOUT_SECS" "$AEROSPACE_BIN" list-workspaces --focused 2>/dev/null | head -n 1)"
 	if [ -n "$focused_workspace" ]; then
 		"$SKETCHYBAR_BIN" --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$focused_workspace"
 	fi

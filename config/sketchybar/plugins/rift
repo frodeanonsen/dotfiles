@@ -13,14 +13,14 @@ workspace_index="$2"
 [ -n "$display_uuid" ] || exit 0
 [ -n "$workspace_index" ] || exit 0
 
-space_id="$("$RIFT_CLI" query displays | "$JQ_BIN" -r --arg uuid "$display_uuid" '.[] | select(.uuid == $uuid) | .space')"
+space_id="$(sb_timeout "$SB_TIMEOUT_SECS" "$RIFT_CLI" query displays | "$JQ_BIN" -r --arg uuid "$display_uuid" '.[] | select(.uuid == $uuid) | .space')"
 
 if [ -z "$space_id" ] || [ "$space_id" = "null" ]; then
   "$SKETCHYBAR_BIN" --set "$NAME" drawing=off
   exit 0
 fi
 
-workspace_json="$("$RIFT_CLI" query workspaces --space-id "$space_id" | "$JQ_BIN" -r --argjson index "$workspace_index" '.[] | select(.index == $index)')"
+workspace_json="$(sb_timeout "$SB_TIMEOUT_SECS" "$RIFT_CLI" query workspaces --space-id "$space_id" | "$JQ_BIN" -r --argjson index "$workspace_index" '.[] | select(.index == $index)')"
 
 if [ -z "$workspace_json" ]; then
   "$SKETCHYBAR_BIN" --set "$NAME" drawing=off
