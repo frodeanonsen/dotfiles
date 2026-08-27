@@ -235,16 +235,40 @@ r = [
   'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
 ] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
+# Toggle between floating and tiling layout
 f = [
   'layout floating tiling',
   'mode main',
-] # Toggle between floating and tiling layout
-backspace = ['close-all-windows-but-current', 'mode main']
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+]
+backspace = [
+  'close-all-windows-but-current',
+  'mode main',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+]
 
-alt-shift-h = ['join-with left', 'mode main']
-alt-shift-j = ['join-with down', 'mode main']
-alt-shift-k = ['join-with up', 'mode main']
-alt-shift-l = ['join-with right', 'mode main']
+# Every binding that returns to 'main' must also clear the sketchybar [s]
+# indicator, otherwise it stays lit after leaving service mode.
+alt-shift-h = [
+  'join-with left',
+  'mode main',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+]
+alt-shift-j = [
+  'join-with down',
+  'mode main',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+]
+alt-shift-k = [
+  'join-with up',
+  'mode main',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+]
+alt-shift-l = [
+  'join-with right',
+  'mode main',
+  'exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_service_mode_enabled_changed AEROSPACE_SERVICE_MODE_ENABLED=false',
+]
 
 # Back to 'main' mode
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
