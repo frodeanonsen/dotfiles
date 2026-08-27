@@ -280,6 +280,7 @@ in
       run_as_user ln -sfn "$dotfiles/nix" "$user_home/.config/nix"
       run_as_user ln -sfn "$dotfiles/lazygit" "$user_home/.config/lazygit"
       run_as_user ln -sfn "$dotfiles/starship" "$user_home/.config/starship"
+      run_as_user ln -sfn "$dotfiles/atuin" "$user_home/.config/atuin"
       run_as_user ln -sfn "$dotfiles/sol" "$user_home/.config/sol"
       run_as_user ${syncAlacrittyTheme}/bin/sync-alacritty-theme
     '';

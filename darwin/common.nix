@@ -63,6 +63,7 @@
       oh-my-posh # Prompt theme engine for any shell
       starship # Prompt for any shell
       zoxide # Smarter cd command
+      atuin # Shell history search and sync
       dust # Disk Usage Summary
       duf # Disk Usage/Free Utility
       neofetch # System info script

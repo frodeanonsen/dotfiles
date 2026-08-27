@@ -2,3 +2,6 @@ secret.yaml
 result
 config/zed/prompts/
 config/sol/state.json
+config/atuin/history.db*
+config/atuin/key
+config/atuin/session

@@ -1,0 +1,30 @@
+# Atuin shell history
+# Full option list: https://docs.atuin.sh/configuration/config/
+#
+# Local-only setup: history lives in $HOME/.local/share/atuin, nothing leaves
+# the machine. To sync later, run `atuin register`/`atuin login`, then flip
+# auto_sync to true (and set sync_address for a self-hosted server).
+
+auto_sync = false
+update_check = false
+
+# Search UI
+search_mode = "fuzzy"
+filter_mode = "global"
+style = "compact"
+inline_height = 20
+show_preview = true
+
+# Up arrow searches the current session only; ctrl-r searches everything
+filter_mode_shell_up_key_binding = "session"
+
+# Enter puts the selected command on the prompt instead of running it
+enter_accept = false
+
+# Keep credentials out of the database
+secrets_filter = true
+
+# Commands never recorded
+history_filter = [
+  "^ ",
+]

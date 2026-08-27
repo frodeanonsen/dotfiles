@@ -19,6 +19,7 @@
     ".config/nix".source = ../config/nix;
     ".config/zellij".source = ../config/zellij;
     ".config/wezterm".source = ../config/wezterm;
+    ".config/atuin".source = ../config/atuin;
   };
 
   home.packages = with pkgs; [
@@ -59,6 +60,7 @@
     oh-my-posh
     zellij
     zoxide
+    atuin
     platformio-core
     terraform
     terraform-ls

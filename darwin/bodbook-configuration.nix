@@ -59,6 +59,7 @@
       ".config/tmux".source = ../config/tmux;
       ".config/nix".source = ../config/nix;
       ".config/lazygit".source = ../config/lazygit;
+      ".config/atuin".source = ../config/atuin;
     };
 
     home.sessionVariables = { };
