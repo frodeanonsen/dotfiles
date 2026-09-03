@@ -137,7 +137,7 @@ alt-p = 'exec-and-forget open -a "System Preferences"'
 
 # Apps
 # Settings menu (replace with your settings app or script)
-alt-enter = 'exec-and-forget open -n -a "alacritty"'
+alt-enter = 'exec-and-forget open -n -a "ghostty"'
 
 # Layouts
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout

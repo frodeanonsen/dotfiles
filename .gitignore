@@ -5,3 +5,4 @@ config/sol/state.json
 config/atuin/history.db*
 config/atuin/key
 config/atuin/session
+config/sol/images_pasteboard
