@@ -277,6 +277,7 @@ in
       run_as_user ln -sfn "$dotfiles/alacritty" "$user_home/.config/alacritty"
       run_as_user ln -sfn "$dotfiles/sketchybar" "$user_home/.config/sketchybar"
       run_as_user ln -sfn "$dotfiles/aerospace" "$user_home/.config/aerospace"
+      run_as_user ln -sfn "$dotfiles/ghostty" "$user_home/.config/ghostty"
       run_as_user ln -sfn "$dotfiles/tmux" "$user_home/.config/tmux"
       run_as_user ln -sfn "$dotfiles/nix" "$user_home/.config/nix"
       run_as_user ln -sfn "$dotfiles/lazygit" "$user_home/.config/lazygit"

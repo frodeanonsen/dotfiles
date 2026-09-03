@@ -1,12 +1,13 @@
-font-family = "MonaspiceKr Nerd Font Mono"
-# font-family = "JetBrainsMono Nerd Font Mono"
+command = /run/current-system/sw/bin/fish
+theme = dark:tokyonight_night,light:tokyonight-day
+click-repeat-interval = 500
+auto-update-channel = stable
+font-family = JetBrainsMono Nerd Font Propo
 font-size = 16
-theme = light:Catppuccin Latte,dark:Catppuccin Mocha
-background-blur-radius = 20
-mouse-hide-while-typing = true
-window-decoration = true
-window-theme = auto
-# keybind = global:cmd+/=toggle_quick_terminal
-macos-option-as-alt = true
-background-opacity = 0.7
-# background-blur-radius = 20
+font-thicken = true
+font-thicken-strength = 10
+macos-titlebar-style = hidden
+macos-option-as-alt = false
+
+# each `open -n` instance exits when its last window closes
+quit-after-last-window-closed = true
