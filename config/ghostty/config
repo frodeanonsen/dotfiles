@@ -1,5 +1,5 @@
 command = /run/current-system/sw/bin/fish
-theme = dark:tokyonight_night,light:tokyonight-day
+theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 click-repeat-interval = 500
 auto-update-channel = stable
 font-family = JetBrainsMono Nerd Font Propo
