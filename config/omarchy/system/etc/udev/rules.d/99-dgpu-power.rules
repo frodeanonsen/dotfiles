@@ -1,0 +1,4 @@
+# Pin the discrete GPU to low clocks on battery, auto on AC.
+# "add" covers boot, "change" covers plugging and unplugging the adapter.
+# Installed by scripts/install_omarchy_system.sh from the dotfiles repo.
+SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ACTION=="add|change", RUN+="/usr/local/bin/dgpu-power"

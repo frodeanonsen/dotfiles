@@ -184,7 +184,19 @@ scripts/install_omarchy_packages.sh
 The package script installs whatever is listed in `config/omarchy/packages`
 and missing, through `omarchy pkg add`. That list is the omarchy counterpart
 of the `home.packages` block in the nix host configs, minus what the omarchy
-base already ships. It needs sudo, so run it from a terminal.
+base already ships.
+
+`scripts/install_omarchy_system.sh` copies the root-owned files under
+`config/omarchy/system/` to the same paths under `/`. Today that is a udev rule
+and the `dgpu-power` helper it runs: on the 2018 MacBook Pro the Radeon drives
+the panel under Linux and idles at ~13 W in auto, so the rule pins it to its
+lowest clocks whenever the adapter is unplugged and frees it again on AC.
+`dgpu-power status` shows what it is doing, `dgpu-power battery` forces the
+low state by hand.
+
+Both scripts need root. From a terminal that is a sudo prompt; from something
+without one, like the `!` runner in Claude Code, they fall back to a `pkexec`
+dialog.
 
 ## Rebuilding
 
@@ -194,7 +206,7 @@ base already ships. It needs sudo, so run it from a terminal.
 | `ZygizoOne` | `scripts/update_linux.sh` |
 | `Ros` | `scripts/update_ros.sh` |
 | `BodBook` | `scripts/update_bodbook.sh` |
-| `homebook` | `scripts/link_config.sh`, then `scripts/install_omarchy_packages.sh` for new packages |
+| `homebook` | `scripts/link_config.sh`, then `scripts/install_omarchy_packages.sh` and `scripts/install_omarchy_system.sh` |
 
 Run `nix flake check` before pushing changes that touch the nix side. It does
 not cover `config/` or `scripts/`, so changes that only affect a non-nix machine
