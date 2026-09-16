@@ -107,8 +107,11 @@ Omarchy-only, so only `link_config.sh` places it. `hypr/` holds the six
 Hyprland override files (`hyprland.lua`, `monitors.lua`, `input.lua`,
 `bindings.lua`, `looknfeel.lua`, `autostart.lua`), linked one by one into
 `~/.config/hypr/` because omarchy owns that dir and keeps its own files and
-upgrade backups there. `bindings.lua` calls `~/.local/bin/theme-mode-toggle`
-and `~/.local/bin/clamshell-follow`, which are not in the repo. Omarchy-only.
+upgrade backups there. `omarchy/bin/` holds the user scripts those bindings
+call, `theme-mode-toggle` (Catppuccin dark/light switch, `auto` picks by time
+of day) and `clamshell-follow` (keeps the laptop's workspace visible on the
+external monitor when the lid closes), linked into `~/.local/bin/`. All
+Omarchy-only.
 
 **Bash on omarchy** — `~/.bashrc` stays omarchy's own file with one added line
 that sources `config/bash/omarchy.bash` after the omarchy rc chain. That file

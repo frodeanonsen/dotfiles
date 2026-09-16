@@ -43,6 +43,8 @@ zellij:zellij
 # ~/.config/hypr is omarchy's dir: it also holds files omarchy owns and
 # rewrites (hyprsunset.conf, xdph.conf, upgrade backups), so only the user
 # override files that hyprland.lua requires are linked, one by one.
+# The omarchy/bin scripts are what those hypr bindings call; they go into
+# ~/.local/bin, which omarchy already puts on PATH.
 home_links="
 .claude/settings.json:claude/settings.json
 .claude/statusline.sh:claude/statusline.sh
@@ -53,6 +55,8 @@ home_links="
 .config/hypr/bindings.lua:hypr/bindings.lua
 .config/hypr/looknfeel.lua:hypr/looknfeel.lua
 .config/hypr/autostart.lua:hypr/autostart.lua
+.local/bin/theme-mode-toggle:omarchy/bin/theme-mode-toggle
+.local/bin/clamshell-follow:omarchy/bin/clamshell-follow
 "
 
 dry_run=false

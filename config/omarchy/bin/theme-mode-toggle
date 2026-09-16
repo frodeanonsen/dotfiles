@@ -1,0 +1,25 @@
+#!/bin/bash
+# Toggle between the dark and light Catppuccin themes.
+# With "auto", pick by time of day: light 06:00-20:00, dark otherwise.
+
+DARK="catppuccin"
+LIGHT="catppuccin-latte"
+LIGHT_NAME="Catppuccin Latte"
+
+current="$(omarchy theme current)"
+
+if [[ $1 == "auto" ]]; then
+  hour=$((10#$(date +%H)))
+  if ((hour >= 6 && hour < 20)); then
+    [[ $current == "$LIGHT_NAME" ]] || omarchy theme set "$LIGHT"
+  else
+    [[ $current == "$LIGHT_NAME" ]] && omarchy theme set "$DARK"
+  fi
+  exit 0
+fi
+
+if [[ $current == "$LIGHT_NAME" ]]; then
+  omarchy theme set "$DARK"
+else
+  omarchy theme set "$LIGHT"
+fi

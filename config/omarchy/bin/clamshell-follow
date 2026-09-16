@@ -1,0 +1,21 @@
+#!/bin/bash
+# Closing the lid with an external monitor disables the laptop panel. Hyprland
+# moves the panel's workspaces to the external monitor but keeps showing the
+# external's own workspace, so the panel's windows end up out of sight.
+# Show the workspace the panel had on screen once the panel is gone.
+
+internal=$(omarchy-hyprland-monitor-laptop)
+[[ -n $internal ]] || exit 0
+omarchy-hw-external-monitors || exit 0
+
+# Read it now, before Omarchy's lid handler disables the panel.
+workspace=$(hyprctl monitors -j | jq -r --arg m "$internal" '.[] | select(.name == $m) | .activeWorkspace.id')
+[[ $workspace =~ ^[0-9]+$ ]] || exit 0
+
+for _ in {1..30}; do
+  if hyprctl monitors all -j | jq -e --arg m "$internal" '.[] | select(.name == $m and .disabled == true)' >/dev/null; then
+    hyprctl dispatch "hl.dsp.focus({ workspace = \"$workspace\" })" >/dev/null
+    exit 0
+  fi
+  sleep 0.1
+done
