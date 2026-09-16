@@ -7,6 +7,7 @@
 
 # Shell history and environment
 atuin
+bash-preexec    # atuin's bash hooks need it
 direnv
 
 # The tools the fish/bash aliases swap in

@@ -84,12 +84,15 @@ nix host configs and `link_config.sh` place: `alacritty`, `atuin`, `fish`,
 `ghostty`, `kitty`, `lazygit`, `lazyvim` (linked as `nvim`), `nix`, `ohmyposh`,
 `sol`, `starship`, `tmux`, `toolkit`, `wezterm`, `zed`, `zellij`.
 
-**Shell topic dirs** — *never* symlinked. `config/*/*.zsh` and `config/*/*.fish`
-are sourced directly out of `$DOTFILES` by `config/zsh/zshrc` and
-`config/fish/conf.d/config.fish`, which glob them at shell startup. This is what
+**Shell topic dirs** — *never* symlinked. `config/*/*.zsh`, `config/*/*.fish`
+and `config/*/*.bash` are sourced directly out of `$DOTFILES` by
+`config/zsh/zshrc`, `config/fish/conf.d/config.fish` and
+`config/bash/omarchy.bash`, which glob them at shell startup. This is what
 `homebrew/`, `java/`, `kubernetes/`, `python/`, `rust/`, `system/` and friends
 are. Adding a `foo/aliases.zsh` is all it takes to get it loaded; adding a
-symlink for it would be wrong.
+symlink for it would be wrong. The `.bash` files are the omarchy port of the
+fish setup: same aliases, atuin, direnv, difftastic and the yazi `y` function,
+each guarded so a missing tool leaves the stock command alone.
 
 **Home-relative files** — single files linked straight into `$HOME` rather than
 a whole `~/.config` dir. `claude/` puts `settings.json` and `statusline.sh` in
@@ -103,10 +106,10 @@ themed configs, and `bash/omarchy.bash` points `STARSHIP_CONFIG` at the result.
 Omarchy-only, so only `link_config.sh` places it.
 
 **Bash on omarchy** — `~/.bashrc` stays omarchy's own file with one added line
-that sources `config/bash/omarchy.bash` after the omarchy rc chain. Anything
-bash-specific this repo wants on that host goes in that file. The older
-`config/bash/bashrc` is the Debian-style rc the nix hosts link as `~/.bashrc`
-and is not used on omarchy.
+that sources `config/bash/omarchy.bash` after the omarchy rc chain. That file
+is only the loader for the `.bash` topic files above; put new things in a
+topic dir, not in it. The older `config/bash/bashrc` is the Debian-style rc
+the nix hosts link as `~/.bashrc` and is not used on omarchy.
 
 **Platform-specific configs** — only linked on the machines that can use them.
 `aerospace`, `sketchybar`, `skhd`, `yabai`, `iterm`, `macos` and `nix-darwin`
