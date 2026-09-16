@@ -178,7 +178,13 @@ home-manager switch --flake .#Ros
 ```sh
 scripts/link_config.sh --dry-run
 scripts/link_config.sh
+scripts/install_omarchy_packages.sh
 ```
+
+The package script installs whatever is listed in `config/omarchy/packages`
+and missing, through `omarchy pkg add`. That list is the omarchy counterpart
+of the `home.packages` block in the nix host configs, minus what the omarchy
+base already ships. It needs sudo, so run it from a terminal.
 
 ## Rebuilding
 
@@ -188,7 +194,7 @@ scripts/link_config.sh
 | `ZygizoOne` | `scripts/update_linux.sh` |
 | `Ros` | `scripts/update_ros.sh` |
 | `BodBook` | `scripts/update_bodbook.sh` |
-| `homebook` | `scripts/link_config.sh` |
+| `homebook` | `scripts/link_config.sh`, then `scripts/install_omarchy_packages.sh` for new packages |
 
 Run `nix flake check` before pushing changes that touch the nix side. It does
 not cover `config/` or `scripts/`, so changes that only affect a non-nix machine

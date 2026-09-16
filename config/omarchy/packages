@@ -1,0 +1,25 @@
+# Arch packages the shell config expects on omarchy hosts, installed with
+# scripts/install_omarchy_packages.sh (which wraps `omarchy pkg add`).
+#
+# Only what the omarchy base does not already ship; bat, eza, fzf, zoxide,
+# lazygit, btop, starship and mise come with omarchy. Mirrors the shell tools
+# in linux/*-configuration.nix home.packages. One package per line, # comments.
+
+# Shell history and environment
+atuin
+direnv
+
+# The tools the fish/bash aliases swap in
+difftastic      # difft, git external diff
+dust            # du
+duf             # df
+xh              # http
+doggo           # dig (maintained fork of the unmaintained dog)
+kubectl         # k
+
+# Everyday CLI
+glow
+tldr
+# hwatch        # not in the Arch repos; AUR only, install by hand if wanted
+lnav
+sshs
