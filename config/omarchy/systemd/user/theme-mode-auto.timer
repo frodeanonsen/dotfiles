@@ -1,0 +1,11 @@
+[Unit]
+Description=Switch Catppuccin light/dark at 06:00 and 20:00
+PartOf=graphical-session.target
+
+[Timer]
+OnCalendar=*-*-* 06,20:00:00
+OnActiveSec=5s
+AccuracySec=1s
+
+[Install]
+WantedBy=graphical-session.target

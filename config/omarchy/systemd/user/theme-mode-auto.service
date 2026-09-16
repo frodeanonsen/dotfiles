@@ -1,0 +1,8 @@
+[Unit]
+Description=Set Catppuccin light/dark theme by time of day
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/theme-mode-toggle auto

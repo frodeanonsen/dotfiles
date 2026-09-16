@@ -113,9 +113,11 @@ of day) and `clamshell-follow` (keeps the laptop's workspace visible on the
 external monitor when the lid closes) and `bt-autoreconnect` (keeps asking
 bonded Bluetooth LE keyboards and mice to reconnect, because the T2 MacBook's
 Broadcom controller does not pick them up on its own), linked into
-`~/.local/bin/`. `omarchy/systemd/user/` holds the user unit that runs
-`bt-autoreconnect`, linked into `~/.config/systemd/user/`; after linking on a
-new machine, `systemctl --user enable --now bt-autoreconnect` once. All
+`~/.local/bin/`. `omarchy/systemd/user/` holds the user units, linked into
+`~/.config/systemd/user/`: the service that runs `bt-autoreconnect`, and the
+`theme-mode-auto` service and timer that run `theme-mode-toggle auto` at 06:00
+and 20:00. After linking on a new machine, enable them once with
+`systemctl --user enable --now bt-autoreconnect theme-mode-auto.timer`. All
 Omarchy-only.
 
 **Bash on omarchy** — `~/.bashrc` stays omarchy's own file with one added line
