@@ -39,10 +39,20 @@ zellij:zellij
 # Single files linked straight into $HOME, for tools that keep runtime state
 # next to their config. ~/.claude also holds history, sessions and
 # credentials, so linking the whole dir would drag that into the repo.
+#
+# ~/.config/hypr is omarchy's dir: it also holds files omarchy owns and
+# rewrites (hyprsunset.conf, xdph.conf, upgrade backups), so only the user
+# override files that hyprland.lua requires are linked, one by one.
 home_links="
 .claude/settings.json:claude/settings.json
 .claude/statusline.sh:claude/statusline.sh
 .config/omarchy/themed/starship.toml.tpl:omarchy/themed/starship.toml.tpl
+.config/hypr/hyprland.lua:hypr/hyprland.lua
+.config/hypr/monitors.lua:hypr/monitors.lua
+.config/hypr/input.lua:hypr/input.lua
+.config/hypr/bindings.lua:hypr/bindings.lua
+.config/hypr/looknfeel.lua:hypr/looknfeel.lua
+.config/hypr/autostart.lua:hypr/autostart.lua
 "
 
 dry_run=false

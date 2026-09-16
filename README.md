@@ -103,7 +103,12 @@ other links. `omarchy/themed/starship.toml.tpl` is the two-line starship prompt
 with every colour replaced by an omarchy theme variable; linked into
 `~/.config/omarchy/themed/`, `omarchy theme set` renders it alongside the other
 themed configs, and `bash/omarchy.bash` points `STARSHIP_CONFIG` at the result.
-Omarchy-only, so only `link_config.sh` places it.
+Omarchy-only, so only `link_config.sh` places it. `hypr/` holds the six
+Hyprland override files (`hyprland.lua`, `monitors.lua`, `input.lua`,
+`bindings.lua`, `looknfeel.lua`, `autostart.lua`), linked one by one into
+`~/.config/hypr/` because omarchy owns that dir and keeps its own files and
+upgrade backups there. `bindings.lua` calls `~/.local/bin/theme-mode-toggle`
+and `~/.local/bin/clamshell-follow`, which are not in the repo. Omarchy-only.
 
 **Bash on omarchy** — `~/.bashrc` stays omarchy's own file with one added line
 that sources `config/bash/omarchy.bash` after the omarchy rc chain. That file
