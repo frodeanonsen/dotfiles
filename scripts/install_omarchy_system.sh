@@ -20,6 +20,8 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 	echo
 	echo "Copies $src_root/<path> to /<path> for every file, then reloads udev"
 	echo "rules and re-triggers power_supply events so new rules take effect."
+	echo "A changed NetworkManager drop-in reloads NetworkManager; a changed"
+	echo "Limine drop-in rebuilds the boot image (takes effect after a reboot)."
 	exit 0
 fi
 
@@ -76,12 +78,20 @@ fi
 
 # One root invocation for the whole batch, so a single password prompt.
 script="set -e"
+reload_nm=false
+rebuild_boot=false
 for rel in $changed; do
 	src="$src_root$rel"
 	mode=$(stat -c '%a' "$src")
 	script="$script; install -D -m $mode '$src' '$rel'"
+	case "$rel" in
+	/etc/NetworkManager/*) reload_nm=true ;;
+	/etc/limine-entry-tool.d/*) rebuild_boot=true ;;
+	esac
 done
 script="$script; udevadm control --reload; udevadm trigger --subsystem-match=power_supply --action=change"
+[ "$reload_nm" = true ] && script="$script; nmcli general reload"
+[ "$rebuild_boot" = true ] && script="$script; limine-mkinitcpio"
 as_root sh -c "$script"
 
 echo

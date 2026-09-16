@@ -205,12 +205,28 @@ of the `home.packages` block in the nix host configs, minus what the omarchy
 base already ships.
 
 `scripts/install_omarchy_system.sh` copies the root-owned files under
-`config/omarchy/system/` to the same paths under `/`. Today that is a udev rule
-and the `dgpu-power` helper it runs: on the 2018 MacBook Pro the Radeon drives
-the panel under Linux and idles at ~13 W in auto, so the rule pins it to its
-lowest clocks whenever the adapter is unplugged and frees it again on AC.
-`dgpu-power status` shows what it is doing, `dgpu-power battery` forces the
-low state by hand.
+`config/omarchy/system/` to the same paths under `/`. Today that is:
+
+- A udev rule and the `dgpu-power` helper it runs: on the 2018 MacBook Pro the
+  Radeon drives the panel under Linux and idles at ~13 W in auto, so the rule
+  pins it to its lowest clocks whenever the adapter is unplugged and frees it
+  again on AC. `dgpu-power status` shows what it is doing, `dgpu-power battery`
+  forces the low state by hand.
+- A Limine drop-in adding `pcie_port_pm=off`. With Omarchy's T2 defaults
+  (`pm_async=off mem_sleep_default=deep`) the two Thunderbolt controllers were
+  polled for ~6 s each after every resume; keeping PCIe ports out of D3 skips
+  that and cut wake from ~20 s to ~2 s. The script rebuilds the boot image when
+  this file changes.
+- A NetworkManager drop-in that leaves the T2 chip's fake USB network
+  interface unmanaged, so NetworkManager stops trying DHCP on it after resume.
+
+Two things about suspend on this machine are deliberately *not* in the repo,
+because they are Omarchy's own defaults: `/etc/default/limine` must only use
+`KERNEL_CMDLINE[default]+=` (a plain `=` there silently overrides every
+Omarchy drop-in, including the T2 suspend parameters), and
+`/etc/systemd/sleep.conf` must stay stock. Old T2 workarounds that force
+`s2idle`/`freeze` or unload modules around sleep break the current `t2bce`
+driver.
 
 Both scripts need root. From a terminal that is a sudo prompt; from something
 without one, like the `!` runner in Claude Code, they fall back to a `pkexec`
