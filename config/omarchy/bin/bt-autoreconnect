@@ -1,0 +1,26 @@
+#!/bin/bash
+# Reconnect Bluetooth LE keyboards and mice after they wake from sleep.
+# This controller (Broadcom, T2 MacBook) doesn't pick up bonded LE devices
+# through background scanning, but a host-initiated connect works, so keep
+# asking trusted LE input devices to connect while they're disconnected.
+# Classic (public address) devices are skipped so nothing gets paged away
+# from another computer.
+
+while true; do
+  if ! bluetoothctl show 2>/dev/null | grep -q 'Powered: yes'; then
+    sleep 30
+    continue
+  fi
+
+  for address in $(bluetoothctl devices Trusted | awk '{ print $2 }'); do
+    info=$(bluetoothctl info "$address")
+    [[ $info == *"(random)"* ]] || continue
+    [[ $info == *"Icon: input-"* ]] || continue
+    [[ $info == *"Connected: yes"* ]] && continue
+
+    timeout 20 bluetoothctl connect "$address" >/dev/null 2>&1 &
+  done
+  wait
+
+  sleep 5
+done

@@ -110,7 +110,12 @@ Hyprland override files (`hyprland.lua`, `monitors.lua`, `input.lua`,
 upgrade backups there. `omarchy/bin/` holds the user scripts those bindings
 call, `theme-mode-toggle` (Catppuccin dark/light switch, `auto` picks by time
 of day) and `clamshell-follow` (keeps the laptop's workspace visible on the
-external monitor when the lid closes), linked into `~/.local/bin/`. All
+external monitor when the lid closes) and `bt-autoreconnect` (keeps asking
+bonded Bluetooth LE keyboards and mice to reconnect, because the T2 MacBook's
+Broadcom controller does not pick them up on its own), linked into
+`~/.local/bin/`. `omarchy/systemd/user/` holds the user unit that runs
+`bt-autoreconnect`, linked into `~/.config/systemd/user/`; after linking on a
+new machine, `systemctl --user enable --now bt-autoreconnect` once. All
 Omarchy-only.
 
 **Bash on omarchy** — `~/.bashrc` stays omarchy's own file with one added line

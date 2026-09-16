@@ -44,7 +44,9 @@ zellij:zellij
 # rewrites (hyprsunset.conf, xdph.conf, upgrade backups), so only the user
 # override files that hyprland.lua requires are linked, one by one.
 # The omarchy/bin scripts are what those hypr bindings call; they go into
-# ~/.local/bin, which omarchy already puts on PATH.
+# ~/.local/bin, which omarchy already puts on PATH. bt-autoreconnect runs
+# from its systemd user unit; on a new machine enable it once after linking:
+#   systemctl --user daemon-reload && systemctl --user enable --now bt-autoreconnect
 home_links="
 .claude/settings.json:claude/settings.json
 .claude/statusline.sh:claude/statusline.sh
@@ -57,6 +59,8 @@ home_links="
 .config/hypr/autostart.lua:hypr/autostart.lua
 .local/bin/theme-mode-toggle:omarchy/bin/theme-mode-toggle
 .local/bin/clamshell-follow:omarchy/bin/clamshell-follow
+.local/bin/bt-autoreconnect:omarchy/bin/bt-autoreconnect
+.config/systemd/user/bt-autoreconnect.service:omarchy/systemd/user/bt-autoreconnect.service
 "
 
 dry_run=false

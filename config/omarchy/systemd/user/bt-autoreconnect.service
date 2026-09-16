@@ -1,0 +1,11 @@
+[Unit]
+Description=Reconnect sleeping Bluetooth LE keyboards and mice
+After=default.target
+
+[Service]
+ExecStart=%h/.local/bin/bt-autoreconnect
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
