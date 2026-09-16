@@ -93,9 +93,10 @@ symlink for it would be wrong.
 
 **Home-relative files** — single files linked straight into `$HOME` rather than
 `~/.config`. Currently just `claude/`, whose `settings.json` and
-`statusline.sh` land in `~/.claude/`. Only `link_config.sh` places these so
-far; the nix hosts do not, because `home.file` makes read-only store links and
-Claude Code writes `settings.json` back when you change a setting.
+`statusline.sh` land in `~/.claude/`. Claude Code writes `settings.json` back
+when you change a setting, so the home-manager hosts link these with
+`mkOutOfStoreSymlink` to the checkout instead of a read-only store copy, and
+zygbook uses `ln -sfn` like its other links.
 
 **Platform-specific configs** — only linked on the machines that can use them.
 `aerospace`, `sketchybar`, `skhd`, `yabai`, `iterm`, `macos` and `nix-darwin`

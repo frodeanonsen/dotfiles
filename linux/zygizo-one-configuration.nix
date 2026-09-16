@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ config, pkgs, vars, ... }:
 
 {
   programs.zsh.enable = true;
@@ -20,6 +20,12 @@
     ".config/zellij".source = ../config/zellij;
     ".config/wezterm".source = ../config/wezterm;
     ".config/atuin".source = ../config/atuin;
+    # Claude Code writes settings.json back when a setting changes, so these
+    # point at the checkout rather than a read-only copy in the store.
+    ".claude/settings.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/claude/settings.json";
+    ".claude/statusline.sh".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/claude/statusline.sh";
   };
 
   home.packages = with pkgs; [

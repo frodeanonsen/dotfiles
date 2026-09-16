@@ -284,6 +284,10 @@ in
       run_as_user ln -sfn "$dotfiles/starship" "$user_home/.config/starship"
       run_as_user ln -sfn "$dotfiles/atuin" "$user_home/.config/atuin"
       run_as_user ln -sfn "$dotfiles/sol" "$user_home/.config/sol"
+
+      run_as_user mkdir -p "$user_home/.claude"
+      run_as_user ln -sfn "$dotfiles/claude/settings.json" "$user_home/.claude/settings.json"
+      run_as_user ln -sfn "$dotfiles/claude/statusline.sh" "$user_home/.claude/statusline.sh"
       run_as_user ${syncAlacrittyTheme}/bin/sync-alacritty-theme
     '';
 

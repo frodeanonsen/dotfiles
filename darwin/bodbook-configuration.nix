@@ -33,7 +33,7 @@
   security.pam.services.sudo_local.touchIdAuth = true;
 
   home-manager.backupFileExtension = "backup";
-  home-manager.users.${vars.user} = {
+  home-manager.users.${vars.user} = { config, ... }: {
     home.stateVersion = "25.05";
     programs.home-manager.enable = true;
     programs.zsh = {
@@ -60,6 +60,12 @@
       ".config/nix".source = ../config/nix;
       ".config/lazygit".source = ../config/lazygit;
       ".config/atuin".source = ../config/atuin;
+      # Claude Code writes settings.json back when a setting changes, so these
+      # point at the checkout rather than a read-only copy in the store.
+      ".claude/settings.json".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/claude/settings.json";
+      ".claude/statusline.sh".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/claude/statusline.sh";
     };
 
     home.sessionVariables = { };
