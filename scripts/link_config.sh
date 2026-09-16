@@ -42,6 +42,7 @@ zellij:zellij
 home_links="
 .claude/settings.json:claude/settings.json
 .claude/statusline.sh:claude/statusline.sh
+.config/omarchy/themed/starship.toml.tpl:omarchy/themed/starship.toml.tpl
 "
 
 dry_run=false

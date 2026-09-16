@@ -92,11 +92,21 @@ are. Adding a `foo/aliases.zsh` is all it takes to get it loaded; adding a
 symlink for it would be wrong.
 
 **Home-relative files** — single files linked straight into `$HOME` rather than
-`~/.config`. Currently just `claude/`, whose `settings.json` and
-`statusline.sh` land in `~/.claude/`. Claude Code writes `settings.json` back
-when you change a setting, so the home-manager hosts link these with
-`mkOutOfStoreSymlink` to the checkout instead of a read-only store copy, and
-zygbook uses `ln -sfn` like its other links.
+a whole `~/.config` dir. `claude/` puts `settings.json` and `statusline.sh` in
+`~/.claude/`; Claude Code writes `settings.json` back when you change a
+setting, so the home-manager hosts link these with `mkOutOfStoreSymlink` to the
+checkout instead of a read-only store copy, and zygbook uses `ln -sfn` like its
+other links. `omarchy/themed/starship.toml.tpl` is the two-line starship prompt
+with every colour replaced by an omarchy theme variable; linked into
+`~/.config/omarchy/themed/`, `omarchy theme set` renders it alongside the other
+themed configs, and `bash/omarchy.bash` points `STARSHIP_CONFIG` at the result.
+Omarchy-only, so only `link_config.sh` places it.
+
+**Bash on omarchy** — `~/.bashrc` stays omarchy's own file with one added line
+that sources `config/bash/omarchy.bash` after the omarchy rc chain. Anything
+bash-specific this repo wants on that host goes in that file. The older
+`config/bash/bashrc` is the Debian-style rc the nix hosts link as `~/.bashrc`
+and is not used on omarchy.
 
 **Platform-specific configs** — only linked on the machines that can use them.
 `aerospace`, `sketchybar`, `skhd`, `yabai`, `iterm`, `macos` and `nix-darwin`
