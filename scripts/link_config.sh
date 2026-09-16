@@ -34,6 +34,16 @@ zed:zed
 zellij:zellij
 "
 
+# <path under $HOME>:<path under config/>
+#
+# Single files linked straight into $HOME, for tools that keep runtime state
+# next to their config. ~/.claude also holds history, sessions and
+# credentials, so linking the whole dir would drag that into the repo.
+home_links="
+.claude/settings.json:claude/settings.json
+.claude/statusline.sh:claude/statusline.sh
+"
+
 dry_run=false
 force=false
 
@@ -96,32 +106,32 @@ echo
 
 [ "$dry_run" = true ] || mkdir -p "$dst_dir"
 
-for entry in $links; do
-	name="${entry%%:*}"
-	source_name="${entry##*:}"
-	src="$src_dir/$source_name"
-	target="$dst_dir/$name"
+# Links $2 -> $1, handling the already-linked, in-the-way and
+# identical-content cases. Works for both dirs and single files.
+link_one() {
+	src="$1"
+	target="$2"
 
-	echo "$name"
-
-	if [ ! -d "$src" ]; then
+	if [ ! -e "$src" ]; then
 		echo "    MISSING source $src, skipping"
 		conflicts=$((conflicts + 1))
-		continue
+		return
 	fi
 
 	# Already pointing where we want it.
 	if [ -L "$target" ] && [ "$(readlink "$target")" = "$src" ]; then
 		echo "    ok, already linked"
 		skipped=$((skipped + 1))
-		continue
+		return
 	fi
+
+	[ "$dry_run" = true ] || mkdir -p "$(dirname "$target")"
 
 	# Nothing in the way. A dangling symlink counts as in the way, hence -L.
 	if [ ! -e "$target" ] && [ ! -L "$target" ]; then
 		make_link "$src" "$target"
 		linked=$((linked + 1))
-		continue
+		return
 	fi
 
 	# Identical content is not worth a backup or a prompt.
@@ -130,7 +140,7 @@ for entry in $links; do
 		[ "$dry_run" = true ] || rm -rf "$target"
 		make_link "$src" "$target"
 		linked=$((linked + 1))
-		continue
+		return
 	fi
 
 	if [ "$force" = false ]; then
@@ -138,12 +148,26 @@ for entry in $links; do
 		echo "    diff -ru '$target' '$src'"
 		echo "    re-run with --force to replace it"
 		conflicts=$((conflicts + 1))
-		continue
+		return
 	fi
 
 	back_up "$target"
 	make_link "$src" "$target"
 	linked=$((linked + 1))
+}
+
+for entry in $links; do
+	name="${entry%%:*}"
+	source_name="${entry##*:}"
+	echo "$name"
+	link_one "$src_dir/$source_name" "$dst_dir/$name"
+done
+
+for entry in $home_links; do
+	name="${entry%%:*}"
+	source_name="${entry##*:}"
+	echo "~/$name"
+	link_one "$src_dir/$source_name" "$HOME/$name"
 done
 
 echo

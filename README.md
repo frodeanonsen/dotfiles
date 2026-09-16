@@ -55,7 +55,11 @@ to `~/.config/.dotfiles-backup/<timestamp>/` before linking.
 
 The list of links is the `links` table at the top of the script. Entries are
 `<name in ~/.config>:<dir under config/>`, which is how `nvim` maps to
-`config/lazyvim`.
+`config/lazyvim`. A second `home_links` table holds single files linked
+relative to `$HOME` instead, as `<path under ~>:<path under config/>`; that is
+how `config/claude/` ends up as `~/.claude/settings.json` and
+`~/.claude/statusline.sh` without dragging the rest of `~/.claude` (history,
+sessions, credentials) into the repo.
 
 ## Repo layout
 
@@ -86,6 +90,12 @@ are sourced directly out of `$DOTFILES` by `config/zsh/zshrc` and
 `homebrew/`, `java/`, `kubernetes/`, `python/`, `rust/`, `system/` and friends
 are. Adding a `foo/aliases.zsh` is all it takes to get it loaded; adding a
 symlink for it would be wrong.
+
+**Home-relative files** — single files linked straight into `$HOME` rather than
+`~/.config`. Currently just `claude/`, whose `settings.json` and
+`statusline.sh` land in `~/.claude/`. Only `link_config.sh` places these so
+far; the nix hosts do not, because `home.file` makes read-only store links and
+Claude Code writes `settings.json` back when you change a setting.
 
 **Platform-specific configs** — only linked on the machines that can use them.
 `aerospace`, `sketchybar`, `skhd`, `yabai`, `iterm`, `macos` and `nix-darwin`
