@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=iCloud Mail
+Comment=Apple iCloud webmail
+Exec=omarchy-launch-webapp "https://www.icloud.com/mail/"
+Terminal=false
+Type=Application
+Icon=icloud-mail
+StartupNotify=true
+MimeType=x-scheme-handler/mailto

@@ -47,6 +47,16 @@ o.bind("SUPER + SHIFT + L", "Swap window to the right", hl.dsp.window.swap({ dir
 o.bind("SUPER + SHIFT + ALT + H", "Move window to left monitor", hl.dsp.window.move({ monitor = "-1" }))
 o.bind("SUPER + SHIFT + ALT + L", "Move window to right monitor", hl.dsp.window.move({ monitor = "+1" }))
 
+-- Email: iCloud Mail instead of HEY. Both keys are Omarchy defaults bound to
+-- HEY. No "new email" binding: iCloud webmail has no compose URL to open.
+-- With focus = true the description doubles as the window pattern (matched
+-- against class and title of every open window), so it must be the web app's
+-- window title "iCloud Mail"; a generic "Email" also matched any terminal
+-- with "email" in its title and focused that instead.
+hl.unbind("SUPER + SHIFT + E")
+hl.unbind("SUPER + SHIFT + ALT + E")
+o.bind("SUPER + SHIFT + E", "iCloud Mail", { webapp = "https://www.icloud.com/mail/", focus = true })
+
 -- Clamshell: show the laptop's workspace on the external monitor when the lid
 -- closes. Runs alongside Omarchy's own lid handler.
 o.bind("switch:on:Lid Switch", nil, "~/.local/bin/clamshell-follow", { locked = true })

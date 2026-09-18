@@ -122,6 +122,11 @@ Broadcom controller does not pick them up on its own), linked into
 `theme-mode-auto` service and timer that run `theme-mode-toggle auto` at 06:00
 and 20:00. After linking on a new machine, enable them once with
 `systemctl --user enable --now bt-autoreconnect theme-mode-auto.timer`.
+`omarchy/applications/` holds web app launchers that `omarchy webapp install`
+would otherwise write into `~/.local/share/applications/`, with their icons in
+`omarchy/icons/` linked into `~/.local/share/icons/hicolor/256x256/apps/`.
+`icloud-mail.desktop` is the mailto handler; after linking, make it the default
+once with `xdg-mime default icloud-mail.desktop x-scheme-handler/mailto`.
 `vivaldi/vivaldi-stable.conf` is the flags file Vivaldi's launcher reads,
 linked to `~/.config/vivaldi-stable.conf`; it turns on VA-API video decode,
 which Chromium leaves off on Linux.

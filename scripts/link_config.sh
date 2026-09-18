@@ -49,6 +49,11 @@ zellij:zellij
 # them once after linking:
 #   systemctl --user daemon-reload
 #   systemctl --user enable --now bt-autoreconnect theme-mode-auto.timer
+# omarchy/applications holds web app launchers that would otherwise be
+# created by `omarchy webapp install`, with their icons in omarchy/icons.
+# The icloud-mail launcher declares the mailto mime type; make it the
+# default handler once after linking:
+#   xdg-mime default icloud-mail.desktop x-scheme-handler/mailto
 # omarchy/shell.json is the omarchy shell's user config (bar layout, idle
 # lock and screensaver timeouts). The shell also writes to it, from
 # `omarchy bar` and its settings panel; it saves through the symlink, so those
@@ -72,6 +77,8 @@ home_links="
 .config/systemd/user/bt-autoreconnect.service:omarchy/systemd/user/bt-autoreconnect.service
 .config/systemd/user/theme-mode-auto.service:omarchy/systemd/user/theme-mode-auto.service
 .config/systemd/user/theme-mode-auto.timer:omarchy/systemd/user/theme-mode-auto.timer
+.local/share/applications/icloud-mail.desktop:omarchy/applications/icloud-mail.desktop
+.local/share/icons/hicolor/256x256/apps/icloud-mail.png:omarchy/icons/icloud-mail.png
 .config/vivaldi-stable.conf:vivaldi/vivaldi-stable.conf
 "
 
