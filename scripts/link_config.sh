@@ -49,12 +49,17 @@ zellij:zellij
 # them once after linking:
 #   systemctl --user daemon-reload
 #   systemctl --user enable --now bt-autoreconnect theme-mode-auto.timer
+# omarchy/shell.json is the omarchy shell's user config (bar layout, idle
+# lock and screensaver timeouts). The shell also writes to it, from
+# `omarchy bar` and its settings panel; it saves through the symlink, so those
+# changes show up in the repo as a diff.
 # vivaldi-stable.conf is the flags file Vivaldi's launcher reads;
 # ~/.config/vivaldi itself is the browser profile and stays out of the repo.
 home_links="
 .claude/settings.json:claude/settings.json
 .claude/statusline.sh:claude/statusline.sh
 .config/omarchy/themed/starship.toml.tpl:omarchy/themed/starship.toml.tpl
+.config/omarchy/shell.json:omarchy/shell.json
 .config/hypr/hyprland.lua:hypr/hyprland.lua
 .config/hypr/monitors.lua:hypr/monitors.lua
 .config/hypr/input.lua:hypr/input.lua
