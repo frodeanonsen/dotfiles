@@ -117,8 +117,11 @@ Broadcom controller does not pick them up on its own), linked into
 `~/.config/systemd/user/`: the service that runs `bt-autoreconnect`, and the
 `theme-mode-auto` service and timer that run `theme-mode-toggle auto` at 06:00
 and 20:00. After linking on a new machine, enable them once with
-`systemctl --user enable --now bt-autoreconnect theme-mode-auto.timer`. All
-Omarchy-only.
+`systemctl --user enable --now bt-autoreconnect theme-mode-auto.timer`.
+`vivaldi/vivaldi-stable.conf` is the flags file Vivaldi's launcher reads,
+linked to `~/.config/vivaldi-stable.conf`; it turns on VA-API video decode,
+which Chromium leaves off on Linux.
+All Omarchy-only.
 
 **Bash on omarchy** — `~/.bashrc` stays omarchy's own file with one added line
 that sources `config/bash/omarchy.bash` after the omarchy rc chain. That file
@@ -219,6 +222,10 @@ base already ships.
   this file changes.
 - A NetworkManager drop-in that leaves the T2 chip's fake USB network
   interface unmanaged, so NetworkManager stops trying DHCP on it after resume.
+- `t2fand.conf`, the fan curve for `t2fanrd`. The packaged curve ramps from
+  55°C to full speed at 75°C, which had both fans at ~4400 RPM with the CPU at
+  60-65°C during video playback; this one ramps from 65°C to 90°C. The script
+  restarts `t2fanrd` when this file changes.
 
 Two things about suspend on this machine are deliberately *not* in the repo,
 because they are Omarchy's own defaults: `/etc/default/limine` must only use

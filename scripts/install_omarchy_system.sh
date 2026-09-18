@@ -21,7 +21,8 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 	echo "Copies $src_root/<path> to /<path> for every file, then reloads udev"
 	echo "rules and re-triggers power_supply events so new rules take effect."
 	echo "A changed NetworkManager drop-in reloads NetworkManager; a changed"
-	echo "Limine drop-in rebuilds the boot image (takes effect after a reboot)."
+	echo "Limine drop-in rebuilds the boot image (takes effect after a reboot); a"
+	echo "changed t2fand.conf restarts t2fanrd."
 	exit 0
 fi
 
@@ -80,6 +81,7 @@ fi
 script="set -e"
 reload_nm=false
 rebuild_boot=false
+restart_fans=false
 for rel in $changed; do
 	src="$src_root$rel"
 	mode=$(stat -c '%a' "$src")
@@ -87,11 +89,13 @@ for rel in $changed; do
 	case "$rel" in
 	/etc/NetworkManager/*) reload_nm=true ;;
 	/etc/limine-entry-tool.d/*) rebuild_boot=true ;;
+	/etc/t2fand.conf) restart_fans=true ;;
 	esac
 done
 script="$script; udevadm control --reload; udevadm trigger --subsystem-match=power_supply --action=change"
 [ "$reload_nm" = true ] && script="$script; nmcli general reload"
 [ "$rebuild_boot" = true ] && script="$script; limine-mkinitcpio"
+[ "$restart_fans" = true ] && script="$script; systemctl restart t2fanrd"
 as_root sh -c "$script"
 
 echo

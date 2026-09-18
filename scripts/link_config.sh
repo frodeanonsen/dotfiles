@@ -49,6 +49,8 @@ zellij:zellij
 # them once after linking:
 #   systemctl --user daemon-reload
 #   systemctl --user enable --now bt-autoreconnect theme-mode-auto.timer
+# vivaldi-stable.conf is the flags file Vivaldi's launcher reads;
+# ~/.config/vivaldi itself is the browser profile and stays out of the repo.
 home_links="
 .claude/settings.json:claude/settings.json
 .claude/statusline.sh:claude/statusline.sh
@@ -65,6 +67,7 @@ home_links="
 .config/systemd/user/bt-autoreconnect.service:omarchy/systemd/user/bt-autoreconnect.service
 .config/systemd/user/theme-mode-auto.service:omarchy/systemd/user/theme-mode-auto.service
 .config/systemd/user/theme-mode-auto.timer:omarchy/systemd/user/theme-mode-auto.timer
+.config/vivaldi-stable.conf:vivaldi/vivaldi-stable.conf
 "
 
 dry_run=false
