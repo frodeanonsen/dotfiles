@@ -6,5 +6,6 @@
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
-  }
+  },
+  "hooks": {"SessionStart":[{"matcher":"*","hooks":[{"type":"command","command":"bash '/home/frode/.claude/hooks/herdr-agent-state.sh' session","timeout":10}]}]}
 }
