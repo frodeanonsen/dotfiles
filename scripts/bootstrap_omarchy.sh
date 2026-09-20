@@ -45,6 +45,11 @@ for arg in "$@"; do
 	esac
 done
 
+# A non-interactive shell (ssh without a tty) does not get omarchy's env, and
+# without OMARCHY_PATH the theme commands look for themes under /themes. Same
+# fallback as config/hypr/hyprland.lua.
+export OMARCHY_PATH="${OMARCHY_PATH:-/usr/share/omarchy}"
+
 if ! command -v omarchy >/dev/null 2>&1; then
 	echo "omarchy not found; this script is for omarchy hosts" >&2
 	exit 1
