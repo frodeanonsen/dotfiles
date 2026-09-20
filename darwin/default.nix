@@ -50,41 +50,6 @@ let
   };
 in
 {
-  BodBook =
-    let
-      inherit (systemConfig "x86_64-darwin") system pkgs unstable;
-    in
-    darwin.lib.darwinSystem {
-      inherit system;
-      specialArgs = {
-        inherit
-          inputs
-          system
-          pkgs
-          unstable
-          vars
-          ;
-      };
-      modules = [
-        ./bodbook-configuration.nix
-        ./intel.nix
-        home-manager.darwinModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = {
-            inherit
-              inputs
-              system
-              pkgs
-              unstable
-              vars
-              ;
-          };
-        }
-      ];
-    };
-
   # MacBookPro16,1 M2 16" (2023)
   MacBookApple =
     let
