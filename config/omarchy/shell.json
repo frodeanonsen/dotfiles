@@ -61,6 +61,10 @@
     "lock": 1800,
     "screensaver": 300
   },
-  "plugins": [],
+  "plugins": [
+    {
+      "id": "frode.battery-suspend"
+    }
+  ],
   "version": 1
 }

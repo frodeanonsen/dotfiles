@@ -58,6 +58,9 @@ zellij:zellij
 # lock and screensaver timeouts). The shell also writes to it, from
 # `omarchy bar` and its settings panel; it saves through the symlink, so those
 # changes show up in the repo as a diff.
+# omarchy/plugins holds user plugins for the omarchy shell, linked one dir per
+# plugin. frode.battery-suspend suspends after 15 minutes of idle on battery;
+# it is switched on by its entry in shell.json's plugins list.
 # vivaldi-stable.conf is the flags file Vivaldi's launcher reads;
 # ~/.config/vivaldi itself is the browser profile and stays out of the repo.
 home_links="
@@ -65,6 +68,7 @@ home_links="
 .claude/statusline.sh:claude/statusline.sh
 .config/omarchy/themed/starship.toml.tpl:omarchy/themed/starship.toml.tpl
 .config/omarchy/shell.json:omarchy/shell.json
+.config/omarchy/plugins/frode.battery-suspend:omarchy/plugins/frode.battery-suspend
 .config/hypr/hyprland.lua:hypr/hyprland.lua
 .config/hypr/monitors.lua:hypr/monitors.lua
 .config/hypr/input.lua:hypr/input.lua

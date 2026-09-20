@@ -107,6 +107,11 @@ Omarchy-only, so only `link_config.sh` places it. `omarchy/shell.json` is the
 omarchy shell's user config (bar layout, idle lock and screensaver timeouts),
 linked to `~/.config/omarchy/shell.json`; the shell writes to it too, from
 `omarchy bar` and its settings panel, and saves through the symlink.
+`omarchy/plugins/` holds user plugins for the omarchy shell, each dir linked
+into `~/.config/omarchy/plugins/`. `frode.battery-suspend` suspends after 15
+minutes of idle, but only on battery; omarchy itself never suspends on idle. It
+is switched on by its entry in `shell.json`'s `plugins` list. `omarchy plugin
+validate` refuses symlinked folders, so run it on the dir in the repo.
 `hypr/` holds the six
 Hyprland override files (`hyprland.lua`, `monitors.lua`, `input.lua`,
 `bindings.lua`, `looknfeel.lua`, `autostart.lua`), linked one by one into
