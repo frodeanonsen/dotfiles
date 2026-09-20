@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
-# Installs the system-level files under config/omarchy/system/ onto an
-# omarchy host: everything below that dir is copied to the same path under /.
+# Installs this host's system-level files onto an omarchy host: everything
+# below config/omarchy/hosts/<hostname>/system/ is copied to the same path
+# under /.
+#
+# All of these are fixes for one machine's hardware, which is why they are
+# per host. A host without that dir has nothing to install.
+# DOTFILES_HOST overrides the hostname, for a dry run of another host.
 #
 # These are root-owned files outside ~/.config, so they cannot be symlinked
 # the way link_config.sh does it. Idempotent: unchanged files are skipped.
@@ -9,7 +14,8 @@
 set -eu
 
 dotfiles="${DOTFILES:-$HOME/.dotfiles}"
-src_root="$dotfiles/config/omarchy/system"
+host="${DOTFILES_HOST:-$(hostname)}"
+src_root="$dotfiles/config/omarchy/hosts/$host/system"
 
 if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 	echo "Usage: scripts/install_omarchy_system.sh [--help] [--dry-run]"
@@ -37,6 +43,11 @@ for arg in "$@"; do
 		;;
 	esac
 done
+
+if [ ! -d "$src_root" ]; then
+	echo "no $src_root, nothing to install on $host"
+	exit 0
+fi
 
 as_root() {
 	if [ "$(id -u)" = 0 ]; then

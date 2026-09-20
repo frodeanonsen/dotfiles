@@ -1,0 +1,5 @@
+# User units scripts/bootstrap_omarchy.sh enables on every omarchy host. The
+# unit files are in config/omarchy/systemd/user, placed by link_config.sh.
+# Units only one machine needs go in config/omarchy/hosts/<hostname>/units.
+# One per line, # comments.
+theme-mode-auto.timer

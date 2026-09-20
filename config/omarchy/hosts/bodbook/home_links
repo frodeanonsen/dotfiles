@@ -1,0 +1,6 @@
+# Extra links for bodbook, the 2015 MacBookPro12,1 (Intel Iris 6100, no T2).
+# Same format as the home_links table in scripts/link_config.sh:
+# <path under $HOME>:<path under config/>
+
+# Still omarchy's stock file: the 2560x1600 panel at auto scale.
+.config/hypr/monitors.lua:omarchy/hosts/bodbook/hypr/monitors.lua

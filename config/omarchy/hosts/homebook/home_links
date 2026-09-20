@@ -1,0 +1,11 @@
+# Extra links for homebook, the 2018 T2 MacBook Pro. Same format as the
+# home_links table in scripts/link_config.sh:
+# <path under $HOME>:<path under config/>
+
+# Internal 2880x1800 panel on the left, the ultrawide on DP-6 to the right.
+.config/hypr/monitors.lua:omarchy/hosts/homebook/hypr/monitors.lua
+
+# The T2's Broadcom controller does not pick bonded Bluetooth LE keyboards and
+# mice up again on its own; this keeps asking them to reconnect.
+.local/bin/bt-autoreconnect:omarchy/bin/bt-autoreconnect
+.config/systemd/user/bt-autoreconnect.service:omarchy/systemd/user/bt-autoreconnect.service

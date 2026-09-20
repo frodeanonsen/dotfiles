@@ -44,16 +44,13 @@ zellij:zellij
 # rewrites (hyprsunset.conf, xdph.conf, upgrade backups), so only the user
 # override files that hyprland.lua requires are linked, one by one.
 # The omarchy/bin scripts are what those hypr bindings call; they go into
-# ~/.local/bin, which omarchy already puts on PATH. bt-autoreconnect and the
-# timed theme switch run from systemd user units; on a new machine enable
-# them once after linking:
-#   systemctl --user daemon-reload
-#   systemctl --user enable --now bt-autoreconnect theme-mode-auto.timer
+# ~/.local/bin, which omarchy already puts on PATH. The timed theme switch
+# runs from systemd user units; scripts/bootstrap_omarchy.sh enables the ones
+# listed in omarchy/units.
 # omarchy/applications holds web app launchers that would otherwise be
 # created by `omarchy webapp install`, with their icons in omarchy/icons.
-# The icloud-mail launcher declares the mailto mime type; make it the
-# default handler once after linking:
-#   xdg-mime default icloud-mail.desktop x-scheme-handler/mailto
+# The icloud-mail launcher declares the mailto mime type;
+# scripts/bootstrap_omarchy.sh makes it the default handler.
 # omarchy/shell.json is the omarchy shell's user config (bar layout, idle
 # lock and screensaver timeouts). The shell also writes to it, from
 # `omarchy bar` and its settings panel; it saves through the symlink, so those
@@ -70,21 +67,30 @@ home_links="
 .config/omarchy/shell.json:omarchy/shell.json
 .config/omarchy/plugins/frode.battery-suspend:omarchy/plugins/frode.battery-suspend
 .config/hypr/hyprland.lua:hypr/hyprland.lua
-.config/hypr/monitors.lua:hypr/monitors.lua
 .config/hypr/input.lua:hypr/input.lua
 .config/hypr/bindings.lua:hypr/bindings.lua
 .config/hypr/looknfeel.lua:hypr/looknfeel.lua
 .config/hypr/autostart.lua:hypr/autostart.lua
 .local/bin/theme-mode-toggle:omarchy/bin/theme-mode-toggle
 .local/bin/clamshell-follow:omarchy/bin/clamshell-follow
-.local/bin/bt-autoreconnect:omarchy/bin/bt-autoreconnect
-.config/systemd/user/bt-autoreconnect.service:omarchy/systemd/user/bt-autoreconnect.service
 .config/systemd/user/theme-mode-auto.service:omarchy/systemd/user/theme-mode-auto.service
 .config/systemd/user/theme-mode-auto.timer:omarchy/systemd/user/theme-mode-auto.timer
 .local/share/applications/icloud-mail.desktop:omarchy/applications/icloud-mail.desktop
 .local/share/icons/hicolor/256x256/apps/icloud-mail.png:omarchy/icons/icloud-mail.png
 .config/vivaldi-stable.conf:vivaldi/vivaldi-stable.conf
 "
+
+# What only one machine should get is in omarchy/hosts/<hostname>/home_links,
+# same format, # comments allowed: hypr/monitors.lua, which names that
+# machine's panel and outputs, and links for hardware quirks such as
+# homebook's bt-autoreconnect. A host without that file gets the shared links
+# only. DOTFILES_HOST overrides the hostname, for a dry run of another host.
+host="${DOTFILES_HOST:-$(hostname)}"
+host_links_file="$src_dir/omarchy/hosts/$host/home_links"
+host_links=""
+if [ -f "$host_links_file" ]; then
+	host_links=$(sed -e 's/#.*//' -e 's/[[:space:]]//g' "$host_links_file" | grep -v '^$' || true)
+fi
 
 dry_run=false
 force=false
@@ -169,6 +175,20 @@ link_one() {
 
 	[ "$dry_run" = true ] || mkdir -p "$(dirname "$target")"
 
+	# A link into the repo that points somewhere else is one of ours from
+	# before the source moved; repoint it, there is nothing to back up.
+	if [ -L "$target" ]; then
+		case "$(readlink "$target")" in
+		"$dotfiles"/*)
+			echo "    stale link to $(readlink "$target"), relinking"
+			[ "$dry_run" = true ] || rm "$target"
+			make_link "$src" "$target"
+			linked=$((linked + 1))
+			return
+			;;
+		esac
+	fi
+
 	# Nothing in the way. A dangling symlink counts as in the way, hence -L.
 	if [ ! -e "$target" ] && [ ! -L "$target" ]; then
 		make_link "$src" "$target"
@@ -206,6 +226,20 @@ for entry in $links; do
 done
 
 for entry in $home_links; do
+	name="${entry%%:*}"
+	source_name="${entry##*:}"
+	echo "~/$name"
+	link_one "$src_dir/$source_name" "$HOME/$name"
+done
+
+if [ -n "$host_links" ]; then
+	echo
+	echo "host $host"
+else
+	echo
+	echo "host $host: no $host_links_file, shared links only"
+fi
+for entry in $host_links; do
 	name="${entry%%:*}"
 	source_name="${entry##*:}"
 	echo "~/$name"

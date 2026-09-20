@@ -14,23 +14,22 @@ anywhere in particular — see [What each machine uses](#what-each-machine-uses)
 | Host | OS | Provisioned by | Notes |
 | --- | --- | --- | --- |
 | `MacBookApple` | macOS (aarch64) | `darwinConfigurations` | Work laptop, aka zygbook. Prefer `scripts/update_zygbook.sh` over calling `darwin-rebuild` directly |
-| `BodBook` | macOS | `darwinConfigurations` | |
 | `ZygizoOne` | Linux (x86_64) | `homeConfigurations` | home-manager only, not NixOS |
 | `Ros` | Linux (aarch64) | `homeConfigurations` | Raspberry-Pi-class box |
-| `homebook` | Omarchy (Arch) | `scripts/link_config.sh` | **No nix.** See [Machines without nix](#machines-without-nix) |
+| `homebook` | Omarchy (Arch) | `scripts/bootstrap_omarchy.sh` | **No nix.** 2018 MacBook Pro (T2, Radeon Pro 560X). See [Machines without nix](#machines-without-nix) |
+| `bodbook` | Omarchy (Arch) | `scripts/bootstrap_omarchy.sh` | **No nix.** 2015 MacBookPro12,1 (Intel Iris 6100, no T2) |
 
 ## Two ways configs get linked
 
 Both mechanisms symlink the same `config/` directory into place. Which one a
 machine uses depends on whether nix is available on it.
 
-### 1. Nix (the four flake hosts)
+### 1. Nix (the three flake hosts)
 
 `flake.nix` wires together platform modules in `darwin/` and `linux/`. Each host
 config declares its links itself, so they differ per host:
 
-- `linux/*-configuration.nix` and `darwin/bodbook-configuration.nix` use
-  home-manager `home.file` entries.
+- `linux/*-configuration.nix` use home-manager `home.file` entries.
 - `darwin/zygbook-configuration.nix` uses `ln -sfn` in a
   `system.activationScripts.postActivation` block, because it also needs to
   place macOS-only configs (sketchybar, aerospace, skhd).
@@ -61,10 +60,14 @@ how `config/claude/` ends up as `~/.claude/settings.json` and
 `~/.claude/statusline.sh` without dragging the rest of `~/.claude` (history,
 sessions, credentials) into the repo.
 
+Both tables are what every omarchy machine gets. What only one machine should
+get is in `config/omarchy/hosts/<hostname>/`, see
+[Per-host omarchy config](#per-host-omarchy-config).
+
 ## Repo layout
 
 ```
-flake.nix        Nix entrypoint, defines the four nix-managed hosts
+flake.nix        Nix entrypoint, defines the three nix-managed hosts
 darwin/          macOS (nix-darwin) host configurations
 linux/           Linux (home-manager) host configurations
 common/          Home Manager modules shared by both platforms
@@ -112,30 +115,54 @@ into `~/.config/omarchy/plugins/`. `frode.battery-suspend` suspends after 15
 minutes of idle, but only on battery; omarchy itself never suspends on idle. It
 is switched on by its entry in `shell.json`'s `plugins` list. `omarchy plugin
 validate` refuses symlinked folders, so run it on the dir in the repo.
-`hypr/` holds the six
-Hyprland override files (`hyprland.lua`, `monitors.lua`, `input.lua`,
-`bindings.lua`, `looknfeel.lua`, `autostart.lua`), linked one by one into
-`~/.config/hypr/` because omarchy owns that dir and keeps its own files and
-upgrade backups there. `omarchy/bin/` holds the user scripts those bindings
+`hypr/` holds five of the six Hyprland override files (`hyprland.lua`,
+`input.lua`, `bindings.lua`, `looknfeel.lua`, `autostart.lua`), linked one by
+one into `~/.config/hypr/` because omarchy owns that dir and keeps its own
+files and upgrade backups there. The sixth, `monitors.lua`, names a machine's
+panel and outputs, so it is per host. `omarchy/bin/` holds the user scripts those bindings
 call, `theme-mode-toggle` (Catppuccin dark/light switch, `auto` picks by time
 of day) and `clamshell-follow` (keeps the laptop's workspace visible on the
-external monitor when the lid closes) and `bt-autoreconnect` (keeps asking
-bonded Bluetooth LE keyboards and mice to reconnect, because the T2 MacBook's
-Broadcom controller does not pick them up on its own), linked into
-`~/.local/bin/`. `omarchy/systemd/user/` holds the user units, linked into
-`~/.config/systemd/user/`: the service that runs `bt-autoreconnect`, and the
-`theme-mode-auto` service and timer that run `theme-mode-toggle auto` at 06:00
-and 20:00. After linking on a new machine, enable them once with
-`systemctl --user enable --now bt-autoreconnect theme-mode-auto.timer`.
+external monitor when the lid closes), linked into `~/.local/bin/`.
+`bt-autoreconnect` is there too (keeps asking bonded Bluetooth LE keyboards
+and mice to reconnect, because the T2 MacBook's Broadcom controller does not
+pick them up on its own), but only homebook links it.
+`omarchy/systemd/user/` holds the user units, linked into
+`~/.config/systemd/user/`: the `theme-mode-auto` service and timer that run
+`theme-mode-toggle auto` at 06:00 and 20:00, and homebook's
+`bt-autoreconnect` service. `omarchy/units` lists the units every machine
+enables; the bootstrap script does the enabling.
 `omarchy/applications/` holds web app launchers that `omarchy webapp install`
 would otherwise write into `~/.local/share/applications/`, with their icons in
 `omarchy/icons/` linked into `~/.local/share/icons/hicolor/256x256/apps/`.
-`icloud-mail.desktop` is the mailto handler; after linking, make it the default
-once with `xdg-mime default icloud-mail.desktop x-scheme-handler/mailto`.
+`icloud-mail.desktop` is the mailto handler; the bootstrap script makes it the
+default.
 `vivaldi/vivaldi-stable.conf` is the flags file Vivaldi's launcher reads,
 linked to `~/.config/vivaldi-stable.conf`; it turns on VA-API video decode,
 which Chromium leaves off on Linux.
 All Omarchy-only.
+
+### Per-host omarchy config
+
+The omarchy machines are different hardware, so what depends on the hardware
+is kept apart in `config/omarchy/hosts/<hostname>/`:
+
+```
+home_links        extra links, same format as the table in link_config.sh
+units             extra systemd user units to enable, one per line
+hypr/monitors.lua that machine's panel and external outputs
+system/           root-owned files, copied to the same path under /
+```
+
+All of it is optional. `link_config.sh`, `install_omarchy_system.sh` and
+`bootstrap_omarchy.sh` look up the dir by `hostname`; a machine without one
+gets the shared setup and keeps omarchy's stock `monitors.lua`. Set
+`DOTFILES_HOST=<name>` to dry-run another machine's setup.
+
+`homebook` has the bulk of it: its monitor layout, `bt-autoreconnect`, and a
+`system/` tree of T2 and Radeon fixes (listed under
+[Omarchy machines](#omarchy-machines)). `bodbook` only has its `monitors.lua`,
+still omarchy's stock file. None of homebook's system files apply to it: it
+has no T2 chip, no dGPU and Thunderbolt 2.
 
 **Bash on omarchy** — `~/.bashrc` stays omarchy's own file with one added line
 that sources `config/bash/omarchy.bash` after the omarchy rc chain. That file
@@ -211,10 +238,32 @@ home-manager switch --flake .#Ros
 ### Omarchy machines
 
 ```sh
-scripts/link_config.sh --dry-run
-scripts/link_config.sh
-scripts/install_omarchy_packages.sh
+scripts/bootstrap_omarchy.sh --dry-run
+scripts/bootstrap_omarchy.sh --force
 ```
+
+Run it from a terminal, it asks for the sudo password. It is idempotent and
+runs these steps in order, each of which can also be run alone:
+
+1. `link_config.sh` links the shared configs and this host's `home_links`. On
+   a fresh install omarchy's stock files are in the way (`nvim`, `tmux`,
+   `lazygit`, `shell.json`, the `hypr/` overrides), which is what `--force` is
+   for: it backs them up and links. Leave it off when re-running later.
+2. Appends the line to `~/.bashrc` that sources `config/bash/omarchy.bash`.
+3. `install_omarchy_packages.sh` installs the package list.
+4. `install_omarchy_system.sh` installs this host's `system/` files, if any.
+5. Enables the user units in `config/omarchy/units` and the host's `units`.
+6. Makes `icloud-mail.desktop` the mailto handler.
+7. `omarchy theme refresh`, so the themed starship config gets rendered.
+
+`--skip-root` leaves out steps 3 and 4, for running it from somewhere without
+a way to ask for a password, such as over SSH without a tty.
+
+For a machine with its own hardware quirks, add a
+`config/omarchy/hosts/<hostname>/` dir first, see
+[Per-host omarchy config](#per-host-omarchy-config). Not done by the script:
+an SSH key for pushing (the clone above is HTTPS), and logging in to atuin,
+`gh` and Claude Code.
 
 The package script installs whatever is listed in `config/omarchy/packages`
 and missing, through `omarchy pkg add`. That list is the omarchy counterpart
@@ -222,7 +271,8 @@ of the `home.packages` block in the nix host configs, minus what the omarchy
 base already ships.
 
 `scripts/install_omarchy_system.sh` copies the root-owned files under
-`config/omarchy/system/` to the same paths under `/`. Today that is:
+`config/omarchy/hosts/<hostname>/system/` to the same paths under `/`. Only
+homebook has any; today that is:
 
 - A udev rule and the `dgpu-power` helper it runs: on the 2018 MacBook Pro the
   Radeon drives the panel under Linux and idles at ~13 W in auto, so the rule
@@ -241,7 +291,7 @@ base already ships.
   60-65°C during video playback; this one ramps from 65°C to 90°C. The script
   restarts `t2fanrd` when this file changes.
 
-Two things about suspend on this machine are deliberately *not* in the repo,
+Two things about suspend on homebook are deliberately *not* in the repo,
 because they are Omarchy's own defaults: `/etc/default/limine` must only use
 `KERNEL_CMDLINE[default]+=` (a plain `=` there silently overrides every
 Omarchy drop-in, including the T2 suspend parameters), and
@@ -260,8 +310,7 @@ dialog.
 | `MacBookApple` | `scripts/update_zygbook.sh` (add `--flake` to refresh inputs first) |
 | `ZygizoOne` | `scripts/update_linux.sh` |
 | `Ros` | `scripts/update_ros.sh` |
-| `BodBook` | `scripts/update_bodbook.sh` |
-| `homebook` | `scripts/link_config.sh`, then `scripts/install_omarchy_packages.sh` and `scripts/install_omarchy_system.sh` |
+| `homebook`, `bodbook` | `scripts/bootstrap_omarchy.sh` |
 
 Run `nix flake check` before pushing changes that touch the nix side. It does
 not cover `config/` or `scripts/`, so changes that only affect a non-nix machine
