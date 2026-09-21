@@ -8,7 +8,9 @@
   },
   // Terminal
   {
-    "context": "Workspace",
+    // Editor and Terminal are listed because the Linux default keymap binds
+    // ctrl-/ to editor::ToggleComments, which would otherwise win over Workspace.
+    "context": "Workspace || Terminal || Editor",
     "bindings": {
       "ctrl-/": "workspace::ToggleBottomDock",
     },
