@@ -5,11 +5,33 @@
 # asking trusted LE input devices to connect while they're disconnected.
 # Classic (public address) devices are skipped so nothing gets paged away
 # from another computer.
+#
+# Each connect attempt makes the controller scan for the device, and the
+# single radio can't scan and stream A2DP at the same time without the audio
+# stuttering. While an audio device is connected the attempts are therefore
+# short and spaced out (a few percent scan duty cycle); otherwise they run
+# back to back so a woken keyboard reconnects as fast as possible.
+
+audio_connected() {
+  local address
+  for address in $(bluetoothctl devices Connected | awk '{ print $2 }'); do
+    [[ $(bluetoothctl info "$address") == *"Icon: audio-"* ]] && return 0
+  done
+  return 1
+}
 
 while true; do
   if ! bluetoothctl show 2>/dev/null | grep -q 'Powered: yes'; then
     sleep 30
     continue
+  fi
+
+  if audio_connected; then
+    attempt=3
+    pause=30
+  else
+    attempt=20
+    pause=5
   fi
 
   for address in $(bluetoothctl devices Trusted | awk '{ print $2 }'); do
@@ -18,9 +40,9 @@ while true; do
     [[ $info == *"Icon: input-"* ]] || continue
     [[ $info == *"Connected: yes"* ]] && continue
 
-    timeout 20 bluetoothctl connect "$address" >/dev/null 2>&1 &
+    timeout "$attempt" bluetoothctl connect "$address" >/dev/null 2>&1 &
   done
   wait
 
-  sleep 5
+  sleep "$pause"
 done

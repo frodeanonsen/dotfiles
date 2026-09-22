@@ -125,12 +125,14 @@ of day) and `clamshell-follow` (keeps the laptop's workspace visible on the
 external monitor when the lid closes), linked into `~/.local/bin/`.
 `bt-autoreconnect` is there too (keeps asking bonded Bluetooth LE keyboards
 and mice to reconnect, because the T2 MacBook's Broadcom controller does not
-pick them up on its own), but only homebook links it.
+pick them up on its own), but only homebook links it, and no host enables
+it: every connect attempt makes the controller scan, and on this single-radio
+chip that starves A2DP audio, so it stays off until it can run on demand.
 `omarchy/systemd/user/` holds the user units, linked into
 `~/.config/systemd/user/`: the `theme-mode-auto` service and timer that run
-`theme-mode-toggle auto` at 06:00 and 20:00, and homebook's
-`bt-autoreconnect` service. `omarchy/units` lists the units every machine
-enables; the bootstrap script does the enabling.
+`theme-mode-toggle auto` at 06:00 and 20:00, and the `bt-autoreconnect`
+service (linked on homebook, enabled nowhere). `omarchy/units` lists the units
+every machine enables; the bootstrap script does the enabling.
 `omarchy/applications/` holds web app launchers that `omarchy webapp install`
 would otherwise write into `~/.local/share/applications/`, with their icons in
 `omarchy/icons/` linked into `~/.local/share/icons/hicolor/256x256/apps/`.

@@ -1,3 +1,2 @@
 # User units scripts/bootstrap_omarchy.sh enables on homebook, on top of the
 # shared config/omarchy/units. One per line, # comments.
-bt-autoreconnect.service
