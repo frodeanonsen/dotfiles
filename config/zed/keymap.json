@@ -353,6 +353,11 @@
     "context": "Editor",
     "bindings": {
       "ctrl-s": "workspace::Save",
+      // On Linux, Hyprland passes Super+C/V/X through to Zed (hypr/bindings.lua)
+      // and Zed reads Super as cmd, so these match the macOS defaults.
+      "cmd-c": "editor::Copy",
+      "cmd-v": "editor::Paste",
+      "cmd-x": "editor::Cut",
     },
   },
   {

@@ -57,6 +57,48 @@ hl.unbind("SUPER + SHIFT + E")
 hl.unbind("SUPER + SHIFT + ALT + E")
 o.bind("SUPER + SHIFT + E", "iCloud Mail", { webapp = "https://www.icloud.com/mail/", focus = true })
 
+-- Super + C/V/X in Zed. Omarchy's universal clipboard sends CTRL+C/V/X, which
+-- Zed's vim mode reads as escape and visual block. Give Zed the chord as-is so
+-- its keymap (cmd-c/cmd-v/cmd-x in zed/keymap.json) copies and pastes instead.
+-- Other windows keep the default behaviour, mirrored from
+-- default/hypr/bindings/clipboard.lua because its helpers are local there.
+local function send_shortcut_once(mods, key)
+  hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "down" }))
+  hl.timer(function()
+    hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "up" }))
+  end, { timeout = 50, type = "oneshot" })
+end
+
+local function active_window_has_tag(name)
+  local window = hl.get_active_window()
+  for _, tag in ipairs(window and window.tags or {}) do
+    if tag:gsub("%*$", "") == name then
+      return true
+    end
+  end
+  return false
+end
+
+local function clipboard_shortcut(key, terminal_mods, terminal_key)
+  return function()
+    local window = hl.get_active_window()
+    if window and window.class == "dev.zed.Zed" then
+      send_shortcut_once("SUPER", key)
+    elseif active_window_has_tag("terminal") then
+      send_shortcut_once(terminal_mods, terminal_key)
+    else
+      send_shortcut_once("CTRL", key)
+    end
+  end
+end
+
+hl.unbind("SUPER + C")
+hl.unbind("SUPER + V")
+hl.unbind("SUPER + X")
+o.bind("SUPER + C", "Universal copy", clipboard_shortcut("C", "CTRL", "Insert"))
+o.bind("SUPER + V", "Universal paste", clipboard_shortcut("V", "SHIFT", "Insert"))
+o.bind("SUPER + X", "Universal cut", clipboard_shortcut("X", "CTRL", "X"))
+
 -- Clamshell: show the laptop's workspace on the external monitor when the lid
 -- closes. Runs alongside Omarchy's own lid handler.
 o.bind("switch:on:Lid Switch", nil, "~/.local/bin/clamshell-follow", { locked = true })
