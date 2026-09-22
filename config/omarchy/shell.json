@@ -10,7 +10,7 @@
           "format": "dddd HH:mm",
           "formatAlt": "d MMMM 'W'ww yyyy",
           "id": "omarchy.clock",
-          "verticalFormat": "HH\n—\nmm"
+          "verticalFormat": "HH\n\u2014\nmm"
         },
         {
           "id": "omarchy.keyboard-layout"
@@ -64,6 +64,9 @@
   "plugins": [
     {
       "id": "frode.battery-suspend"
+    },
+    {
+      "id": "frode.display-off"
     }
   ],
   "version": 1

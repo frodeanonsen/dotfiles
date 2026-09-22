@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "frode.display-off",
+  "name": "Display Off",
+  "version": "1.0.0",
+  "author": "Frode Anonsen",
+  "description": "Turns the displays off after 5 minutes of idle, in place of the screensaver.",
+  "kinds": [
+    "service"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml"
+  }
+}

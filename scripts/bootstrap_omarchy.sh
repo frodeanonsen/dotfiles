@@ -25,7 +25,8 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 	echo
 	echo "Steps: link configs, hook config/bash/omarchy.bash into ~/.bashrc,"
 	echo "install packages, install this host's system files, enable user units,"
-	echo "make iCloud Mail the mailto handler, re-render the theme templates."
+	echo "switch the screensaver off, make iCloud Mail the mailto handler,"
+	echo "re-render the theme templates."
 	exit 0
 fi
 
@@ -114,6 +115,19 @@ for unit in $units; do
 		echo "$unit: enabled and started"
 	fi
 done
+
+# The omarchy screensaver runs a ttfx animation in a terminal on every monitor,
+# busy enough to spin up the fans; the frode.display-off shell plugin blanks
+# the screens instead, so the screensaver stays switched off.
+step "screensaver off"
+if omarchy-toggle-enabled screensaver-off; then
+	echo "ok, already off"
+elif [ "$dry_run" = true ]; then
+	echo "would run: omarchy-toggle screensaver-off on"
+else
+	omarchy-toggle screensaver-off on
+	echo "switched off"
+fi
 
 step "mailto handler"
 if [ "$(xdg-mime query default x-scheme-handler/mailto)" = "icloud-mail.desktop" ]; then
