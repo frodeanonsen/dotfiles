@@ -155,6 +155,7 @@ is kept apart in `config/omarchy/hosts/<hostname>/`:
 home_links        extra links, same format as the table in link_config.sh
 units             extra systemd user units to enable, one per line
 hypr/monitors.lua that machine's panel and external outputs
+foot/foot.ini     the terminal font sized for that panel's scale (homebook)
 system/           root-owned files, copied to the same path under /
 ```
 

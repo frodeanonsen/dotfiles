@@ -9,3 +9,8 @@
 # mice up again on its own; this keeps asking them to reconnect.
 .local/bin/bt-autoreconnect:omarchy/bin/bt-autoreconnect
 .config/systemd/user/bt-autoreconnect.service:omarchy/systemd/user/bt-autoreconnect.service
+
+# Omarchy's stock foot config with the font at 12pt instead of 9pt: the panel
+# runs at scale 1.5 rather than the 2 Omarchy assumes, and 9 * 2 / 1.5 = 12
+# keeps the glyphs the same physical size.
+.config/foot/foot.ini:omarchy/hosts/homebook/foot/foot.ini
