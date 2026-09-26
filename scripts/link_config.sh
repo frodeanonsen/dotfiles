@@ -55,6 +55,8 @@ zellij:zellij
 # lock and screensaver timeouts). The shell also writes to it, from
 # `omarchy bar` and its settings panel; it saves through the symlink, so those
 # changes show up in the repo as a diff.
+# omarchy/XCompose is the compose table; it pulls in keyd's unicode sequences,
+# which the per-host keyd config (Alt+a = å) needs to produce a character.
 # omarchy/plugins holds user plugins for the omarchy shell, linked one dir per
 # plugin. frode.battery-suspend suspends after 15 minutes of idle on battery;
 # frode.display-off turns the displays off after 5 minutes of idle in place of
@@ -80,6 +82,7 @@ home_links="
 .local/share/applications/icloud-mail.desktop:omarchy/applications/icloud-mail.desktop
 .local/share/icons/hicolor/256x256/apps/icloud-mail.png:omarchy/icons/icloud-mail.png
 .config/vivaldi-stable.conf:vivaldi/vivaldi-stable.conf
+.XCompose:omarchy/XCompose
 "
 
 # What only one machine should get is in omarchy/hosts/<hostname>/home_links,

@@ -1,0 +1,19 @@
+# Compose sequences, read by fcitx5 and by xkbcommon in apps that do their own
+# compose handling. Apply changes with `omarchy restart xcompose`; apps that
+# are already open keep the table they loaded at start.
+
+# keyd types unicode (the Alt+a = å chords from hosts/<hostname>/system/etc/keyd)
+# as a Cancel-key sequence that only this table knows how to turn into the
+# character. Without it the raw sequence leaks through as digits and letters.
+include "/usr/share/keyd/keyd.compose"
+
+# Omarchy's emoji and symbol sequences. These need a compose key, which
+# hypr/input.lua no longer has (Caps Lock is Escape); add compose:ralt there
+# to get them back.
+include "/usr/share/omarchy/default/xcompose"
+
+# Identification
+<Multi_key> <space> <n> : "Frode Ånonsen"
+<Multi_key> <space> <e> : "frode@anonsen.org"
+<Multi_key> <a>         : "å"
+<Multi_key> <A>         : "Å"

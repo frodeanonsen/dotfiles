@@ -144,6 +144,9 @@ default.
 `vivaldi/vivaldi-stable.conf` is the flags file Vivaldi's launcher reads,
 linked to `~/.config/vivaldi-stable.conf`; it turns on VA-API video decode,
 which Chromium leaves off on Linux.
+`omarchy/XCompose` is linked to `~/.XCompose`; it includes keyd's compose
+table, which turns the Cancel-key sequences keyd emits for Alt+a and friends
+into å, ø and æ. Without it those chords type digits and letters instead.
 All Omarchy-only.
 
 ### Per-host omarchy config
@@ -292,6 +295,11 @@ homebook has any; today that is:
   this file changes.
 - A NetworkManager drop-in that leaves the T2 chip's fake USB network
   interface unmanaged, so NetworkManager stops trying DHCP on it after resume.
+- `keyd/default.conf`, the Mac Option letters: Alt+a is å, Alt+o is ø and
+  Alt+' is æ, with Shift for the capitals. keyd sits below the compositor and
+  only takes those six chords, so every other Alt combination still reaches
+  Hyprland and the terminal. The script enables keyd and reloads it when this
+  file changes; `keyd check` validates a config before installing it.
 - `t2fand.conf`, the fan curve for `t2fanrd`. The packaged curve ramps from
   55°C to full speed at 75°C, which had both fans at ~4400 RPM with the CPU at
   60-65°C during video playback; this one ramps from 65°C to 90°C. The script

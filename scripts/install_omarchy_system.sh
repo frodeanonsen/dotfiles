@@ -28,7 +28,8 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 	echo "rules and re-triggers power_supply events so new rules take effect."
 	echo "A changed NetworkManager drop-in reloads NetworkManager; a changed"
 	echo "Limine drop-in rebuilds the boot image (takes effect after a reboot); a"
-	echo "changed t2fand.conf restarts t2fanrd."
+	echo "changed t2fand.conf restarts t2fanrd; a changed keyd config enables keyd"
+	echo "and reloads it."
 	exit 0
 fi
 
@@ -93,6 +94,7 @@ script="set -e"
 reload_nm=false
 rebuild_boot=false
 restart_fans=false
+reload_keyd=false
 for rel in $changed; do
 	src="$src_root$rel"
 	mode=$(stat -c '%a' "$src")
@@ -101,12 +103,16 @@ for rel in $changed; do
 	/etc/NetworkManager/*) reload_nm=true ;;
 	/etc/limine-entry-tool.d/*) rebuild_boot=true ;;
 	/etc/t2fand.conf) restart_fans=true ;;
+	/etc/keyd/*) reload_keyd=true ;;
 	esac
 done
 script="$script; udevadm control --reload; udevadm trigger --subsystem-match=power_supply --action=change"
 [ "$reload_nm" = true ] && script="$script; nmcli general reload"
 [ "$rebuild_boot" = true ] && script="$script; limine-mkinitcpio"
 [ "$restart_fans" = true ] && script="$script; systemctl restart t2fanrd"
+# A running keyd is told to reload; a stopped one reads the new file on start.
+# `keyd reload` right after `enable --now` races the socket, hence the order.
+[ "$reload_keyd" = true ] && script="$script; if systemctl is-active --quiet keyd; then keyd reload; fi; systemctl enable --now keyd"
 as_root sh -c "$script"
 
 echo

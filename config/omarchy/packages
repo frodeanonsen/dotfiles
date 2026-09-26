@@ -23,3 +23,7 @@ tldr
 # hwatch        # not in the Arch repos; AUR only, install by hand if wanted
 lnav
 sshs
+
+# Key remapping below the compositor: the Mac Option letters (Alt+a = å ...)
+# come from the per-host keyd config in hosts/<hostname>/system/etc/keyd.
+keyd

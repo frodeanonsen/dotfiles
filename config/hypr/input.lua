@@ -56,9 +56,14 @@
 -- hl.gesture({ fingers = 3, direction = "left", action = function() hl.dispatch(hl.dsp.focus({ direction = "l" })) end })
 -- hl.gesture({ fingers = 3, direction = "right", action = function() hl.dispatch(hl.dsp.focus({ direction = "r" })) end })
 
+-- Caps Lock is Escape. Omarchy's default makes it the compose key
+-- (compose:caps); kb_options replaces that string wholesale, so the
+-- both-Shifts-toggle-Caps-Lock part is repeated here to keep it. If a compose
+-- key is missed, add compose:ralt to this list.
 -- Natural (inverse) scrolling for both mouse and touchpad.
 hl.config({
   input = {
+    kb_options = "caps:escape,shift:both_capslock_cancel",
     natural_scroll = true,
     touchpad = {
       natural_scroll = true,
