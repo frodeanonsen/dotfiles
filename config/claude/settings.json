@@ -1,11 +1,24 @@
 {
-  "skipDangerousModePermissionPrompt": true,
-  "theme": "auto",
-  "agentPushNotifEnabled": true,
-  "model": "claude-fable-5-1[1m]",
+  "model": "opus",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/home/frode/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
-  "hooks": {"SessionStart":[{"matcher":"*","hooks":[{"type":"command","command":"bash '/home/frode/.claude/hooks/herdr-agent-state.sh' session","timeout":10}]}]}
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "agentPushNotifEnabled": true
 }
