@@ -6,7 +6,7 @@
 
 format = """
 [░▒▓]({{ mix background accent 60% }})\
-[  ](bg:{{ mix background accent 60% }} fg:{{ background }})\
+[  ](bg:{{ mix background accent 60% }} fg:{{ background }})\
 [](bg:{{ accent }} fg:{{ mix background accent 60% }})\
 $directory\
 [](fg:{{ accent }} bg:{{ selection }})\
