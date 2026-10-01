@@ -5,7 +5,8 @@
 # lazygit, btop, starship and mise come with omarchy. Mirrors the shell tools
 # in linux/*-configuration.nix home.packages. One package per line, # comments.
 
-# Shell history and environment
+# Shell, history and environment
+fish            # interactive shell; bash stays the login shell, see bash/omarchy.bash
 atuin
 direnv
 

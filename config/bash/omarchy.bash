@@ -26,3 +26,14 @@ for _f in "${_dotfiles_bash_files[@]}"; do
 done
 
 unset _f _dotfiles_bash_files
+
+# Hand interactive shells over to fish. The login shell stays bash: omarchy's
+# session start (uwsm, /etc/profile.d, ~/.bash_profile) expects it, and a fish
+# login shell leaves a black screen after the LUKS prompt (omarchy #2487).
+# Everything above has run by now, so fish inherits omarchy's env. Running
+# `bash` from fish stays in bash, and so does `bash -c` / scripts.
+if [[ $- == *i* && -z ${BASH_EXECUTION_STRING} ]] && command -v fish >/dev/null 2>&1 &&
+	[[ $(ps --no-header --pid=$PPID --format=comm) != fish ]]; then
+	shopt -q login_shell && exec fish --login
+	exec fish
+fi
