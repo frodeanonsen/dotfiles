@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# Brings the BCM4364 Wi-Fi back after resume. Run as ExecStop of
+# suspend-t2.service, which unloaded brcmfmac before suspend.
+#
+# Normally `modprobe brcmfmac` is all it takes. After a longer S3 the chip has
+# been seen to stay dead when the root port is repowered: the PCI core logs
+# "Unable to change power state from unknown to D0, device inaccessible" and
+# the probe fails with all-ones MMIO reads. The driver then never binds and
+# only a reboot used to help. If that happens this removes the device and
+# rescans its root port so the link is trained again, and as a last resort
+# removes the root port itself and rescans the whole bus. Output lands in the
+# journal under suspend-t2.service.
+#
+#   t2-wifi-resume          # load the driver, recover if it did not bind
+#   t2-wifi-resume status   # show whether the driver is bound
+set -u
+
+vendor=0x14e4
+device=0x4464
+fallback=/sys/bus/pci/devices/0000:03:00.0
+
+find_dev() {
+	local d
+	for d in /sys/bus/pci/devices/*; do
+		if [ "$(cat "$d/vendor" 2>/dev/null)" = "$vendor" ] && [ "$(cat "$d/device" 2>/dev/null)" = "$device" ]; then
+			echo "$d"
+			return
+		fi
+	done
+	echo "$fallback"
+}
+
+dev=$(find_dev)
+name=$(basename "$dev")
+port=$(dirname "$(readlink -f "$dev")")
+
+bound() {
+	[ -e "$dev/driver" ]
+}
+
+if [ "${1:-}" = "status" ]; then
+	if bound; then
+		echo "$name: $(basename "$(readlink -f "$dev/driver")") bound"
+	else
+		echo "$name: no driver bound"
+	fi
+	exit 0
+fi
+
+modprobe brcmfmac
+sleep 1
+if bound; then
+	exit 0
+fi
+
+echo "brcmfmac did not bind $name after resume, removing it and rescanning $(basename "$port")"
+[ -e "$dev/remove" ] && echo 1 >"$dev/remove"
+sleep 1
+echo 1 >"$port/rescan"
+sleep 3
+dev=$(find_dev)
+if bound; then
+	echo "$name recovered after rescanning the root port"
+	exit 0
+fi
+
+echo "$name still dead, removing root port $(basename "$port") and rescanning the bus"
+[ -e "$port/remove" ] && echo 1 >"$port/remove"
+sleep 1
+echo 1 >/sys/bus/pci/rescan
+sleep 3
+dev=$(find_dev)
+if bound; then
+	echo "$name recovered after re-enumerating the root port"
+	exit 0
+fi
+
+echo "$name did not come back, a reboot is needed"
+exit 1

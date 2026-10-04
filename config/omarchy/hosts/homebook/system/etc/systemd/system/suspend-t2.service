@@ -8,10 +8,14 @@
 # installed here.
 #
 # Before=sleep.target runs ExecStart on the way down; StopWhenUnneeded runs
-# ExecStop once sleep.target is released after resume; brcmfmac pulls in its
-# brcmfmac_wcc vendor module itself (a second name on the modprobe line would
-# be read as a module parameter). NetworkManager picks the interface up again
-# and reconnects on its own.
+# ExecStop once sleep.target is released after resume. ExecStop is
+# /usr/local/bin/t2-wifi-resume (installed from the same system/ tree): it
+# modprobes brcmfmac, which pulls in its brcmfmac_wcc vendor module itself,
+# and if the chip came back dead from a long sleep ("Unable to change power
+# state from unknown to D0, device inaccessible", probe fails on all-ones
+# reads) it removes the device and rescans the root port so the link is
+# trained again instead of leaving Wi-Fi gone until a reboot. NetworkManager
+# picks the interface up again and reconnects on its own.
 [Unit]
 Description=Unload the Broadcom Wi-Fi driver around suspend
 Before=sleep.target
@@ -21,7 +25,7 @@ StopWhenUnneeded=yes
 Type=oneshot
 RemainAfterExit=yes
 ExecStart=-/usr/bin/modprobe -r brcmfmac_wcc brcmfmac
-ExecStop=-/usr/bin/modprobe brcmfmac
+ExecStop=-/usr/local/bin/t2-wifi-resume
 
 [Install]
 WantedBy=sleep.target
