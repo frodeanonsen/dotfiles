@@ -29,7 +29,8 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 	echo "A changed NetworkManager drop-in reloads NetworkManager; a changed"
 	echo "Limine drop-in rebuilds the boot image (takes effect after a reboot); a"
 	echo "changed t2fand.conf restarts t2fanrd; a changed keyd config enables keyd"
-	echo "and reloads it."
+	echo "and reloads it; a changed systemd unit reloads systemd; a changed journald"
+	echo "drop-in restarts journald."
 	exit 0
 fi
 
@@ -95,6 +96,8 @@ reload_nm=false
 rebuild_boot=false
 restart_fans=false
 reload_keyd=false
+reload_units=false
+restart_journald=false
 for rel in $changed; do
 	src="$src_root$rel"
 	mode=$(stat -c '%a' "$src")
@@ -104,6 +107,8 @@ for rel in $changed; do
 	/etc/limine-entry-tool.d/*) rebuild_boot=true ;;
 	/etc/t2fand.conf) restart_fans=true ;;
 	/etc/keyd/*) reload_keyd=true ;;
+	/etc/systemd/system/*) reload_units=true ;;
+	/etc/systemd/journald.conf.d/*) restart_journald=true ;;
 	esac
 done
 script="$script; udevadm control --reload; udevadm trigger --subsystem-match=power_supply --action=change"
@@ -113,6 +118,9 @@ script="$script; udevadm control --reload; udevadm trigger --subsystem-match=pow
 # A running keyd is told to reload; a stopped one reads the new file on start.
 # `keyd reload` right after `enable --now` races the socket, hence the order.
 [ "$reload_keyd" = true ] && script="$script; if systemctl is-active --quiet keyd; then keyd reload; fi; systemctl enable --now keyd"
+# sleep.conf.d drop-ins need no reload: systemd-sleep reads them on each suspend.
+[ "$reload_units" = true ] && script="$script; systemctl daemon-reload"
+[ "$restart_journald" = true ] && script="$script; systemctl restart systemd-journald"
 as_root sh -c "$script"
 
 echo

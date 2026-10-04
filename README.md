@@ -304,14 +304,31 @@ homebook has any; today that is:
   55°C to full speed at 75°C, which had both fans at ~4400 RPM with the CPU at
   60-65°C during video playback; this one ramps from 65°C to 90°C. The script
   restarts `t2fanrd` when this file changes.
+- `systemd/sleep.conf.d/homebook-no-s2idle.conf`, `SuspendState=mem` and
+  `MemorySleepMode=deep`. systemd tries its default `mem standby freeze` in
+  turn, so a deep suspend that fails (the Wi-Fi chip sometimes times out
+  entering D3) silently falls through to `freeze`, which is s2idle. s2idle has
+  never resumed cleanly on this machine: the Thunderbolt controllers die and it
+  hard-crashes soon after, which is how the Oct 4 2026 crash happened. With
+  only `mem` listed a failed suspend just returns to the desktop.
+- `systemd/system/suspend-t2.service`, the t2linux sleep hook, cut down to
+  unloading `brcmfmac` before suspend and loading it again on resume, so the
+  D3 timeout above has nothing to time out. The copy Omarchy ships has every
+  line commented out except a `systemctl stop tiny-dfr` that fails on each
+  suspend because tiny-dfr is not installed. The script reloads systemd when
+  this file changes.
+- `systemd/journald.conf.d/homebook-sync.conf`, `SyncIntervalSec=30s` instead
+  of the 5 min default, so a hard crash loses at most half a minute of log.
+  The script restarts journald when this file changes.
 
-Two things about suspend on homebook are deliberately *not* in the repo,
-because they are Omarchy's own defaults: `/etc/default/limine` must only use
-`KERNEL_CMDLINE[default]+=` (a plain `=` there silently overrides every
-Omarchy drop-in, including the T2 suspend parameters), and
-`/etc/systemd/sleep.conf` must stay stock. Old T2 workarounds that force
-`s2idle`/`freeze` or unload modules around sleep break the current `t2bce`
-driver.
+Two suspend-related files on homebook stay Omarchy's own: `/etc/default/limine`
+must only use `KERNEL_CMDLINE[default]+=` (a plain `=` there silently
+overrides every Omarchy drop-in, including the T2 suspend parameters), and
+`/etc/systemd/sleep.conf` itself stays stock; the sleep drop-in above only
+narrows it to S3. Old T2 workarounds that force `s2idle`/`freeze`, or unload
+the `apple-bce`/`t2bce` and Touch Bar modules around sleep, break the current
+`t2bce` driver and must not come back; unloading `brcmfmac` alone is fine, it
+is a separate PCIe device.
 
 Both scripts need root. From a terminal that is a sudo prompt; from something
 without one, like the `!` runner in Claude Code, they fall back to a `pkexec`

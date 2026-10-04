@@ -1,0 +1,27 @@
+# Unloads the Broadcom Wi-Fi driver before suspend and loads it again on
+# resume. The BCM4364 firmware sometimes never acknowledges the D3 request on
+# the way down ("brcmf_pcie_pm_enter_D3: Timeout on response for entering D3
+# substate"), which makes the kernel abort the whole suspend; with the driver
+# gone there is nothing to time out. This is the t2linux suspend hook, which
+# Omarchy's T2 install ships with every line commented out except a
+# `systemctl stop tiny-dfr` that fails on every suspend because tiny-dfr is not
+# installed here.
+#
+# Before=sleep.target runs ExecStart on the way down; StopWhenUnneeded runs
+# ExecStop once sleep.target is released after resume; brcmfmac pulls in its
+# brcmfmac_wcc vendor module itself (a second name on the modprobe line would
+# be read as a module parameter). NetworkManager picks the interface up again
+# and reconnects on its own.
+[Unit]
+Description=Unload the Broadcom Wi-Fi driver around suspend
+Before=sleep.target
+StopWhenUnneeded=yes
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=-/usr/bin/modprobe -r brcmfmac_wcc brcmfmac
+ExecStop=-/usr/bin/modprobe brcmfmac
+
+[Install]
+WantedBy=sleep.target
