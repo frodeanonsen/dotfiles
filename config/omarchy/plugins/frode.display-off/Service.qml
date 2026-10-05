@@ -10,6 +10,15 @@ import Quickshell.Wayland
 // scripts/bootstrap_omarchy.sh) and this blanks the screens at the time it
 // would have started. omarchy's own idle service still locks at idle.lock.
 //
+// External monitors are disabled as outputs rather than blanked with dpms.
+// The Samsung S27A850 on the HP USB-C to DP adapter drops its hotplug line
+// about ten seconds after the link goes to sleep and then comes back, which
+// Hyprland takes as a replug and powers the monitor on again; a disabled
+// output ignores the replug and stays dark. The laptop panel is blanked with
+// dpms as before. On activity the monitor rules are reloaded from the config,
+// which re-enables the externals and moves their workspaces back, and only
+// then is dpms turned on; the reload is skipped when nothing was disabled.
+//
 // Hyprland lights the displays again on the first key press or mouse move
 // (key_press_enables_dpms and mouse_move_enables_dpms in omarchy's defaults);
 // the explicit `on` covers wake-ups that arrive another way. Idle inhibitors
@@ -39,18 +48,41 @@ Item {
 
   Process {
     id: offProcess
-    command: ["bash", "-c", "if [[ -f $HOME/.local/state/omarchy/indicators/stay-awake ]]; then echo stay-awake; else omarchy-brightness-display off; fi"]
+    command: ["bash", "-c", `
+      if [[ -f $HOME/.local/state/omarchy/indicators/stay-awake ]]; then
+        echo stay-awake
+        exit 0
+      fi
+      state="$XDG_RUNTIME_DIR/display-off-disabled"
+      externals=$(hyprctl monitors -j | jq -r '.[] | select(.disabled | not) | select(.name | test("^(eDP|LVDS|DSI)-") | not) | .name')
+      for m in $externals; do
+        hyprctl eval "hl.monitor({ output = \\"$m\\", disabled = true })" >/dev/null && echo "disabled $m" && echo "$m" >>"$state"
+      done
+      omarchy-brightness-display off
+    `]
     stdout: SplitParser {
-      onRead: function(line) { root.log("skipped: " + line) }
+      onRead: function(line) { root.log("off: " + line) }
     }
     onExited: function(exitCode) { root.log("off exitCode=" + exitCode) }
   }
 
   Process {
     id: onProcess
-    command: ["bash", "-c", "omarchy-brightness-display on"]
+    command: ["bash", "-c", `
+      state="$XDG_RUNTIME_DIR/display-off-disabled"
+      if [[ -f $state ]]; then
+        echo "re-enabling $(tr '\\n' ' ' <"$state")"
+        rm -f "$state"
+        hyprctl reload >/dev/null
+        sleep 2
+      fi
+      omarchy-brightness-display on
+    `]
+    stdout: SplitParser {
+      onRead: function(line) { root.log("on: " + line) }
+    }
     onExited: function(exitCode) { root.log("on exitCode=" + exitCode) }
   }
 
-  Component.onCompleted: log("ready timeout=" + timeoutSeconds)
+  Component.onCompleted: log("ready timeout=" + timeoutSeconds + " externals=disable")
 }
