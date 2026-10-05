@@ -16,6 +16,14 @@ hl.monitor({ output = "eDP-1", mode = "2880x1800@60", position = "0x0", scale = 
 -- automatically if the cable/port/monitor setting ever offers it again.
 hl.monitor({ output = "DP-6", mode = "highres", position = "1920x0", scale = 1 })
 
+-- Samsung S27A850 (2560x1440) over the HP USB-C to DP adapter, matched by
+-- EDID description so it gets the same rule on whichever port it lands on.
+-- highres picks 2560x1440@60 when the link trained at HBR and falls back to
+-- 1280x1024 if it only trained at RBR. If it comes up at 1280x1024, replug
+-- the adapter; the link verified at RBR once at plug-in but re-verifies at
+-- HBR on a hotplug (amdgpu debugfs DP-4/trigger_hotplug does the same).
+hl.monitor({ output = "desc:Samsung Electric Company SMS27A850 H1AK500000", mode = "highres", position = "1920x0", scale = 1 })
+
 -- Configure a specific monitor.
 -- hl.monitor({ output = "DP-2", mode = "2560x1440@144", position = "0x0", scale = 1 })
 
