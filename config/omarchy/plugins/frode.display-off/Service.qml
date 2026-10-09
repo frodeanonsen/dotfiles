@@ -19,6 +19,15 @@ import Quickshell.Wayland
 // which re-enables the externals and moves their workspaces back, and only
 // then is dpms turned on; the reload is skipped when nothing was disabled.
 //
+// A disabled output is still not enough for the Samsung on its own: with
+// source detection on auto it woke itself every 5 minutes to probe for a
+// signal (two hotplug drops 5 s apart, logged by the shell as a removal of
+// DP-4), lighting up each time. Setting source detection to manual in the
+// monitor's menu stopped that. Do not try to sleep it over DDC/CI instead:
+// `ddcutil setvcp d6 4` blanks it, but it then answers no DDC, no modeset
+// trains the link (amdgpu: "enabling link 1 failed") and a debugfs
+// trigger_hotplug does nothing; only the power button wakes it.
+//
 // Hyprland lights the displays again on the first key press or mouse move
 // (key_press_enables_dpms and mouse_move_enables_dpms in omarchy's defaults);
 // the explicit `on` covers wake-ups that arrive another way. Idle inhibitors
