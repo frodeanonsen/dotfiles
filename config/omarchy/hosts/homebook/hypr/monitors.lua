@@ -9,12 +9,16 @@ hl.monitor({ output = "", mode = "preferred", position = "auto", scale = omarchy
 
 -- Laptop panel (Apple LCD) on the left, ultrawide external on the right.
 -- Restored from the pre-Lua hyprland.conf.
--- At scale 1.5 the laptop panel is 1920x1200 logical, so DP-6 starts at x=1920.
+-- At scale 1.5 the laptop panel is 1920x1200 logical, so the ultrawide starts at x=1920.
 -- (2880/1.5 and 1800/1.5 are both integers, which Hyprland requires.)
 hl.monitor({ output = "eDP-1", mode = "2880x1800@60", position = "0x0", scale = 1.5 })
--- highres: the current link only offers 5120x1440@30, but this picks 60Hz
--- automatically if the cable/port/monitor setting ever offers it again.
-hl.monitor({ output = "DP-6", mode = "highres", position = "1920x0", scale = 1 })
+-- Philips 499P9 ultrawide, matched by EDID description because the port name
+-- has moved (DP-6, then DP-4) and the catch-all left it at 3840x1080 @1.25.
+-- Over USB-C the OSD "USB Setting > USB-C Setting" decides the DP lane count:
+-- "High Data Speed" (USB 3) leaves two lanes and the EDID only offers
+-- 5120x1440@30; "High Resolution" (USB 2) gives four lanes and 5120x1440@60.
+-- highres picks 60Hz automatically whenever the monitor advertises it.
+hl.monitor({ output = "desc:Philips Consumer Electronics Company PHL 499P9 AU02105001407", mode = "highres", position = "1920x0", scale = 1 })
 
 -- Samsung S27A850 (2560x1440) over the HP USB-C to DP adapter, matched by
 -- EDID description so it gets the same rule on whichever port it lands on.
