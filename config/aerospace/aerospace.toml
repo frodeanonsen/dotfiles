@@ -70,7 +70,8 @@ exec-on-workspace-change = [
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
 # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
 # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
-automatically-unhide-macos-hidden-apps = true
+# Off: on macOS 26.6 it makes new windows lose focus more often, see focus_bug.md
+automatically-unhide-macos-hidden-apps = false
 
 # Keep the same 10 workspace slots alive as Rift:
 # 0=personal, 1=ui, 2=api, 3=3d, 4=db, 5=fw, 6=ai, 7=m1, 8=m2, 9=chat
@@ -279,7 +280,7 @@ esc = [
 
 # Match Rift-style routing where AeroSpace supports the same signal.
 [[on-window-detected]]
-if.window-title-regex-substring = '\\.dotfiles'
+if.window-title-regex-substring = '\.dotfiles'
 run = 'move-node-to-workspace 0'
 
 [[on-window-detected]]
