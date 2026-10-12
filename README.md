@@ -85,7 +85,7 @@ used in completely different ways. This matters when adding something new.
 **XDG app configs** — symlinked into `~/.config/<name>`. These are the ones the
 nix host configs and `link_config.sh` place: `alacritty`, `atuin`, `fish`,
 `ghostty`, `kitty`, `lazygit`, `lazyvim` (linked as `nvim`), `nix`, `ohmyposh`,
-`sol`, `starship`, `tmux`, `toolkit`, `wezterm`, `zed`, `zellij`.
+`starship`, `tmux`, `toolkit`, `wezterm`, `zed`, `zellij`.
 
 **Shell topic dirs** — *never* symlinked. `config/*/*.zsh`, `config/*/*.fish`
 and `config/*/*.bash` are sourced directly out of `$DOTFILES` by

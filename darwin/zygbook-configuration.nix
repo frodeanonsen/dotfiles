@@ -101,6 +101,7 @@ in
   homebrew = {
     taps = [
       "nikitabobko/tap"
+      "abue-ammar/tinycast"
     ];
 
     casks = [
@@ -109,11 +110,11 @@ in
       "openscad@snapshot" # OpenSCAD 3D modeling software
       "gimp" # GIMP photo editor
       "ungoogled-chromium" # Chromium
-      "sol" # MacOS Launcher, alternative to Raycast, etc.
     ];
 
     extraConfig = ''
       cask "nikitabobko/tap/aerospace", trusted: true
+      cask "abue-ammar/tinycast/tinycast", trusted: true # MacOS Launcher, alternative to Raycast, etc.
     '';
 
     brews = [
@@ -283,7 +284,6 @@ in
       run_as_user ln -sfn "$dotfiles/lazygit" "$user_home/.config/lazygit"
       run_as_user ln -sfn "$dotfiles/starship" "$user_home/.config/starship"
       run_as_user ln -sfn "$dotfiles/atuin" "$user_home/.config/atuin"
-      run_as_user ln -sfn "$dotfiles/sol" "$user_home/.config/sol"
 
       run_as_user mkdir -p "$user_home/.claude"
       run_as_user ln -sfn "$dotfiles/claude/settings.json" "$user_home/.claude/settings.json"
