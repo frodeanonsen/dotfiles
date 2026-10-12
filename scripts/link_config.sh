@@ -61,6 +61,10 @@ zellij:zellij
 # plugin. frode.battery-suspend suspends after 15 minutes of idle on battery;
 # frode.display-off turns the displays off after 5 minutes of idle in place of
 # the screensaver. Each is switched on by its entry in shell.json's plugins list.
+# frode.workspaces is a clone of the bar's omarchy.workspaces widget that
+# always shows all ten workspaces; the stock one shows 1-5 and adds 6-10 only
+# while they hold a window. It is switched on by replacing omarchy.workspaces
+# in shell.json's bar layout (`omarchy plugin clone` did that).
 # vivaldi-stable.conf is the flags file Vivaldi's launcher reads;
 # ~/.config/vivaldi itself is the browser profile and stays out of the repo.
 home_links="
@@ -70,6 +74,7 @@ home_links="
 .config/omarchy/shell.json:omarchy/shell.json
 .config/omarchy/plugins/frode.battery-suspend:omarchy/plugins/frode.battery-suspend
 .config/omarchy/plugins/frode.display-off:omarchy/plugins/frode.display-off
+.config/omarchy/plugins/frode.workspaces:omarchy/plugins/frode.workspaces
 .config/hypr/hyprland.lua:hypr/hyprland.lua
 .config/hypr/input.lua:hypr/input.lua
 .config/hypr/bindings.lua:hypr/bindings.lua

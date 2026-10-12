@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "frode.workspaces",
+  "name": "Workspaces 1-0",
+  "version": "1.0.0",
+  "author": "frode",
+  "description": "Workspace indicators, all ten always shown",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Workspaces.qml"
+  },
+  "barWidget": {
+    "displayName": "Workspaces 1-0",
+    "description": "Workspace indicators, all ten always shown",
+    "category": "Compositor",
+    "allowMultiple": false
+  },
+  "omarchy": {
+    "clonedFrom": "omarchy.workspaces"
+  }
+}

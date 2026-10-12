@@ -116,8 +116,12 @@ minutes of idle, but only on battery; omarchy itself never suspends on idle.
 `frode.display-off` turns the displays off after 5 minutes of idle in place of
 omarchy's screensaver, which runs a terminal animation on every monitor and
 spins up the fans; the bootstrap script switches that screensaver off. Each
-plugin is switched on by its entry in `shell.json`'s `plugins` list. `omarchy
-plugin validate` refuses symlinked folders, so run it on the dir in the repo.
+plugin is switched on by its entry in `shell.json`'s `plugins` list.
+`frode.workspaces` is a clone of the bar's `omarchy.workspaces` widget that
+always shows all ten workspaces, where the stock one shows 1-5 and adds 6-10
+only while they hold a window; it is switched on by its id standing in for
+`omarchy.workspaces` in `shell.json`'s bar layout. `omarchy plugin validate`
+refuses symlinked folders, so run it on the dir in the repo.
 `hypr/` holds five of the six Hyprland override files (`hyprland.lua`,
 `input.lua`, `bindings.lua`, `looknfeel.lua`, `autostart.lua`), linked one by
 one into `~/.config/hypr/` because omarchy owns that dir and keeps its own
