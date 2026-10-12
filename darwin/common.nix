@@ -19,7 +19,7 @@
     };
 
     systemPackages = with pkgs; [
-      nixfmt-rfc-style # Nix code formatter
+      nixfmt # Nix code formatter
       vim # Text editor
       unstable.neovim # Hyperextensible Vim-based text editor
       unstable.alacritty-graphics # terminal emulator
@@ -66,7 +66,7 @@
       atuin # Shell history search and sync
       dust # Disk Usage Summary
       duf # Disk Usage/Free Utility
-      neofetch # System info script
+      fastfetch # System info script
       rustup # Rust toolchain installer
       toot # Mastodon tui client
       fedistar # Mastodon client

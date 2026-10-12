@@ -12,7 +12,7 @@
       VISUAL = "${vars.editor}";
     };
     systemPackages = with pkgs; [
-      nixfmt-rfc-style # Nix code formatter
+      nixfmt # Nix code formatter
       vim # Text editor
       unstable.neovim # Hyperextensible Vim-based text editor
       unstable.alacritty-graphics # terminal emulator
