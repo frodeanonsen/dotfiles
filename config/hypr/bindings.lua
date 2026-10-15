@@ -104,6 +104,17 @@ o.bind("SUPER + C", "Universal copy", clipboard_shortcut("C", "CTRL", "Insert"))
 o.bind("SUPER + V", "Universal paste", clipboard_shortcut("V", "SHIFT", "Insert"))
 o.bind("SUPER + X", "Universal cut", clipboard_shortcut("X", "CTRL", "X"))
 
+-- Capture bindings on F10 instead of PRINT, which the custom keyboard lacks.
+-- Commands mirror default/hypr/bindings/utilities.lua.
+hl.unbind("PRINT")
+hl.unbind("ALT + PRINT")
+hl.unbind("SUPER + PRINT")
+hl.unbind("SUPER + CTRL + PRINT")
+o.bind("F10", "Screenshot", "omarchy-capture-screenshot")
+o.bind("ALT + F10", "Screenrecording", "omarchy-capture-screenrecording --stop-recording || omarchy-menu toggle trigger.capture.screenrecord")
+o.bind("SUPER + F10", "Color picker", "pkill hyprpicker || hyprpicker -a")
+o.bind("SUPER + CTRL + F10", "Extract text (OCR) from screenshot", "omarchy-capture-text")
+
 -- Clamshell: show the laptop's workspace on the external monitor when the lid
 -- closes. Runs alongside Omarchy's own lid handler.
 o.bind("switch:on:Lid Switch", nil, "~/.local/bin/clamshell-follow", { locked = true })
