@@ -34,6 +34,11 @@ o.bind("SUPER + E", "Toggle window split", hl.dsp.layout("togglesplit"))
 o.bind("SUPER + I", "Keybindings", "omarchy-menu-keybindings")
 o.bind("SUPER + Y", "Toggle workspace layout", "omarchy-hyprland-workspace-layout-toggle")
 
+-- Scrolling layout: step the focused column through
+-- scrolling.explicit_column_widths. Does nothing in dwindle.
+o.bind("SUPER + BRACKETRIGHT", "Widen column", hl.dsp.layout("colresize +conf"))
+o.bind("SUPER + BRACKETLEFT", "Narrow column", hl.dsp.layout("colresize -conf"))
+
 o.bind("SUPER + H", "Focus on left window", hl.dsp.focus({ direction = "l" }))
 o.bind("SUPER + J", "Focus on below window", hl.dsp.focus({ direction = "d" }))
 o.bind("SUPER + K", "Focus on above window", hl.dsp.focus({ direction = "u" }))

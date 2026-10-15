@@ -2,8 +2,12 @@
 
 -- Pink focused-window border for every theme (loads after the theme's colors).
 -- Inactive borders keep the theme's grey.
+-- Niri-like side-scrolling layout on every workspace instead of dwindle.
+-- SUPER + Y still flips one workspace back to dwindle, and that choice sticks
+-- in ~/.local/state/omarchy/workspace-layouts/.
 hl.config({
   general = {
+    layout = "scrolling",
     col = {
       active_border = "rgb(f7768e)",
     },
