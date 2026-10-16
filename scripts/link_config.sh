@@ -65,6 +65,11 @@ zellij:zellij
 # always shows all ten workspaces; the stock one shows 1-5 and adds 6-10 only
 # while they hold a window. It is switched on by replacing omarchy.workspaces
 # in shell.json's bar layout (`omarchy plugin clone` did that).
+# 51-bluez-codecs.conf is the bluetooth codec list for wireplumber. In
+# PipeWire 1.6 the headset (HFP) codecs are in it too, so it names cvsd, msbc
+# and lc3_swb besides sbc; with sbc only, a headset mic falls back to 8kHz
+# CVSD. ~/.config/wireplumber also holds omarchy's a2dp autoconnect file, so
+# only this one is linked.
 # vivaldi-stable.conf is the flags file Vivaldi's launcher reads;
 # ~/.config/vivaldi itself is the browser profile and stays out of the repo.
 # herdr/config.toml is linked as a single file because ~/.config/herdr also
@@ -89,6 +94,7 @@ home_links="
 .config/systemd/user/theme-mode-auto.timer:omarchy/systemd/user/theme-mode-auto.timer
 .local/share/applications/icloud-mail.desktop:omarchy/applications/icloud-mail.desktop
 .local/share/icons/hicolor/256x256/apps/icloud-mail.png:omarchy/icons/icloud-mail.png
+.config/wireplumber/wireplumber.conf.d/51-bluez-codecs.conf:wireplumber/wireplumber.conf.d/51-bluez-codecs.conf
 .config/vivaldi-stable.conf:vivaldi/vivaldi-stable.conf
 .XCompose:omarchy/XCompose
 "
