@@ -28,17 +28,29 @@ import Quickshell.Wayland
 // trains the link (amdgpu: "enabling link 1 failed") and a debugfs
 // trigger_hotplug does nothing; only the power button wakes it.
 //
+// The idle monitor is input-only (respectInhibitors false) and inhibitors
+// are checked by hand. With the lid closed the external is the only output,
+// and disabling it leaves Hyprland with none; it then creates a headless
+// FALLBACK output, drops the window focus and re-checks idle inhibitors.
+// That re-check (Hyprland 0.56, CIdleNotifyProtocol::setInhibit) resets
+// every inhibitor-obeying idle notification even when nothing inhibits, so
+// the shell saw "resumed" 0.4 s after the disable and lit the monitor again,
+// which would have repeated every 5 minutes. An input-only notification only
+// resumes on a key or pointer event. When a window inhibits idle (video
+// playback) the blanking is skipped and retried every minute while still
+// idle, so it still happens once the video ends. omarchy's "Stay awake"
+// toggle is checked the same way frode.battery-suspend does.
+//
 // Hyprland lights the displays again on the first key press or mouse move
 // (key_press_enables_dpms and mouse_move_enables_dpms in omarchy's defaults);
-// the explicit `on` covers wake-ups that arrive another way. Idle inhibitors
-// (video playback) hold the blanking off, and so does omarchy's "Stay awake"
-// toggle, which this checks the same way frode.battery-suspend does.
+// the explicit `on` covers wake-ups that arrive another way.
 Item {
   id: root
 
   // Fixed at load: changing an IdleMonitor's timeout on a running shell left
   // omarchy's own monitor dead until the shell was restarted.
   readonly property int timeoutSeconds: 300
+  readonly property int retrySeconds: 60
 
   function log(message) {
     console.log("display-off " + new Date().toISOString() + " " + message)
@@ -47,12 +59,22 @@ Item {
   IdleMonitor {
     id: idleMonitor
     timeout: root.timeoutSeconds
-    respectInhibitors: true
+    respectInhibitors: false
     onIsIdleChanged: {
       root.log(isIdle ? "idle, displays off" : "active, displays on")
+      retryTimer.stop()
       if (isIdle) offProcess.running = true
       else onProcess.running = true
     }
+  }
+
+  // Re-tries the blanking while idle after it was skipped for an inhibitor
+  // or the stay-awake toggle.
+  Timer {
+    id: retryTimer
+    interval: root.retrySeconds * 1000
+    repeat: false
+    onTriggered: if (idleMonitor.isIdle) offProcess.running = true
   }
 
   Process {
@@ -60,7 +82,11 @@ Item {
     command: ["bash", "-c", `
       if [[ -f $HOME/.local/state/omarchy/indicators/stay-awake ]]; then
         echo stay-awake
-        exit 0
+        exit 2
+      fi
+      if hyprctl clients -j | jq -e 'any(.[]; .inhibitingIdle)' >/dev/null; then
+        echo "inhibited by $(hyprctl clients -j | jq -r '[.[] | select(.inhibitingIdle) | .class] | unique | join(" ")')"
+        exit 2
       fi
       state="$XDG_RUNTIME_DIR/display-off-disabled"
       externals=$(hyprctl monitors -j | jq -r '.[] | select(.disabled | not) | select(.name | test("^(eDP|LVDS|DSI)-") | not) | .name')
@@ -72,7 +98,10 @@ Item {
     stdout: SplitParser {
       onRead: function(line) { root.log("off: " + line) }
     }
-    onExited: function(exitCode) { root.log("off exitCode=" + exitCode) }
+    onExited: function(exitCode) {
+      root.log("off exitCode=" + exitCode)
+      if (exitCode === 2 && idleMonitor.isIdle) retryTimer.restart()
+    }
   }
 
   Process {
@@ -93,5 +122,5 @@ Item {
     onExited: function(exitCode) { root.log("on exitCode=" + exitCode) }
   }
 
-  Component.onCompleted: log("ready timeout=" + timeoutSeconds + " externals=disable")
+  Component.onCompleted: log("ready timeout=" + timeoutSeconds + " externals=disable inhibitors=manual retry=" + retrySeconds)
 }
