@@ -7,10 +7,12 @@
           "id": "omarchy.indicators"
         },
         {
+          "id": "omarchy.clock",
           "format": "dddd d MMM HH:mm",
           "formatAlt": "d MMMM 'W'ww yyyy",
-          "id": "omarchy.clock",
-          "verticalFormat": "HH\n—\nmm"
+          "verticalFormat": "HH\n—\nmm",
+          "birthYear": 1975,
+          "lifeExpectancy": 90
         },
         {
           "id": "omarchy.keyboard-layout"
