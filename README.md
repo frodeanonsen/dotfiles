@@ -102,7 +102,10 @@ a whole `~/.config` dir. `claude/` puts `settings.json` and `statusline.sh` in
 `~/.claude/`; Claude Code writes `settings.json` back when you change a
 setting, so the home-manager hosts link these with `mkOutOfStoreSymlink` to the
 checkout instead of a read-only store copy, and zygbook uses `ln -sfn` like its
-other links. `omarchy/themed/starship.toml.tpl` is the two-line starship prompt
+other links. `herdr/config.toml` is the herdr config, a port of the tmux
+bindings with `ctrl+space` as prefix, linked into `~/.config/herdr/` as a
+single file because that dir also holds herdr's sockets, logs and session
+state. `omarchy/themed/starship.toml.tpl` is the two-line starship prompt
 with every colour replaced by an omarchy theme variable; linked into
 `~/.config/omarchy/themed/`, `omarchy theme set` renders it alongside the other
 themed configs, and `bash/omarchy.bash` points `STARSHIP_CONFIG` at the result.

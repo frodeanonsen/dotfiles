@@ -67,7 +67,10 @@ zellij:zellij
 # in shell.json's bar layout (`omarchy plugin clone` did that).
 # vivaldi-stable.conf is the flags file Vivaldi's launcher reads;
 # ~/.config/vivaldi itself is the browser profile and stays out of the repo.
+# herdr/config.toml is linked as a single file because ~/.config/herdr also
+# holds the server sockets, logs and session state.
 home_links="
+.config/herdr/config.toml:herdr/config.toml
 .claude/settings.json:claude/settings.json
 .claude/statusline.sh:claude/statusline.sh
 .config/omarchy/themed/starship.toml.tpl:omarchy/themed/starship.toml.tpl

@@ -285,6 +285,10 @@ in
       run_as_user ln -sfn "$dotfiles/starship" "$user_home/.config/starship"
       run_as_user ln -sfn "$dotfiles/atuin" "$user_home/.config/atuin"
 
+      # single file: ~/.config/herdr also holds sockets, logs and session state
+      run_as_user mkdir -p "$user_home/.config/herdr"
+      run_as_user ln -sfn "$dotfiles/herdr/config.toml" "$user_home/.config/herdr/config.toml"
+
       run_as_user mkdir -p "$user_home/.claude"
       run_as_user ln -sfn "$dotfiles/claude/settings.json" "$user_home/.claude/settings.json"
       run_as_user ln -sfn "$dotfiles/claude/statusline.sh" "$user_home/.claude/statusline.sh"
