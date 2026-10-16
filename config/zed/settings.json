@@ -30,22 +30,6 @@
       },
       "type": "registry"
     },
-    "codex-acp": {
-      "type": "registry",
-      "default_config_options": {
-        "model": "gpt-5.4",
-        "mode": "full-access",
-      },
-    },
-    "github-copilot-cli": {
-      "default_config_options": {
-        "mode": "https://agentclientprotocol.com/protocol/session-modes#agent",
-        "reasoning_effort": "high",
-        "model": "gpt-5.6-sol",
-        "allow_all": "on",
-      },
-      "type": "registry",
-    },
   },
   "which_key": {
     "enabled": true,
