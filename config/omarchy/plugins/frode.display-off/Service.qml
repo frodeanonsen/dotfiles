@@ -3,7 +3,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 
-// Turns the displays off after 5 minutes of idle, in place of omarchy's
+// Turns the displays off after 15 minutes of idle, in place of omarchy's
 // screensaver. The screensaver runs a ttfx animation in a terminal on every
 // monitor, which keeps the CPU and GPU busy enough to spin up the fans, so
 // the screensaver is switched off (`omarchy toggle screensaver`, done by
@@ -49,7 +49,7 @@ Item {
 
   // Fixed at load: changing an IdleMonitor's timeout on a running shell left
   // omarchy's own monitor dead until the shell was restarted.
-  readonly property int timeoutSeconds: 300
+  readonly property int timeoutSeconds: 900
   readonly property int retrySeconds: 60
 
   function log(message) {
