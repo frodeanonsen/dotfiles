@@ -1,0 +1,16 @@
+# VNC server for the Hyprland session, so bodbook can be driven from the LAN.
+# Needs `sudo pacman -S wayvnc` and ~/.config/wayvnc/config, which holds the
+# password and the RSA key path and stays out of the repo. ufw on bodbook
+# allows 5900/tcp from 192.168.0.0/16.
+[Unit]
+Description=wayvnc VNC server for the Hyprland session
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/wayvnc
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target

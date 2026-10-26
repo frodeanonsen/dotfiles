@@ -4,3 +4,7 @@
 
 # Still omarchy's stock file: the 2560x1600 panel at auto scale.
 .config/hypr/monitors.lua:omarchy/hosts/bodbook/hypr/monitors.lua
+
+# VNC server for remote control from the LAN; config and password in
+# ~/.config/wayvnc, outside the repo.
+.config/systemd/user/wayvnc.service:omarchy/systemd/user/wayvnc.service
