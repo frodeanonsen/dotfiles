@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import Quickshell.Hyprland
 import Quickshell.Io
 import Quickshell.Wayland
 
@@ -41,6 +42,18 @@ import Quickshell.Wayland
 // idle, so it still happens once the video ends. omarchy's "Stay awake"
 // toggle is checked the same way frode.battery-suspend does.
 //
+// An inhibitor only holds the displays on for an hour past the idle timeout;
+// after that they are blanked regardless. A Home Assistant dashboard left open
+// in Vivaldi inhibited idle all night (most likely its camera feeds count as
+// video playback). The stay-awake toggle has no such limit. The same
+// inhibitor keeps omarchy's idle service from locking at idle.lock, so a
+// blanking past the limit locks the session too, before the outputs go away.
+//
+// A config reload re-applies the monitor rules and so re-enables a disabled
+// external; theme-mode-auto's evening theme switch lit the monitor that way
+// with nobody at it. While the displays are off, a reload makes this blank
+// them again after a short wait, through the same inhibitor checks.
+//
 // Hyprland lights the displays again on the first key press or mouse move
 // (key_press_enables_dpms and mouse_move_enables_dpms in omarchy's defaults);
 // the explicit `on` covers wake-ups that arrive another way.
@@ -51,6 +64,11 @@ Item {
   // omarchy's own monitor dead until the shell was restarted.
   readonly property int timeoutSeconds: 900
   readonly property int retrySeconds: 60
+  readonly property int maxInhibitSeconds: 3600
+  property double idleSince: 0
+  // Set before each run, since the command binding does not see time pass.
+  property bool inhibitorsExpired: false
+  property bool blanked: false
 
   function log(message) {
     console.log("display-off " + new Date().toISOString() + " " + message)
@@ -63,6 +81,10 @@ Item {
     onIsIdleChanged: {
       root.log(isIdle ? "idle, displays off" : "active, displays on")
       retryTimer.stop()
+      reblankTimer.stop()
+      root.blanked = false
+      if (isIdle) root.idleSince = Date.now()
+      root.inhibitorsExpired = false
       if (isIdle) offProcess.running = true
       else onProcess.running = true
     }
@@ -74,7 +96,31 @@ Item {
     id: retryTimer
     interval: root.retrySeconds * 1000
     repeat: false
-    onTriggered: if (idleMonitor.isIdle) offProcess.running = true
+    onTriggered: {
+      if (!idleMonitor.isIdle) return
+      root.inhibitorsExpired = Date.now() - root.idleSince >= root.maxInhibitSeconds * 1000
+      offProcess.running = true
+    }
+  }
+
+  Connections {
+    target: Hyprland
+    function onRawEvent(event) {
+      if (event && event.name === "configreloaded" && root.blanked) reblankTimer.restart()
+    }
+  }
+
+  // Gives the reload time to bring the outputs back before blanking again.
+  Timer {
+    id: reblankTimer
+    interval: 2000
+    repeat: false
+    onTriggered: {
+      if (!idleMonitor.isIdle || !root.blanked) return
+      root.log("config reloaded while off, blanking again")
+      root.blanked = false
+      retryTimer.triggered()
+    }
   }
 
   Process {
@@ -84,7 +130,13 @@ Item {
         echo stay-awake
         exit 2
       fi
-      if hyprctl clients -j | jq -e 'any(.[]; .inhibitingIdle)' >/dev/null; then
+      if [[ $1 == expired ]]; then
+        echo "inhibitors ignored after ${root.maxInhibitSeconds} s idle"
+        if [[ $(omarchy-shell lock isLocked 2>/dev/null) != true ]]; then
+          omarchy-system-lock && echo locked
+          sleep 1
+        fi
+      elif hyprctl clients -j | jq -e 'any(.[]; .inhibitingIdle)' >/dev/null; then
         echo "inhibited by $(hyprctl clients -j | jq -r '[.[] | select(.inhibitingIdle) | .class] | unique | join(" ")')"
         exit 2
       fi
@@ -94,12 +146,13 @@ Item {
         hyprctl eval "hl.monitor({ output = \\"$m\\", disabled = true })" >/dev/null && echo "disabled $m" && echo "$m" >>"$state"
       done
       omarchy-brightness-display off
-    `]
+    `, "display-off", root.inhibitorsExpired ? "expired" : ""]
     stdout: SplitParser {
       onRead: function(line) { root.log("off: " + line) }
     }
     onExited: function(exitCode) {
       root.log("off exitCode=" + exitCode)
+      root.blanked = exitCode === 0 && idleMonitor.isIdle
       if (exitCode === 2 && idleMonitor.isIdle) retryTimer.restart()
     }
   }
@@ -122,5 +175,5 @@ Item {
     onExited: function(exitCode) { root.log("on exitCode=" + exitCode) }
   }
 
-  Component.onCompleted: log("ready timeout=" + timeoutSeconds + " externals=disable inhibitors=manual retry=" + retrySeconds)
+  Component.onCompleted: log("ready timeout=" + timeoutSeconds + " externals=disable inhibitors=manual retry=" + retrySeconds + " maxInhibit=" + maxInhibitSeconds)
 }

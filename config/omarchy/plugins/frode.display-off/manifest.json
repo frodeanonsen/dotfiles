@@ -4,7 +4,7 @@
   "name": "Display Off",
   "version": "1.0.0",
   "author": "Frode Anonsen",
-  "description": "Turns the displays off after 15 minutes of idle, in place of the screensaver.",
+  "description": "Turns the displays off after 15 minutes of idle, in place of the screensaver; blanks and locks after an hour past that even when an app inhibits idle.",
   "kinds": [
     "service"
   ],
