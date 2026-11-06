@@ -11,6 +11,8 @@ set -eu
 dotfiles="${DOTFILES:-$HOME/.dotfiles}"
 scripts="$dotfiles/scripts"
 host="${DOTFILES_HOST:-$(hostname)}"
+# uucp owns /dev/ttyUSB* and /dev/ttyACM* on arch (dialout elsewhere).
+user_groups="uucp"
 bashrc_line='[ -f ~/.dotfiles/config/bash/omarchy.bash ] && source ~/.dotfiles/config/bash/omarchy.bash'
 
 if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
@@ -24,7 +26,8 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 	echo "  --skip-root  Skip the package and system file steps, which need root"
 	echo
 	echo "Steps: link configs, hook config/bash/omarchy.bash into ~/.bashrc,"
-	echo "install packages, install this host's system files, enable user units,"
+	echo "install packages, install this host's system files, add the user to"
+	echo "extra groups, enable user units,"
 	echo "switch the screensaver off, make iCloud Mail the mailto handler,"
 	echo "re-render the theme templates."
 	exit 0
@@ -92,6 +95,7 @@ if [ "$skip_root" = true ]; then
 	echo "skipped; run these from a terminal later:"
 	echo "  scripts/install_omarchy_packages.sh"
 	echo "  scripts/install_omarchy_system.sh"
+	echo "  sudo usermod -aG ${user_groups// /,} $USER"
 else
 	step "packages"
 	# shellcheck disable=SC2086
@@ -100,6 +104,18 @@ else
 	step "system files ($host)"
 	# shellcheck disable=SC2086
 	"$scripts/install_omarchy_system.sh" $pass_through
+
+	step "groups"
+	for group in $user_groups; do
+		if id -nG "$USER" | tr ' ' '\n' | grep -qx "$group"; then
+			echo "$group: ok, already a member"
+		elif [ "$dry_run" = true ]; then
+			echo "$group: would add $USER"
+		else
+			sudo usermod -aG "$group" "$USER"
+			echo "$group: added $USER, takes effect at next login"
+		fi
+	done
 fi
 
 step "user units"
