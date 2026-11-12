@@ -66,9 +66,11 @@ ai.storyteller.soundcraft
 ai.storyteller.vectorcraft
 ai.storyteller.wordcraft
 # SolidCraft is another vendor (tangency-labs) with no pacman repository of
-# its own. This is the AUR source build, kept by an Arch package maintainer
-# (alerque); solidcraft-bin is from an account without that standing.
-aur/solidcraft
+# its own. solidcraft-bin repackages upstream's release tarball. The AUR
+# source build (solidcraft, kept by Arch package maintainer alerque) ran 51
+# minutes on homebook until systemd-oomd killed it. The -bin maintainer is a
+# young account, so read the diff yay shows on each update.
+aur/solidcraft-bin
 
 # Key remapping below the compositor: the Mac Option letters (Alt+a = å ...)
 # come from the per-host keyd config in hosts/<hostname>/system/etc/keyd.
