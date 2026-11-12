@@ -4,6 +4,10 @@
 # Only what the omarchy base does not already ship; bat, eza, fzf, zoxide,
 # lazygit, btop, starship and mise come with omarchy. Mirrors the shell tools
 # in linux/*-configuration.nix home.packages. One package per line, # comments.
+# A name prefixed with aur/ is built from the AUR with `omarchy pkg aur add`
+# (yay) instead; that needs a terminal for the sudo prompt.
+# The ai.storyteller.* and ai.artcraft.app names come from ArtCraft's own
+# repository, which scripts/install_artcraft_repo.sh enables first.
 
 # Shell, history and environment
 fish            # interactive shell; bash stays the login shell, see bash/omarchy.bash
@@ -24,6 +28,47 @@ tldr
 # hwatch        # not in the Arch repos; AUR only, install by hand if wanted
 lnav
 sshs
+yazi            # file manager
+bottom          # btm
+caligula        # disk image writer
+cyme            # lsusb
+iperf3
+7zip
+rsync
+podman
+tigervnc        # vncviewer, for the wayvnc unit on bodbook
+
+# Desktop apps
+vivaldi         # the default browser, set by scripts/bootstrap_omarchy.sh
+bitwarden
+slack-desktop
+telegram-desktop
+nextcloud-client
+zed
+pdfarranger
+kicad
+aur/zennotes-bin
+aur/orca-slicer-bin     # the stable release; aur/orca-slicer builds from source and lags behind
+aur/hyprmon-bin         # monitor layout tui
+
+# ArtCraft and the Craft apps, from the vendor's signed pacman repository
+# (https://getartcraft.com/linux). Each installs <app> and <app>-cli.
+ai.artcraft.app
+ai.storyteller.cadcraft
+ai.storyteller.deckcraft
+ai.storyteller.figcraft
+ai.storyteller.filmcraft
+ai.storyteller.gridcraft
+ai.storyteller.lightcraft
+ai.storyteller.pdfcraft
+ai.storyteller.photocraft
+ai.storyteller.soundcraft
+ai.storyteller.vectorcraft
+ai.storyteller.wordcraft
+# SolidCraft is another vendor (tangency-labs) with no pacman repository of
+# its own. This is the AUR source build, kept by an Arch package maintainer
+# (alerque); solidcraft-bin is from an account without that standing.
+aur/solidcraft
 
 # Key remapping below the compositor: the Mac Option letters (Alt+a = å ...)
 # come from the per-host keyd config in hosts/<hostname>/system/etc/keyd.

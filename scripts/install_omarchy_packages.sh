@@ -4,6 +4,10 @@
 # Wraps `omarchy pkg add`, which is a --needed pacman install, so this is
 # idempotent and safe to re-run after pulling. pacman needs root: from a
 # terminal that is a sudo password prompt, without one it is a pkexec dialog.
+# It first enables ArtCraft's pacman repository with install_artcraft_repo.sh.
+# Names listed as aur/<name> go through `omarchy pkg aur add` (yay) instead.
+# yay builds as the user and calls sudo itself, so those need a terminal and
+# are reported and left alone without one.
 set -eu
 
 dotfiles="${DOTFILES:-$HOME/.dotfiles}"
@@ -37,22 +41,38 @@ if ! command -v omarchy-pkg-add >/dev/null 2>&1; then
 	exit 1
 fi
 
+# The list names packages from ArtCraft's repository, which has to be enabled
+# before pacman can find them.
+if [ "$dry_run" = true ]; then
+	"$dotfiles/scripts/install_artcraft_repo.sh" --dry-run
+else
+	"$dotfiles/scripts/install_artcraft_repo.sh"
+fi
+
 # Strip comments and blank lines, keep the first word of each line.
 packages=$(sed -e 's/#.*//' -e 's/^[[:space:]]*//' -e 's/[[:space:]].*//' "$list" | grep -v '^$')
 
 missing=""
+missing_aur=""
 for pkg in $packages; do
-	if ! pacman -Q "$pkg" >/dev/null 2>&1; then
-		missing="$missing $pkg"
+	name="${pkg#aur/}"
+	if pacman -Q "$name" >/dev/null 2>&1; then
+		continue
+	fi
+	if [ "$name" = "$pkg" ]; then
+		missing="$missing $name"
+	else
+		missing_aur="$missing_aur $name"
 	fi
 done
 
-if [ -z "$missing" ]; then
+if [ -z "$missing" ] && [ -z "$missing_aur" ]; then
 	echo "all packages present, nothing to do"
 	exit 0
 fi
 
-echo "missing:$missing"
+[ -z "$missing" ] || echo "missing:$missing"
+[ -z "$missing_aur" ] || echo "missing from the AUR:$missing_aur"
 if [ "$dry_run" = true ]; then
 	echo "dry run, nothing installed"
 	exit 0
@@ -61,10 +81,23 @@ fi
 # omarchy-pkg-add uses sudo, which needs a terminal for the password. Without
 # one (e.g. run from an agent or the `!` runner in Claude Code) fall back to
 # pkexec, which asks through a graphical dialog instead.
-if [ -t 0 ]; then
+if [ -z "$missing" ]; then
+	:
+elif [ -t 0 ]; then
 	# shellcheck disable=SC2086
 	omarchy-pkg-add $missing
 else
 	# shellcheck disable=SC2086
 	pkexec pacman -S --noconfirm --needed $missing
+fi
+
+if [ -z "$missing_aur" ]; then
+	:
+elif [ -t 0 ]; then
+	# shellcheck disable=SC2086
+	omarchy-pkg-aur-add $missing_aur
+else
+	echo "no terminal for yay's sudo prompt, AUR packages not installed:$missing_aur" >&2
+	echo "run scripts/install_omarchy_packages.sh from a terminal" >&2
+	exit 1
 fi

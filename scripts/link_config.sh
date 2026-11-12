@@ -57,6 +57,9 @@ zellij:zellij
 # changes show up in the repo as a diff.
 # omarchy/hooks/post-update.d/relink-dotfiles re-runs this script at the end of
 # `omarchy update`, for the adopt list below.
+# omarchy/hooks/pre-refresh-pacman.d/artcraft-repo puts the ArtCraft
+# repository back into /etc/pacman.conf when `omarchy refresh pacman` has
+# rewritten it, by running scripts/install_artcraft_repo.sh.
 # omarchy/XCompose is the compose table; it pulls in keyd's unicode sequences,
 # which the per-host keyd config (Alt+a = å) needs to produce a character.
 # omarchy/plugins holds user plugins for the omarchy shell, linked one dir per
@@ -83,6 +86,7 @@ home_links="
 .config/omarchy/themed/starship.toml.tpl:omarchy/themed/starship.toml.tpl
 .config/omarchy/shell.json:omarchy/shell.json
 .config/omarchy/hooks/post-update.d/relink-dotfiles:omarchy/hooks/post-update.d/relink-dotfiles
+.config/omarchy/hooks/pre-refresh-pacman.d/artcraft-repo:omarchy/hooks/pre-refresh-pacman.d/artcraft-repo
 .config/omarchy/plugins/frode.battery-suspend:omarchy/plugins/frode.battery-suspend
 .config/omarchy/plugins/frode.display-off:omarchy/plugins/frode.display-off
 .config/omarchy/plugins/frode.workspaces:omarchy/plugins/frode.workspaces

@@ -291,7 +291,16 @@ an SSH key for pushing (the clone above is HTTPS), and logging in to atuin,
 The package script installs whatever is listed in `config/omarchy/packages`
 and missing, through `omarchy pkg add`. That list is the omarchy counterpart
 of the `home.packages` block in the nix host configs, minus what the omarchy
-base already ships.
+base already ships, plus the desktop apps both machines get. A name written
+as `aur/<name>` is built from the AUR through `omarchy pkg aur add` (yay),
+which needs a terminal for its sudo prompt. The `ai.storyteller.*` and
+`ai.artcraft.app` entries are ArtCraft and the Craft apps from the vendor's
+own signed pacman repository; `scripts/install_artcraft_repo.sh`, which the
+package script runs first, imports the signing key (checked against a pinned
+fingerprint), installs `config/omarchy/pacman/artcraft.conf` to
+`/etc/pacman.d/` and includes it from `/etc/pacman.conf`. `omarchy refresh
+pacman` rewrites that file, so `omarchy/hooks/pre-refresh-pacman.d/artcraft-repo`
+runs the script again from there.
 
 `scripts/install_omarchy_system.sh` copies the root-owned files under
 `config/omarchy/hosts/<hostname>/system/` to the same paths under `/`. Only

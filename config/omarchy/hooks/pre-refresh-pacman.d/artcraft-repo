@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# `omarchy refresh pacman` has just replaced /etc/pacman.conf with omarchy's
+# template, which drops the include for the ArtCraft repository; put it back
+# before the upgrade that follows, so the Craft apps stay in the transaction.
+"${DOTFILES:-$HOME/.dotfiles}/scripts/install_artcraft_repo.sh"
