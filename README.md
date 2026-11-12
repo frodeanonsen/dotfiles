@@ -276,7 +276,8 @@ runs these steps in order, each of which can also be run alone:
 4. `install_omarchy_system.sh` installs this host's `system/` files, if any.
 5. Enables the user units in `config/omarchy/units` and the host's `units`.
 6. Makes `icloud-mail.desktop` the mailto handler.
-7. `omarchy theme refresh`, so the themed starship config gets rendered.
+7. Makes Vivaldi the default browser, if it is installed.
+8. `omarchy theme refresh`, so the themed starship config gets rendered.
 
 `--skip-root` leaves out steps 3 and 4, for running it from somewhere without
 a way to ask for a password, such as over SSH without a tty.

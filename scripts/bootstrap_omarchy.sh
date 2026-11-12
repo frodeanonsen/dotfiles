@@ -29,7 +29,7 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 	echo "install packages, install this host's system files, add the user to"
 	echo "extra groups, enable user units,"
 	echo "switch the screensaver off, make iCloud Mail the mailto handler,"
-	echo "re-render the theme templates."
+	echo "make Vivaldi the default browser, re-render the theme templates."
 	exit 0
 fi
 
@@ -153,6 +153,23 @@ elif [ "$dry_run" = true ]; then
 else
 	xdg-mime default icloud-mail.desktop x-scheme-handler/mailto
 	echo "set to icloud-mail.desktop"
+fi
+
+# `omarchy default browser` only knows its own list of browsers, so this makes
+# the call it makes underneath. The desktop-specific hyprland-mimeapps.list
+# keeps routing links through omarchy-browser.desktop; with XDG_CURRENT_DESKTOP
+# and BROWSER out of the way xdg-settings reads and writes mimeapps.list, where
+# omarchy looks the browser itself up.
+step "default browser"
+if ! command -v vivaldi-stable >/dev/null 2>&1; then
+	echo "vivaldi is not installed, skipping"
+elif [ "$(env -u BROWSER XDG_CURRENT_DESKTOP= xdg-settings get default-web-browser)" = "vivaldi-stable.desktop" ]; then
+	echo "ok, already vivaldi-stable.desktop"
+elif [ "$dry_run" = true ]; then
+	echo "would set vivaldi-stable.desktop"
+else
+	env -u BROWSER XDG_CURRENT_DESKTOP= xdg-settings set default-web-browser vivaldi-stable.desktop
+	echo "set to vivaldi-stable.desktop"
 fi
 
 # The themed/*.tpl files only turn into real configs when the theme is
