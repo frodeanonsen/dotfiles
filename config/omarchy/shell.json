@@ -55,6 +55,9 @@
         },
         {
           "id": "frode.workspaces"
+        },
+        {
+          "id": "omarchy.active-window"
         }
       ],
       "right": [
