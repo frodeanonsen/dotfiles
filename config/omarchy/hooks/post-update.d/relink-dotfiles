@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Omarchy's migrations edit ~/.config/omarchy/shell.json with jq and mv the
+# result over it, which replaces the symlink into the dotfiles with a regular
+# file. link_config.sh copies such a file back into the repo and links it
+# again; running it here does that before anything else writes to the stray
+# file. Conflicts it reports are not this hook's to fail on.
+"${DOTFILES:-$HOME/.dotfiles}/scripts/link_config.sh" --quiet || true

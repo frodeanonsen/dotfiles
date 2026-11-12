@@ -112,7 +112,13 @@ themed configs, and `bash/omarchy.bash` points `STARSHIP_CONFIG` at the result.
 Omarchy-only, so only `link_config.sh` places it. `omarchy/shell.json` is the
 omarchy shell's user config (bar layout, idle lock and screensaver timeouts),
 linked to `~/.config/omarchy/shell.json`; the shell writes to it too, from
-`omarchy bar` and its settings panel, and saves through the symlink.
+`omarchy bar` and its settings panel, and saves through the symlink. Omarchy's
+migrations do not: they `mv` a rewritten file over it, which leaves a regular
+file in place of the link. `link_config.sh` copies such a file into the repo
+and links it again (its `adopt` list, limited to files it linked before, so
+the stock file on a fresh install still takes `--force`), and
+`omarchy/hooks/post-update.d/relink-dotfiles` runs it at the end of every
+`omarchy update`. The result is an uncommitted diff in the repo.
 `omarchy/plugins/` holds user plugins for the omarchy shell, each dir linked
 into `~/.config/omarchy/plugins/`. `frode.battery-suspend` suspends after 15
 minutes of idle, but only on battery; omarchy itself never suspends on idle.

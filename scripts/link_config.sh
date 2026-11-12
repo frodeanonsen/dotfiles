@@ -55,6 +55,8 @@ zellij:zellij
 # lock and screensaver timeouts). The shell also writes to it, from
 # `omarchy bar` and its settings panel; it saves through the symlink, so those
 # changes show up in the repo as a diff.
+# omarchy/hooks/post-update.d/relink-dotfiles re-runs this script at the end of
+# `omarchy update`, for the adopt list below.
 # omarchy/XCompose is the compose table; it pulls in keyd's unicode sequences,
 # which the per-host keyd config (Alt+a = å) needs to produce a character.
 # omarchy/plugins holds user plugins for the omarchy shell, linked one dir per
@@ -80,6 +82,7 @@ home_links="
 .claude/statusline.sh:claude/statusline.sh
 .config/omarchy/themed/starship.toml.tpl:omarchy/themed/starship.toml.tpl
 .config/omarchy/shell.json:omarchy/shell.json
+.config/omarchy/hooks/post-update.d/relink-dotfiles:omarchy/hooks/post-update.d/relink-dotfiles
 .config/omarchy/plugins/frode.battery-suspend:omarchy/plugins/frode.battery-suspend
 .config/omarchy/plugins/frode.display-off:omarchy/plugins/frode.display-off
 .config/omarchy/plugins/frode.workspaces:omarchy/plugins/frode.workspaces
@@ -99,6 +102,24 @@ home_links="
 .XCompose:omarchy/XCompose
 "
 
+# <path under $HOME>
+#
+# Linked files that a tool on the machine rewrites, and may replace instead of
+# writing through the symlink: omarchy's migrations edit shell.json with jq
+# and `mv` the result over it, which leaves a regular file where the link was
+# and the repo copy a version behind. For these the live file is the newer
+# one, so it is copied into the repo and linked again rather than reported as
+# a conflict. Only for a file this script linked before (see $state_file): on
+# a fresh install the file in the way is omarchy's stock one, and that still
+# takes --force.
+adopt="
+.config/omarchy/shell.json
+"
+
+# The targets this script has linked, one per line; what tells a link that was
+# replaced apart from a file that was never ours.
+state_file="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles/linked"
+
 # What only one machine should get is in omarchy/hosts/<hostname>/home_links,
 # same format, # comments allowed: hypr/monitors.lua, which names that
 # machine's panel and outputs, and links for hardware quirks such as
@@ -113,17 +134,22 @@ fi
 
 dry_run=false
 force=false
+quiet=false
 
 if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
-	echo "Usage: scripts/link_config.sh [--help] [--dry-run] [--force]"
+	echo "Usage: scripts/link_config.sh [--help] [--dry-run] [--force] [--quiet]"
 	echo
 	echo "Options:"
 	echo "  --help, -h   Show this help message"
 	echo "  --dry-run    Report what would change, touch nothing"
 	echo "  --force      Replace existing files, backing them up first"
+	echo "  --quiet      Leave out the links that are already correct"
 	echo
 	echo "Without --force, anything already present in ~/.config that is not"
 	echo "already the right symlink is left alone and reported as a conflict."
+	echo "The exception is a file a tool replaced its link with (shell.json, after"
+	echo "an omarchy migration): its content is copied into the repo and it is"
+	echo "linked again. --force puts the repo copy back instead."
 	echo "Backups go to \$XDG_CONFIG_HOME/.dotfiles-backup/<timestamp>/."
 	exit 0
 fi
@@ -132,6 +158,7 @@ for arg in "$@"; do
 	case "$arg" in
 	--dry-run) dry_run=true ;;
 	--force) force=true ;;
+	--quiet) quiet=true ;;
 	*)
 		echo "unknown option: $arg" >&2
 		echo "try: scripts/link_config.sh --help" >&2
@@ -143,6 +170,7 @@ done
 linked=0
 skipped=0
 conflicts=0
+adopted=0
 
 # Moves an existing path aside into the timestamped backup dir.
 back_up() {
@@ -167,17 +195,45 @@ make_link() {
 	echo "    linked $target -> $src"
 }
 
+# Notes a target as linked by this script.
+remember() {
+	[ "$dry_run" = true ] && return
+	grep -qxF "$1" "$state_file" 2>/dev/null && return
+	mkdir -p "$(dirname "$state_file")"
+	echo "$1" >>"$state_file"
+}
+
+# True for a regular file on the adopt list that this script linked before.
+adoptable() {
+	[ -f "$1" ] && [ ! -L "$1" ] || return 1
+	grep -qxF "$1" "$state_file" 2>/dev/null || return 1
+	for entry in $adopt; do
+		[ "$HOME/$entry" = "$1" ] && return 0
+	done
+	return 1
+}
+
 [ "$dry_run" = true ] && echo "dry run, nothing will be changed"
-echo "$src_dir -> $dst_dir"
-echo
+if [ "$quiet" = false ]; then
+	echo "$src_dir -> $dst_dir"
+	echo
+fi
 
 [ "$dry_run" = true ] || mkdir -p "$dst_dir"
 
 # Links $2 -> $1, handling the already-linked, in-the-way and
-# identical-content cases. Works for both dirs and single files.
+# identical-content cases. Works for both dirs and single files. $3 is the
+# name to report it under.
 link_one() {
 	src="$1"
 	target="$2"
+
+	if [ "$quiet" = true ] && [ -e "$src" ] && [ -L "$target" ] && [ "$(readlink "$target")" = "$src" ]; then
+		remember "$target"
+		skipped=$((skipped + 1))
+		return
+	fi
+	echo "$3"
 
 	if [ ! -e "$src" ]; then
 		echo "    MISSING source $src, skipping"
@@ -188,6 +244,7 @@ link_one() {
 	# Already pointing where we want it.
 	if [ -L "$target" ] && [ "$(readlink "$target")" = "$src" ]; then
 		echo "    ok, already linked"
+		remember "$target"
 		skipped=$((skipped + 1))
 		return
 	fi
@@ -202,6 +259,7 @@ link_one() {
 			echo "    stale link to $(readlink "$target"), relinking"
 			[ "$dry_run" = true ] || rm "$target"
 			make_link "$src" "$target"
+			remember "$target"
 			linked=$((linked + 1))
 			return
 			;;
@@ -211,6 +269,7 @@ link_one() {
 	# Nothing in the way. A dangling symlink counts as in the way, hence -L.
 	if [ ! -e "$target" ] && [ ! -L "$target" ]; then
 		make_link "$src" "$target"
+		remember "$target"
 		linked=$((linked + 1))
 		return
 	fi
@@ -220,7 +279,29 @@ link_one() {
 		echo "    identical content, converting to symlink"
 		[ "$dry_run" = true ] || rm -rf "$target"
 		make_link "$src" "$target"
+		remember "$target"
 		linked=$((linked + 1))
+		return
+	fi
+
+	# A tool replaced our link with its own rewrite of the file: keep what it
+	# wrote. The repo copy it replaces goes to the backup dir, in case it had
+	# changes the live file never saw (a pull since the link broke).
+	if [ "$force" = false ] && adoptable "$target"; then
+		echo "    link was replaced by a file that differs, adopting it into the repo"
+		if [ "$dry_run" = true ]; then
+			echo "    would back up $src to $backup_dir/$(basename "$src").repo"
+			echo "    would copy $target over $src"
+		else
+			mkdir -p "$backup_dir"
+			cp "$src" "$backup_dir/$(basename "$src").repo"
+			cat "$target" >"$src"
+			rm "$target"
+			echo "    repo copy backed up to $backup_dir/$(basename "$src").repo"
+		fi
+		make_link "$src" "$target"
+		linked=$((linked + 1))
+		adopted=$((adopted + 1))
 		return
 	fi
 
@@ -234,24 +315,25 @@ link_one() {
 
 	back_up "$target"
 	make_link "$src" "$target"
+	remember "$target"
 	linked=$((linked + 1))
 }
 
 for entry in $links; do
 	name="${entry%%:*}"
 	source_name="${entry##*:}"
-	echo "$name"
-	link_one "$src_dir/$source_name" "$dst_dir/$name"
+	link_one "$src_dir/$source_name" "$dst_dir/$name" "$name"
 done
 
 for entry in $home_links; do
 	name="${entry%%:*}"
 	source_name="${entry##*:}"
-	echo "~/$name"
-	link_one "$src_dir/$source_name" "$HOME/$name"
+	link_one "$src_dir/$source_name" "$HOME/$name" "~/$name"
 done
 
-if [ -n "$host_links" ]; then
+if [ "$quiet" = true ]; then
+	:
+elif [ -n "$host_links" ]; then
 	echo
 	echo "host $host"
 else
@@ -261,12 +343,14 @@ fi
 for entry in $host_links; do
 	name="${entry%%:*}"
 	source_name="${entry##*:}"
-	echo "~/$name"
-	link_one "$src_dir/$source_name" "$HOME/$name"
+	link_one "$src_dir/$source_name" "$HOME/$name" "~/$name"
 done
 
-echo
+[ "$quiet" = true ] || echo
 echo "$linked linked, $skipped already correct, $conflicts conflicts"
+if [ "$adopted" -gt 0 ]; then
+	echo "$adopted adopted from the machine: review with git -C $dotfiles diff, then commit"
+fi
 
 if [ "$conflicts" -gt 0 ] && [ "$force" = false ]; then
 	echo "resolve the conflicts above, or re-run with --force"
