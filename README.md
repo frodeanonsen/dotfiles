@@ -13,11 +13,12 @@ anywhere in particular — see [What each machine uses](#what-each-machine-uses)
 
 | Host | OS | Provisioned by | Notes |
 | --- | --- | --- | --- |
-| `MacBookApple` | macOS (aarch64) | `darwinConfigurations` | Work laptop, aka zygbook. Prefer `scripts/update_zygbook.sh` over calling `darwin-rebuild` directly |
+| `MacBookApple` | macOS (aarch64) | `darwinConfigurations` | **Not in use.** zygbook's old macOS install, reinstalled with Omarchy in Nov 2026. `darwin/` and `scripts/update_zygbook.sh` are kept but no machine runs them |
 | `ZygizoOne` | Linux (x86_64) | `homeConfigurations` | home-manager only, not NixOS |
 | `Ros` | Linux (aarch64) | `homeConfigurations` | Raspberry-Pi-class box |
 | `homebook` | Omarchy (Arch) | `scripts/bootstrap_omarchy.sh` | **No nix.** 2018 MacBook Pro (T2, Radeon Pro 560X). See [Machines without nix](#machines-without-nix) |
 | `bodbook` | Omarchy (Arch) | `scripts/bootstrap_omarchy.sh` | **No nix.** 2015 MacBookPro12,1 (Intel Iris 6100, no T2) |
+| `zygbook` | Omarchy (Asahi, aarch64) | `scripts/bootstrap_omarchy.sh` | **No nix.** Work laptop, 16" MacBook Pro M2 Max (Mac14,6). No host dir, gets the shared setup |
 
 ## Two ways configs get linked
 
@@ -184,7 +185,8 @@ gets the shared setup and keeps omarchy's stock `monitors.lua`. Set
 `system/` tree of T2 and Radeon fixes (listed under
 [Omarchy machines](#omarchy-machines)). `bodbook` only has its `monitors.lua`,
 still omarchy's stock file. None of homebook's system files apply to it: it
-has no T2 chip, no dGPU and Thunderbolt 2.
+has no T2 chip, no dGPU and Thunderbolt 2. `zygbook` has no dir: its panel
+runs at omarchy's default scale 2, and Asahi needs none of the T2 fixes.
 
 **Bash on omarchy** — `~/.bashrc` stays omarchy's own file with one added line
 that sources `config/bash/omarchy.bash` after the omarchy rc chain. That file
@@ -273,7 +275,8 @@ runs these steps in order, each of which can also be run alone:
    for: it backs them up and links. Leave it off when re-running later.
 2. Appends the line to `~/.bashrc` that sources `config/bash/omarchy.bash`.
 3. `install_omarchy_packages.sh` installs the package list.
-4. `install_omarchy_system.sh` installs this host's `system/` files, if any.
+4. `install_omarchy_system.sh` installs the shared and this host's `system/`
+   files.
 5. Enables the user units in `config/omarchy/units` and the host's `units`.
 6. Makes `icloud-mail.desktop` the mailto handler.
 7. Makes Vivaldi the default browser, if it is installed.
@@ -291,7 +294,7 @@ an SSH key for pushing (the clone above is HTTPS), and logging in to atuin,
 The package script installs whatever is listed in `config/omarchy/packages`
 and missing, through `omarchy pkg add`. That list is the omarchy counterpart
 of the `home.packages` block in the nix host configs, minus what the omarchy
-base already ships, plus the desktop apps both machines get. A name written
+base already ships, plus the desktop apps every machine gets. A name written
 as `aur/<name>` is built from the AUR through `omarchy pkg aur add` (yay),
 which needs a terminal for its sudo prompt. The `ai.storyteller.*` and
 `ai.artcraft.app` entries are ArtCraft and the Craft apps from the vendor's
@@ -302,9 +305,23 @@ fingerprint), installs `config/omarchy/pacman/artcraft.conf` to
 pacman` rewrites that file, so `omarchy/hooks/pre-refresh-pacman.d/artcraft-repo`
 runs the script again from there.
 
+A listed name with no build for the machine's architecture is reported and
+skipped rather than failing the batch: repo packages pacman cannot find, and
+AUR packages whose `.SRCINFO` lacks the architecture. On the aarch64 zygbook
+that is `vivaldi`, `zennotes-bin` and `orca-slicer-bin`, all x86_64 only.
+
 `scripts/install_omarchy_system.sh` copies the root-owned files under
-`config/omarchy/hosts/<hostname>/system/` to the same paths under `/`. Only
-homebook has any; today that is:
+`config/omarchy/system/` (every host) and
+`config/omarchy/hosts/<hostname>/system/` (this host; wins when both have a
+path) to the same paths under `/`. The shared tree holds one file:
+
+- `keyd/default.conf`, the Mac Option letters: Alt+a is å, Alt+o is ø and
+  Alt+' is æ, with Shift for the capitals. keyd sits below the compositor and
+  only takes those six chords, so every other Alt combination still reaches
+  Hyprland and the terminal. The script enables keyd and reloads it when this
+  file changes; `keyd check` validates a config before installing it.
+
+Only homebook has host files; today that is:
 
 - A udev rule and the `dgpu-power` helper it runs: on the 2018 MacBook Pro the
   Radeon drives the panel under Linux and idles at ~13 W in auto, so the rule
@@ -318,11 +335,6 @@ homebook has any; today that is:
   this file changes.
 - A NetworkManager drop-in that leaves the T2 chip's fake USB network
   interface unmanaged, so NetworkManager stops trying DHCP on it after resume.
-- `keyd/default.conf`, the Mac Option letters: Alt+a is å, Alt+o is ø and
-  Alt+' is æ, with Shift for the capitals. keyd sits below the compositor and
-  only takes those six chords, so every other Alt combination still reaches
-  Hyprland and the terminal. The script enables keyd and reloads it when this
-  file changes; `keyd check` validates a config before installing it.
 - `t2fand.conf`, the fan curve for `t2fanrd`. The packaged curve ramps from
   55°C to full speed at 75°C, which had both fans at ~4400 RPM with the CPU at
   60-65°C during video playback; this one ramps from 65°C to 90°C. The script
@@ -361,10 +373,9 @@ dialog.
 
 | Machine | Command |
 | --- | --- |
-| `MacBookApple` | `scripts/update_zygbook.sh` (add `--flake` to refresh inputs first) |
 | `ZygizoOne` | `scripts/update_linux.sh` |
 | `Ros` | `scripts/update_ros.sh` |
-| `homebook`, `bodbook` | `scripts/bootstrap_omarchy.sh` |
+| `homebook`, `bodbook`, `zygbook` | `scripts/bootstrap_omarchy.sh` |
 
 Run `nix flake check` before pushing changes that touch the nix side. It does
 not cover `config/` or `scripts/`, so changes that only affect a non-nix machine

@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# Installs this host's system-level files onto an omarchy host: everything
-# below config/omarchy/hosts/<hostname>/system/ is copied to the same path
-# under /.
+# Installs system-level files onto an omarchy host: everything below
+# config/omarchy/system/ (every host) and config/omarchy/hosts/<hostname>/system/
+# (this host) is copied to the same path under /. A path in both comes from
+# the host's tree.
 #
-# All of these are fixes for one machine's hardware, which is why they are
-# per host. A host without that dir has nothing to install.
+# The shared tree is what every machine wants (keyd's Mac Option letters); the
+# host trees are fixes for one machine's hardware.
 # DOTFILES_HOST overrides the hostname, for a dry run of another host.
 #
 # These are root-owned files outside ~/.config, so they cannot be symlinked
@@ -15,6 +16,7 @@ set -eu
 
 dotfiles="${DOTFILES:-$HOME/.dotfiles}"
 host="${DOTFILES_HOST:-$(hostname)}"
+shared_root="$dotfiles/config/omarchy/system"
 src_root="$dotfiles/config/omarchy/hosts/$host/system"
 
 if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
@@ -24,7 +26,8 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 	echo "  --help, -h   Show this help message"
 	echo "  --dry-run    Report what would be copied, touch nothing"
 	echo
-	echo "Copies $src_root/<path> to /<path> for every file, then reloads udev"
+	echo "Copies $shared_root/<path> and"
+	echo "$src_root/<path> to /<path> for every file, then reloads udev"
 	echo "rules and re-triggers power_supply events so new rules take effect."
 	echo "A changed NetworkManager drop-in reloads NetworkManager; a changed"
 	echo "Limine drop-in rebuilds the boot image (takes effect after a reboot); a"
@@ -46,8 +49,17 @@ for arg in "$@"; do
 	esac
 done
 
-if [ ! -d "$src_root" ]; then
-	echo "no $src_root, nothing to install on $host"
+# Published path -> source file; the host tree is read last so it wins.
+declare -A src_of
+for root in "$shared_root" "$src_root"; do
+	[ -d "$root" ] || continue
+	while IFS= read -r src; do
+		src_of["${src#"$root"}"]="$src"
+	done < <(find "$root" -type f)
+done
+
+if [ "${#src_of[@]}" -eq 0 ]; then
+	echo "no system files for $host, nothing to install"
 	exit 0
 fi
 
@@ -62,8 +74,8 @@ as_root() {
 }
 
 changed=""
-while IFS= read -r src; do
-	rel="${src#"$src_root"}"
+while IFS= read -r rel; do
+	src="${src_of[$rel]}"
 	if [ -f "$rel" ] && cmp -s "$src" "$rel"; then
 		echo "$rel"
 		echo "    ok, up to date"
@@ -76,7 +88,7 @@ while IFS= read -r src; do
 		echo "    missing, will install"
 	fi
 	changed="$changed $rel"
-done < <(find "$src_root" -type f | sort)
+done < <(printf '%s\n' "${!src_of[@]}" | sort)
 
 if [ -z "$changed" ]; then
 	echo
@@ -99,7 +111,7 @@ reload_keyd=false
 reload_units=false
 restart_journald=false
 for rel in $changed; do
-	src="$src_root$rel"
+	src="${src_of[$rel]}"
 	mode=$(stat -c '%a' "$src")
 	script="$script; install -D -m $mode '$src' '$rel'"
 	case "$rel" in

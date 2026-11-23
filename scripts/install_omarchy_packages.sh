@@ -8,6 +8,9 @@
 # Names listed as aur/<name> go through `omarchy pkg aur add` (yay) instead.
 # yay builds as the user and calls sudo itself, so those need a terminal and
 # are reported and left alone without one.
+# A name with no build for this machine's architecture (vivaldi and some AUR
+# -bin packages are x86_64 only, which matters on the aarch64 Asahi zygbook)
+# is reported and skipped, so one of them does not fail the whole batch.
 set -eu
 
 dotfiles="${DOTFILES:-$HOME/.dotfiles}"
@@ -52,19 +55,43 @@ fi
 # Strip comments and blank lines, keep the first word of each line.
 packages=$(sed -e 's/#.*//' -e 's/^[[:space:]]*//' -e 's/[[:space:]].*//' "$list" | grep -v '^$')
 
+arch="$(uname -m)"
+
+# Whether an AUR package builds for this machine, from the arch lines of its
+# .SRCINFO. When the AUR cannot be reached it says yes and leaves it to yay.
+aur_has_arch() {
+	local srcinfo
+	srcinfo=$(curl -fsS --max-time 10 "https://aur.archlinux.org/cgit/aur.git/plain/.SRCINFO?h=$1" 2>/dev/null) || return 0
+	printf '%s\n' "$srcinfo" | grep -qE "^[[:space:]]*arch = ($arch|any)\$"
+}
+
 missing=""
 missing_aur=""
+unavailable=""
 for pkg in $packages; do
 	name="${pkg#aur/}"
 	if pacman -Q "$name" >/dev/null 2>&1; then
 		continue
 	fi
 	if [ "$name" = "$pkg" ]; then
-		missing="$missing $name"
-	else
+		if pacman -Si "$name" >/dev/null 2>&1; then
+			missing="$missing $name"
+		else
+			unavailable="$unavailable $name"
+		fi
+	elif aur_has_arch "$name"; then
 		missing_aur="$missing_aur $name"
+	else
+		unavailable="$unavailable aur/$name"
 	fi
 done
+
+if [ -n "$unavailable" ]; then
+	echo "not available for $arch, skipped:$unavailable"
+	# A dry run has not enabled the ArtCraft repository yet, so its packages
+	# land here until the first real run.
+	[ "$dry_run" = false ] || echo "(a repository the real run enables first is not searched in a dry run)"
+fi
 
 if [ -z "$missing" ] && [ -z "$missing_aur" ]; then
 	echo "all packages present, nothing to do"
