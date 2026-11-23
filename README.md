@@ -103,7 +103,12 @@ a whole `~/.config` dir. `claude/` puts `settings.json` and `statusline.sh` in
 `~/.claude/`; Claude Code writes `settings.json` back when you change a
 setting, so the home-manager hosts link these with `mkOutOfStoreSymlink` to the
 checkout instead of a read-only store copy, and zygbook uses `ln -sfn` like its
-other links. `herdr/config.toml` is the herdr config, a port of the tmux
+other links. `git/gitconfig` and `git/gitignore` become `~/.gitconfig` and
+`~/.gitignore` on the omarchy machines, next to omarchy's own
+`~/.config/git/config`, which git also reads; `~/.gitconfig` wins on a clash.
+Anything that should not be in the repo, such as a work email for one
+directory, goes in `~/.gitconfig.local`, which the gitconfig includes.
+`herdr/config.toml` is the herdr config, a port of the tmux
 bindings with `ctrl+space` as prefix, linked into `~/.config/herdr/` as a
 single file because that dir also holds herdr's sockets, logs and session
 state. `omarchy/themed/starship.toml.tpl` is the two-line starship prompt

@@ -79,7 +79,13 @@ zellij:zellij
 # ~/.config/vivaldi itself is the browser profile and stays out of the repo.
 # herdr/config.toml is linked as a single file because ~/.config/herdr also
 # holds the server sockets, logs and session state.
+# git/gitconfig carries the identity, difft as diff.external and an include of
+# ~/.gitconfig.local for what stays off the repo (a work email per dir); it
+# names ~/.gitignore as the excludes file. Omarchy's ~/.config/git/config
+# stays its own file and git reads both, ~/.gitconfig winning on a clash.
 home_links="
+.gitconfig:git/gitconfig
+.gitignore:git/gitignore
 .config/herdr/config.toml:herdr/config.toml
 .claude/settings.json:claude/settings.json
 .claude/statusline.sh:claude/statusline.sh
