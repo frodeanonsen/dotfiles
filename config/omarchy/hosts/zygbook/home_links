@@ -1,0 +1,6 @@
+# Extra links for zygbook, the 16" M2 Max MacBook Pro on Asahi. Same format as
+# the home_links table in scripts/link_config.sh:
+# <path under $HOME>:<path under config/>
+
+# Built-in panel on the left, the Philips ultrawide to the right.
+.config/hypr/monitors.lua:omarchy/hosts/zygbook/hypr/monitors.lua

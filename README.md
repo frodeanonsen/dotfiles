@@ -18,7 +18,7 @@ anywhere in particular — see [What each machine uses](#what-each-machine-uses)
 | `Ros` | Linux (aarch64) | `homeConfigurations` | Raspberry-Pi-class box |
 | `homebook` | Omarchy (Arch) | `scripts/bootstrap_omarchy.sh` | **No nix.** 2018 MacBook Pro (T2, Radeon Pro 560X). See [Machines without nix](#machines-without-nix) |
 | `bodbook` | Omarchy (Arch) | `scripts/bootstrap_omarchy.sh` | **No nix.** 2015 MacBookPro12,1 (Intel Iris 6100, no T2) |
-| `zygbook` | Omarchy (Asahi, aarch64) | `scripts/bootstrap_omarchy.sh` | **No nix.** Work laptop, 16" MacBook Pro M2 Max (Mac14,6). No host dir, gets the shared setup |
+| `zygbook` | Omarchy (Asahi, aarch64) | `scripts/bootstrap_omarchy.sh` | **No nix.** Work laptop, 16" MacBook Pro M2 Max (Mac14,6). Host dir has only its monitor layout |
 
 ## Two ways configs get linked
 
@@ -190,8 +190,10 @@ gets the shared setup and keeps omarchy's stock `monitors.lua`. Set
 `system/` tree of T2 and Radeon fixes (listed under
 [Omarchy machines](#omarchy-machines)). `bodbook` only has its `monitors.lua`,
 still omarchy's stock file. None of homebook's system files apply to it: it
-has no T2 chip, no dGPU and Thunderbolt 2. `zygbook` has no dir: its panel
-runs at omarchy's default scale 2, and Asahi needs none of the T2 fixes.
+has no T2 chip, no dGPU and Thunderbolt 2. `zygbook` only has its
+`monitors.lua`: the panel at omarchy's default scale 2 and the Philips
+ultrawide forced to 5120x1440 at scale 1.25, matched without the serial so the home and work
+screens share the rule. Asahi needs none of the T2 fixes.
 
 **Bash on omarchy** — `~/.bashrc` stays omarchy's own file with one added line
 that sources `config/bash/omarchy.bash` after the omarchy rc chain. That file
